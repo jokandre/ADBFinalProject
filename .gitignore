@@ -17,5 +17,3 @@ htmlcov
 .coverage
 .coverage.*
 *,cover
-
-.templates/
