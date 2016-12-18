@@ -11,6 +11,7 @@ function statusChangeCallback(response) {
     FB.api('/me', {fields: 'name,gender,email,friends,likes'}, function(response) {
       //user的資料在這裡
       console.log(response);
+      // ajax and redirect to index.html
     });
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
