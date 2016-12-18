@@ -18,20 +18,14 @@ class User:
         user = graph.find_one('User', 'username', self.username)
         return user
 
-    def register(self, password):
+    def register(self):
         if not self.find():
-            user = Node('User', username=self.username, password=bcrypt.encrypt(password))
+            user = Node('User', username=self.username)
             graph.create(user)
             return True
         else:
             return False
 
-    def verify_password(self, password):
-        user = self.find()
-        if user:
-            return bcrypt.verify(password, user['password'])
-        else:
-            return False
 
     def add_post(self, title, tags, text):
         user = self.find()

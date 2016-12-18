@@ -1,3 +1,4 @@
+import config   # import neo4j config
 from blog import app
 import os
 
