@@ -3,9 +3,8 @@
     <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>
-        XXX
-      </title>
+      <title>D-Day</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
     
     <style type="text/css">
@@ -57,7 +56,8 @@
                   <div>
                     <form>
                       <h3>註冊以查看朋友的相簿和影片</h3>
-                      <span class=""><button class="btn-info"><span class=""></span>使用 Facebook 帳號登入</button></span>
+                      <span class=""><button class="btn-info" onclick="FB_Login()">使用 Facebook 帳號登入</button></span>
+                      <div id="status"></div>
                       
                       <div class=""><br><div class=""></div><div class="">或</div><div class=""></div><br></div>
                       
@@ -143,5 +143,7 @@
         </span>
         
     </body>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- JavaScript files start -->
+    <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/login.js"></script>
 </html>
