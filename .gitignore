@@ -20,6 +20,7 @@ htmlcov
 
 # virtualenv
 ADB/
+venv/
 
 # config setting
 config.py
