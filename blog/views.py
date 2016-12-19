@@ -1,4 +1,4 @@
-from .models import User   # get_todays_recent_posts
+from .api import member
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
 
 app = Flask(__name__)
@@ -15,17 +15,9 @@ def send_static(filename):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-
-        # For postgreSQL
-        if not User(username).register():
-            flash('A user with that username already exists.')
-        else:
-            session['username'] = username
-            flash('Logged in.')
-            return redirect(url_for('index'))
-
+        return member.register()
     return render_template('login.html')
+
 
 @app.route('/index.html', methods=['GET'])
 def main():
