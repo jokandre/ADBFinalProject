@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('test.html')
+    return render_template('login.html')
 
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
@@ -19,6 +19,6 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/index.html', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def main():
     return render_template('index.html')
