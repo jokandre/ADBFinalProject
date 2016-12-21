@@ -30,6 +30,18 @@ class User:
         else:
             return False
 
+    def add_fb_likes(self, likes):
+        user = self.find()
+        for like in likes:
+            rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
+            graph.merge(rel)
+
+    def add_fb_friends(self, friends):
+        user = self.find()
+        for friend in friends:
+            rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], id=friend['id']))
+            graph.merge(rel)
+
     def add_post(self, title, tags, text):
         user = self.find()
         post = Node(

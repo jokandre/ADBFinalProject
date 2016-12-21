@@ -10,11 +10,11 @@ def register():
 	Fb_id = json_dict['id']
 	access_token = json_dict['access_token']
 
-	if User(name, email, gender, Fb_id).register():
+	me = User(name, email, gender, Fb_id)
+	if me.register():
 		#  Not yet register before.
-		fb_API.get_fb_frends(Fb_id, access_token)
-		fb_API.get_fb_likes(Fb_id, access_token)
-
+		me.add_fb_likes(fb_API.get_fb_likes(Fb_id, access_token))
+	me.add_fb_friends(fb_API.get_fb_frends(Fb_id, access_token))
 	session['Fb_id'] = Fb_id
 	return redirect(url_for('main'))
 	flash('Logged in.')
