@@ -18,4 +18,12 @@ htmlcov
 .coverage.*
 *,cover
 
+# virtualenv
 ADB/
+venv/
+
+# config setting
+config.py
+
+# Mac
+.DS_Store
