@@ -1,0 +1,29 @@
+_Store
+*.pyc
+*.pyo
+env
+env*
+dist
+build
+*.egg
+*.egg-info
+_mailinglist
+.tox
+.cache/
+.idea/
+
+# Coverage reports
+htmlcov
+.coverage
+.coverage.*
+*,cover
+
+# virtualenv
+ADB/
+venv/
+
+# config setting
+config.py
+
+# Mac
+.DS_Store
