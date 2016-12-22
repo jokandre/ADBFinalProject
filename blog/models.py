@@ -11,27 +11,36 @@ password = os.environ.get('NEO4J_PASSWORD')
 graph = Graph(url + '/db/data/', username=username, password=password)
 
 class User:
-    def __init__(self, username):
-        self.username = username
+    def __init__(self, name, email, gender, Fb_id):
+        self.name = name
+        self.email = email
+        self.gender = gender
+        self.Fb_id = Fb_id
 
     def find(self):
-        user = graph.find_one('User', 'username', self.username)
+        user = graph.find_one('User', 'Fb_id', self.Fb_id)
         return user
 
-    def register(self, password):
+    def register(self):
         if not self.find():
-            user = Node('User', username=self.username, password=bcrypt.encrypt(password))
+            # TODO: put likes and friends to the neo4j.
+            user = Node('User', name=self.name, email=self.email, gender=self.gender, Fb_id=self.Fb_id)
             graph.create(user)
             return True
         else:
             return False
 
-    def verify_password(self, password):
+    def add_fb_likes(self, likes):
         user = self.find()
-        if user:
-            return bcrypt.verify(password, user['password'])
-        else:
-            return False
+        for like in likes:
+            rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
+            graph.merge(rel)
+
+    def add_fb_friends(self, friends):
+        user = self.find()
+        for friend in friends:
+            rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], id=friend['id']))
+            graph.merge(rel)
 
     def add_post(self, title, tags, text):
         user = self.find()
