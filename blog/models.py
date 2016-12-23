@@ -124,3 +124,36 @@ def timestamp():
 
 def date():
     return datetime.now().strftime('%Y-%m-%d')
+
+class Diary(object):
+    """docstring for diary"""
+    def __init__(self, owner_id):
+        super(Diary, self).__init__()
+        self.owner_id = owner_id
+
+    def get_owner(self):
+        user = graph.node(self.owner_id)
+        return user
+
+    def get_all_diary(self):
+        query = '''
+        MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D LIMIT 25
+        '''
+        return graph.run(query, id=self.owner_id)
+
+    def add_diary(self, title, content, latitude, longitude, category):
+        user = self.get_owner()
+        diary = Node(
+            'Diary',
+            id=str(uuid.uuid4()),
+            title=title,
+            content=content,
+            timestamp=timestamp(),
+            date=date(),
+            lat=latitude,
+            lon=longitude,
+            category=category
+        )
+        rel = Relationship(user, 'PUBLISHED', diary)
+        graph.create(rel)
+        return ('', 200)
