@@ -32,12 +32,16 @@ def diary_API(path):
         # API GET: /diary/api/v1/get?id=x
         if path == 'api/v1/get':
            return diary.get_all_diary()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
         # API POST: /diary/api/v1/create
         if path == 'api/v1/create':
             return diary.create()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
     else:
-        return 'Something Wrong!'
+        raise InvalidUsage("Something Wrong.", 404)
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
