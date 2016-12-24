@@ -48,19 +48,19 @@ def ida(articles):
 	with open('ch_stopwords.txt', 'r') as f:
 		stopwords = set(f.read().lower().split('\n'))
 
-	print('stopwords', stopwords[:10])
+	#print('stopwords', stopwords[:10])
 
 	trigram_vectorizer = CountVectorizer(ngram_range=(2,3),token_pattern=r'([\u4e00-\u9fa5]{1}|\b[a-zA-Z]+\b)', min_df=0.2, max_df=0.7, stop_words=stopwords, analyzer='word')
 	analyzer = trigram_vectorizer.build_analyzer()
 
 	for article in articles:
 		terms = set(map(lambda x: x.replace(' ', ''), analyzer(article.Content))) #get rid of spaces
-		terms -= stopwords
+		terms = list(terms-stopwords)
 		doc_terms.append(terms)
 	
 	dictionary = corpora.Dictionary(doc_terms)
 	corpus = [dictionary.doc2bow(text) for text in doc_terms]
-	ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=8, id2word = dictionary, alpha='auto', eval_every=5, iterations=100, passes=40)
+	ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=8, id2word = dictionary, alpha='auto', eval_every=5, iterations=500, passes=60)
 	ldamodel.save('ldamodel%s.mdl'%str(datetime.now())[5:-7])
 	print(ldamodel.print_topics(num_topics=8, num_words=10))
 
@@ -68,7 +68,7 @@ def ida(articles):
 board, cate = (sys.argv[1], '')
 Articles = getArticlesByDateRange()
 i=0
-ida(Articles[:100])
+ida(Articles)
 '''
 for article in Articles:
 	i+=1;
