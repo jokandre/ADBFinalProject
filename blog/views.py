@@ -23,8 +23,7 @@ def send_static(filename):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        member.register()
-        return redirect(url_for('main'))
+        return member.register()
     return render_template('login.html')
 
 @app.route('/diary/<path:path>', methods=['GET', 'POST'])

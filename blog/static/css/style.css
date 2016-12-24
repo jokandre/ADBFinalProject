@@ -88,6 +88,12 @@ body a:hover{
 .logo-right ul li a:hover{
 	color:#66D5DE;
 }
+.logo-right ul li a span{
+	margin-left: 6px;
+}
+.user_icon{
+	width: 32px;
+}
 .header-nav {
     background-color: #F8F8F8;
 }
