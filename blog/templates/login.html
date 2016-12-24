@@ -1,150 +1,103 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>D-Day</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    </head>
+<head>
+<title>D-Day</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- CSS files start -->
+<link href="../static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/login.css" rel="stylesheet" type="text/css" media="all" />
+<!-- CSS files start -->
+</head>
+<body>
+  <span class="root col-md-8 col-md-offset-2">
+    <main>
+      <article>
+        <div class="main_pic rootL col-md-6" align="center">
+          <img src="../static/images/main.png">
+        </div>
+        <div class="rootLR col-md-6" align="center">
+          <h1>。D.Day。</h1>
+          <h3 style="color: #999;">- Dat Day we met -</h3>
+          <!--registration form-->
+          <div id="registration_form">
+            <form>
+              <div class="fb_button"><a href="javascript: fb_login();">Login with Facebook</a></div>
+              <div id="status"></div>
 
-    <style type="text/css">
-      body{
-        min-width: 500px;
-        background-color: #F5F5F5 !important;
-      }
-      main{
-        padding-top: 40px;
-      }
-      .rootLR{
-        border: solid 1px #DCDCDC;
-        background-color: #FFFFFF;
-      }
-      .rootL img{
-        width: 80%;
-      }
-      button{
-        margin-top: 10px !important;
-        width: 200px;
-      }
-      input{
-        margin-top: 5px !important;
-      }
-      p{
-        margin-top: 10px !important;
-        padding-top: 15px;
-        padding-bottom: 15px;
-      }
-      footer{
-        padding-top: 20px;
-      }
-      li{
-        float: left;
-        list-style-type:none;
-        margin-left: 20px;
-      }
-    </style>
+              <div></br><div>OR</div></br></div>
 
-    <body class="">
-        <span class="root col-md-8 col-md-offset-2">
-          <main>
-            <article>
-              <div class="rootL col-md-6" align="center">
-                <img src="https://instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot5-2x.jpg/9cb9ba2dda6a.jpg">
-              </div>
-              <div class="rootLR col-md-6" align="center">
-                  <h1>Dating Service</h1>
-                  <div>
+              <div class="login_input">
+                <div>
+                  <input type="text" class="form-control" aria-describedby="" aria-label="手機號碼或電子郵件" aria-required="true" autocapitalize="off" autocorrect="off" name="emailOrPhone" placeholder="Cellphone number of Email" value=""/>
+                </div>
 
-                      <h3>註冊以查看朋友的相簿和影片</h3>
-                      <span class=""><button class="btn-info" onclick="fb_login()">使用 Facebook 帳號登入</button></span>
-                      <div id="status"></div>
-                    <form>
-                      <div class=""><br><div class=""></div><div class="">或</div><div class=""></div><br></div>
+                <div>
+                  <input type="text" class="form-control" aria-describedby="" aria-label="全名" aria-required="false" autocapitalize="sentences" autocorrect="off" name="fullName" placeholder="Full Name" value=""/>
+                </div>
 
-                      <div class="col-md-8 col-md-offset-2">
-                        <input type="text" class="form-control" aria-describedby="" aria-label="手機號碼或電子郵件" aria-required="true" autocapitalize="off" autocorrect="off" name="emailOrPhone" placeholder="手機號碼或電子郵件" value=""></div>
+                <div>
+                  <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="Username" value=""/>
+                </div>
 
-                      <div class="col-md-8 col-md-offset-2">
-                        <input type="text" class="form-control" aria-describedby="" aria-label="全名" aria-required="false" autocapitalize="sentences" autocorrect="off" name="fullName" placeholder="全名" value=""></div>
-
-                      <div class="col-md-8 col-md-offset-2">
-                        <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="用戶名稱" value=""></div>
-
-                      <div class="col-md-8 col-md-offset-2">
-                        <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="密碼" value=""></div>
-
-                      <div>
-                        <span class="">
-                          <button class="btn-info">繼續</button>
-                        </span>
-                      </div>
-
-                      <p class="_rpioj">一旦註冊，即表示你同意我們的<a class="_m4qul" href="/legal/terms/" target="_blank">使用條款</a>即<a class="_m4qul" href="/legal/privacy/" target="_blank">隱私政策</a></p>
-                    </form>
-                  </div>
-                  <div>
-                  <p class="">已有帳號嗎？<a class="_fcn8k" href="javascript:;">登入</a></p>
+                <div>
+                  <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="Password" value=""/>
                 </div>
               </div>
-            </article>
-          </main>
-          <footer class="root col-md-12" role="contentinfo">
-            <div class="" style="max-width: 935px;">
-              <nav class="" role="navigation">
-              <ul class="">
-                <li class="">
-                  <a href="/about/us/">關於我們</a>
-                </li>
-                <li class="">
-                  <a href="">支援</a>
-                </li>
-                <li class=""><a href="http://blog.instagram.com/">部落格</a></li>
-                <li class=""><a href="/press/">新聞稿</a></li>
-                <li class=""><a href="/developer/">API</a></li>
-                <li class=""><a href="/about/jobs/">工作機會</a></li>
-                <li class=""><a href="/legal/privacy/">隱私</a></li>
-                <li class=""><a href="/legal/terms/">使用條款</a></li>
-                <li class="">
-                  <span class="_17z9g">語言
-                    <select class="_nif11">
-                      <option value="af">南非荷蘭語</option>
-                      <option value="cs">捷克語</option>
-                      <option value="da">丹麥語</option>
-                      <option value="de">德語</option>
-                      <option value="el">希臘語</option>
-                      <option value="en">英文</option>
-                      <option value="es">西班牙語</option>
-                      <option value="fi">芬蘭語</option>
-                      <option value="fr">法語</option>
-                      <option value="hi">北印度語</option>
-                      <option value="id">印尼語</option>
-                      <option value="it">義大利語</option>
-                      <option value="ja">日語</option>
-                      <option value="ko">韓語</option>
-                      <option value="ms">馬來語</option>
-                      <option value="nb">挪威語</option>
-                      <option value="nl">荷蘭語</option>
-                      <option value="pl">波蘭語</option>
-                      <option value="pt">葡萄牙語（葡萄牙</option>
-                      <option value="pt-br">葡萄牙語</option>
-                      <option value="ru">俄語</option>
-                      <option value="sv">瑞典語</option>
-                      <option value="th">泰語</option>
-                      <option value="tl">塔加拉族語／菲律賓語</option>
-                      <option value="tr">土耳其語</option>
-                      <option value="zh-cn">中文（簡體）</option>
-                      <option value="zh-tw">中文（繁體）</option>
-                    </select>
-                  </span>
-                </li>
-              </ul>
-              </nav>
-              <span class="_es4h6">© 2016 DataMining</span></div></footer>
-        </span>
 
-    </body>
-    <!-- JavaScript files start -->
-    <script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
-    <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/static/js/login.js"></script>
+              <div class="login_button">
+                  <a href="">Continue</a>
+              </div>
+
+              <p class="_rpioj">Once registerd, you agree to our <a class="_m4qul" href="/legal/terms/" target="_blank">Terms of Use </a>ie <a class="_m4qul" href="/legal/privacy/" target="_blank">Privacy Policy</a></p>
+            </form>
+            <div>
+              <p>Already have an account? <a class="_fcn8k" href="javascript: show_login_form();">Sign in</a></p>
+            </div>
+          </div>
+
+          <!--login form-->
+          <div id="login_form">
+            <form>
+              <div class="input_area">
+                <div>
+                  <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="用戶名稱" value=""/>
+                </div>
+
+                <div>
+                  <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="密碼" value=""/>
+                </div>
+              </div>
+
+              <div class="login_button">
+                  <a href="">登入</a>
+              </div>
+            </form>
+            <div>
+              <p>沒有帳號嗎？<a class="_fcn8k" href="javascript: show_registration_form();">註冊</a></p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+    <footer class="root col-md-12" role="contentinfo">
+
+    </footer>
+  </span>
+</body>
+
+<!-- JavaScript files start -->
+<script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+<script type="text/javascript" src="../static/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../static/js/login.js"></script>
+<script>
+function show_login_form(){
+  $('#registration_form').hide();
+  $('#login_form').show();
+}
+function show_registration_form(){
+  $('#login_form').hide();
+  $('#registration_form').show();
+}
+</script>
 </html>

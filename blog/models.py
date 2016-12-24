@@ -30,6 +30,18 @@ class User:
         else:
             return False
 
+    def add_fb_likes(self, likes):
+        user = self.find()
+        for like in likes:
+            rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
+            graph.merge(rel)
+
+    def add_fb_friends(self, friends):
+        user = self.find()
+        for friend in friends:
+            rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], id=friend['id']))
+            graph.merge(rel)
+
     def add_post(self, title, tags, text):
         user = self.find()
         post = Node(
@@ -112,3 +124,36 @@ def timestamp():
 
 def date():
     return datetime.now().strftime('%Y-%m-%d')
+
+class Diary(object):
+    """docstring for diary"""
+    def __init__(self, owner_id):
+        super(Diary, self).__init__()
+        self.owner_id = owner_id
+
+    def get_owner(self):
+        user = graph.node(self.owner_id)
+        return user
+
+    def get_all_diary(self):
+        query = '''
+        MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D LIMIT 25
+        '''
+        return graph.run(query, id=self.owner_id)
+
+    def add_diary(self, title, content, latitude, longitude, category):
+        user = self.get_owner()
+        diary = Node(
+            'Diary',
+            id=str(uuid.uuid4()),
+            title=title,
+            content=content,
+            timestamp=timestamp(),
+            date=date(),
+            lat=latitude,
+            lon=longitude,
+            category=category
+        )
+        rel = Relationship(user, 'PUBLISHED', diary)
+        graph.create(rel)
+        return ('', 200)
