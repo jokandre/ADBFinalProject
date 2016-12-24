@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>D-Day</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    
+    <style type="text/css">
+      body{
+        min-width: 500px;
+        background-color: #F5F5F5 !important;
+      }
+      main{
+        padding-top: 40px;
+      }
+      .rootLR{
+        border: solid 1px #DCDCDC;
+        background-color: #FFFFFF;
+      }
+      .rootL img{
+        width: 80%;
+      }
+      button{
+        margin-top: 10px !important;
+        width: 200px;
+      }
+      input{
+        margin-top: 5px !important;
+      }
+      p{
+        margin-top: 10px !important;
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+      footer{
+        padding-top: 20px;
+      }
+      li{
+        float: left;
+        list-style-type:none;
+        margin-left: 20px;
+      }
+    </style>
+
+    <script>
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+      console.log(response);
+      // The response object is returned with a status field that lets the
+      // app know the current login status of the person.
+      // Full docs on the response object can be found in the documentation
+      // for FB.getLoginStatus().
+      if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        console.log(response.authResponse.accessToken);
+        FB.api('/me', {fields: 'name,gender,email,friends,likes'}, function(response) {
+          console.log(response);
+          //console.log(response.email);
+        });
+      } else if (response.status === 'not_authorized') {
+        // The person is logged into Facebook, but not your app.
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into this app.';
+      } else {
+        // The person is not logged into Facebook, so we're not sure if
+        // they are logged into this app or not.
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into Facebook.';
+      }
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '247334179013123',
+      cookie     : true,  // enable cookies to allow the server to access 
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.8' // use graph api version 2.8
+    });
+
+    // Now that we've initialized the JavaScript SDK, we call 
+    // FB.getLoginStatus().  This function gets the state of the
+    // person visiting this page and can return one of three states to
+    // the callback you provide.  They can be:
+    //
+    // 1. Logged into your app ('connected')
+    // 2. Logged into Facebook, but not your app ('not_authorized')
+    // 3. Not logged into Facebook and can't tell if they are logged into
+    //    your app or not.
+    //
+    // These three cases are handled in the callback function.
+
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+
+    function fb_login(){
+      // FB 第三方登入
+      FB.login(function(response)
+      {
+          //statusChangeCallback(response);
+          if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            location.reload();
+          } else {
+            console.log('User cancelled login or did not fully authorize.');
+          }
+      }, {scope: 'public_profile,email,user_friends,user_likes'});
+    }
+    
+    </script>
+
+    <body class="">
+        <span class="root col-md-8 col-md-offset-2">
+          <main>
+            <article>
+              <div class="rootL col-md-6" align="center">
+                <img src="https://instagramstatic-a.akamaihd.net/h1/images/homepage/screenshot5-2x.jpg/9cb9ba2dda6a.jpg">
+              </div>
+              <div class="rootLR col-md-6" align="center">
+                  <h1>Dating Service</h1>
+                  <div>
+                    <form>
+                      <h3>註冊以查看朋友的相簿和影片</h3>
+                      <span class=""><button class="btn-info" onclick="fb_login(); return false;">使用 Facebook 帳號登入</button></span>
+                      <div id="status"></div>
+
+
+                      
+                      <div class=""><br><div class=""></div><div class="">或</div><div class=""></div><br></div>
+                      
+                      <div class="col-md-8 col-md-offset-2">
+                        <input type="text" class="form-control" aria-describedby="" aria-label="手機號碼或電子郵件" aria-required="true" autocapitalize="off" autocorrect="off" name="emailOrPhone" placeholder="手機號碼或電子郵件" value=""></div>
+                      
+                      <div class="col-md-8 col-md-offset-2">
+                        <input type="text" class="form-control" aria-describedby="" aria-label="全名" aria-required="false" autocapitalize="sentences" autocorrect="off" name="fullName" placeholder="全名" value=""></div>
+                      
+                      <div class="col-md-8 col-md-offset-2">
+                        <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="用戶名稱" value=""></div>
+                      
+                      <div class="col-md-8 col-md-offset-2">
+                        <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="密碼" value=""></div>
+                      
+                      <div>
+                        <span class="">
+                          <button class="btn-info">繼續</button>
+                        </span>
+                      </div>
+                      
+                      <p class="_rpioj">一旦註冊，即表示你同意我們的<a class="_m4qul" href="/legal/terms/" target="_blank">使用條款</a>即<a class="_m4qul" href="/legal/privacy/" target="_blank">隱私政策</a></p>
+                    </form>
+                  </div>
+                  <div>
+                  <p class="">已有帳號嗎？<a class="_fcn8k" href="javascript:;">登入</a></p>
+                </div>
+              </div>
+            </article>    
+          </main>
+          <footer class="root col-md-12" role="contentinfo">
+            <div class="" style="max-width: 935px;">
+              <nav class="" role="navigation">
+              <ul class="">
+                <li class="">
+                  <a href="/about/us/">關於我們</a>
+                </li>
+                <li class="">
+                  <a href="">支援</a>
+                </li>
+                <li class=""><a href="http://blog.instagram.com/">部落格</a></li>
+                <li class=""><a href="/press/">新聞稿</a></li>
+                <li class=""><a href="/developer/">API</a></li>
+                <li class=""><a href="/about/jobs/">工作機會</a></li>
+                <li class=""><a href="/legal/privacy/">隱私</a></li>
+                <li class=""><a href="/legal/terms/">使用條款</a></li>
+                <li class="">
+                  <span class="_17z9g">語言
+                    <select class="_nif11">
+                      <option value="af">南非荷蘭語</option>
+                      <option value="cs">捷克語</option>
+                      <option value="da">丹麥語</option>
+                      <option value="de">德語</option>
+                      <option value="el">希臘語</option>
+                      <option value="en">英文</option>
+                      <option value="es">西班牙語</option>
+                      <option value="fi">芬蘭語</option>
+                      <option value="fr">法語</option>
+                      <option value="hi">北印度語</option>
+                      <option value="id">印尼語</option>
+                      <option value="it">義大利語</option>
+                      <option value="ja">日語</option>
+                      <option value="ko">韓語</option>
+                      <option value="ms">馬來語</option>
+                      <option value="nb">挪威語</option>
+                      <option value="nl">荷蘭語</option>
+                      <option value="pl">波蘭語</option>
+                      <option value="pt">葡萄牙語（葡萄牙</option>
+                      <option value="pt-br">葡萄牙語</option>
+                      <option value="ru">俄語</option>
+                      <option value="sv">瑞典語</option>
+                      <option value="th">泰語</option>
+                      <option value="tl">塔加拉族語／菲律賓語</option>
+                      <option value="tr">土耳其語</option>
+                      <option value="zh-cn">中文（簡體）</option>
+                      <option value="zh-tw">中文（繁體）</option>
+                    </select>
+                  </span>
+                </li>
+              </ul>
+              </nav>
+              <span class="_es4h6">© 2016 DataMining</span></div></footer>
+        </span>
+        
+    </body>
+    <!-- JavaScript files start -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    
+</html>

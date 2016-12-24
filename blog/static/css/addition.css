@@ -1,0 +1,70 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 0;
+    z-index: 100;
+}
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover {
+	display: block;
+	background-color: #f1f1f1
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.diary_input{
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+.diary_input div{
+	margin-top: 24px;
+	color: #B7B6B6;
+}
+.diary_input div img{
+	width: 26px;
+	height: 26px;
+	margin-right: 8px;
+	padding-bottom: 4px;
+}
+.form-design{
+	display: inline;
+    width: 85%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.diary_button{
+	margin-top: 40px !important;
+	margin-left:auto;
+    margin-right:auto;
+	width: 200px;
+	background-color: #66D5DE;
+	padding: 6px 10px 6px 10px;
+	text-align:center;
+}
+.diary_button a{
+	color: #ffffff;
+	text-decoration: none;
+}
