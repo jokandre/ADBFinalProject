@@ -11,6 +11,7 @@ function statusChangeCallback(response) {
     FB.api('/me', {fields: 'name,gender,email,friends,likes'}, function(response) {
       //user的資料在這裡
       console.log(response);
+      get_user(response)
       // ajax and redirect to index.html
     });
   } else if (response.status === 'not_authorized') {
@@ -37,13 +38,13 @@ function checkLoginState() {
 window.fbAsyncInit = function() {
 FB.init({
   appId      : '247334179013123',
-  cookie     : true,  // enable cookies to allow the server to access 
+  cookie     : true,  // enable cookies to allow the server to access
                       // the session
   xfbml      : true,  // parse social plugins on this page
   version    : 'v2.8' // use graph api version 2.8
 });
 
-// Now that we've initialized the JavaScript SDK, we call 
+// Now that we've initialized the JavaScript SDK, we call
 // FB.getLoginStatus().  This function gets the state of the
 // person visiting this page and can return one of three states to
 // the callback you provide.  They can be:
@@ -85,4 +86,31 @@ function fb_login(){
         console.log('User cancelled login or did not fully authorize.');
       }
   }, {scope: 'public_profile,email,user_friends,user_likes'});
+}
+
+function get_user(fb) {
+    FB.api('/me', function(response) {
+/*      $.getJSON($SCRIPT_ROOT + '/_get_facebook_login',
+                { facebook_id: response.id, name: response.name, data: fb },
+                function(data) {
+                  console.log(data);
+                  //location.reload(true);
+          });
+    });
+  */
+    $.ajax({
+      url: '/_get_facebook_login',
+      data:{
+        facebook_id:response.id,
+        name:response.name
+      },
+      type:'POST',
+      success:function(response){
+        console.log(response);
+      },
+      error:function(error){
+        console.log(error);
+      }
+    });
+  });
 }

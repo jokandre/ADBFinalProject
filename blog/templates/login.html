@@ -6,7 +6,7 @@
       <title>D-Day</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
-    
+
     <style type="text/css">
       body{
         min-width: 500px;
@@ -54,31 +54,31 @@
               <div class="rootLR col-md-6" align="center">
                   <h1>Dating Service</h1>
                   <div>
-                    
+
                       <h3>註冊以查看朋友的相簿和影片</h3>
                       <span class=""><button class="btn-info" onclick="fb_login()">使用 Facebook 帳號登入</button></span>
                       <div id="status"></div>
                     <form>
                       <div class=""><br><div class=""></div><div class="">或</div><div class=""></div><br></div>
-                      
+
                       <div class="col-md-8 col-md-offset-2">
                         <input type="text" class="form-control" aria-describedby="" aria-label="手機號碼或電子郵件" aria-required="true" autocapitalize="off" autocorrect="off" name="emailOrPhone" placeholder="手機號碼或電子郵件" value=""></div>
-                      
+
                       <div class="col-md-8 col-md-offset-2">
                         <input type="text" class="form-control" aria-describedby="" aria-label="全名" aria-required="false" autocapitalize="sentences" autocorrect="off" name="fullName" placeholder="全名" value=""></div>
-                      
+
                       <div class="col-md-8 col-md-offset-2">
                         <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="用戶名稱" value=""></div>
-                      
+
                       <div class="col-md-8 col-md-offset-2">
                         <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="密碼" value=""></div>
-                      
+
                       <div>
                         <span class="">
                           <button class="btn-info">繼續</button>
                         </span>
                       </div>
-                      
+
                       <p class="_rpioj">一旦註冊，即表示你同意我們的<a class="_m4qul" href="/legal/terms/" target="_blank">使用條款</a>即<a class="_m4qul" href="/legal/privacy/" target="_blank">隱私政策</a></p>
                     </form>
                   </div>
@@ -86,7 +86,7 @@
                   <p class="">已有帳號嗎？<a class="_fcn8k" href="javascript:;">登入</a></p>
                 </div>
               </div>
-            </article>    
+            </article>
           </main>
           <footer class="root col-md-12" role="contentinfo">
             <div class="" style="max-width: 935px;">
@@ -141,9 +141,10 @@
               </nav>
               <span class="_es4h6">© 2016 DataMining</span></div></footer>
         </span>
-        
+
     </body>
     <!-- JavaScript files start -->
+    <script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
     <script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/static/js/login.js"></script>
 </html>
