@@ -23,7 +23,8 @@ def send_static(filename):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        return member.register()
+        member.register()
+        return redirect(url_for('main'))
     return render_template('login.html')
 
 @app.route('/diary/<path:path>', methods=['GET', 'POST'])
@@ -43,27 +44,6 @@ def diary_API(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
-
-
-
-@app.route('/_get_facebook_login', methods=['POST'])
-def get_facebook_login():
-    #facebook_id = request.args.get('facebook_id', 0, type=int)
-    facebook_id = request.args.get('facebook_id')
-    #name = request.args.get('name', '', type=str)
-    name = request.args.get('name')
-
-    if facebook_id:
-    #user = Users.query.filter_by(facebook_id=facebook_id).first()
-        print('User Name: '+ name +' id: '+ facebook_id)
-        print('Data: '+ str(data))
-    #if not user:
-    #    print('Not user yet')
-      #user = Users(facebook_id,name)
-      #db.session.add(user)
-      #db.session.commit()
-    #session['user'] = user
-    return jsonify(result=1)
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):

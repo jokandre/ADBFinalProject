@@ -91,15 +91,6 @@ function fb_login(){
 
 function get_user(fb,token) {
     FB.api('/me', function(response) {
-      console.log(fb)
-/*      $.getJSON($SCRIPT_ROOT + '/_get_facebook_login',
-                { facebook_id: response.id, name: response.name, data: fb },
-                function(data) {
-                  console.log(data);
-                  //location.reload(true);
-          });
-    });
-  */
     $.ajax({
       url: '/login',
       data:JSON.stringify({
@@ -108,13 +99,12 @@ function get_user(fb,token) {
         email: fb.email,
         gender: fb.gender,
         access_token:token
-
       }),
       type:'POST',
       contentType:"application/json",
       datatype:'application/json',
       success:function(response){
-        //console.log(response);
+        console.log("Just registered!")
       },
       error:function(error){
         console.log(error);

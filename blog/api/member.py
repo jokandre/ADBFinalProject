@@ -16,5 +16,6 @@ def register():
 		me.add_fb_likes(fb_API.get_fb_likes(Fb_id, access_token))
 	me.add_fb_friends(fb_API.get_fb_frends(Fb_id, access_token))
 	session['Fb_id'] = Fb_id
-	return redirect(url_for('main'))
+
+	#return redirect(url_for('main'))
 	flash('Logged in.')
