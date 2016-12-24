@@ -46,14 +46,16 @@ def ida(articles):
 	stopwords = []
 	doc_terms = []
 	with open('ch_stopwords.txt', 'r') as f:
-		stopwords = f.read().lower().split('\n')
+		stopwords = set(f.read().lower().split('\n'))
 
-	trigram_vectorizer = CountVectorizer(ngram_range=(2, 3),token_pattern=r'([\u4e00-\u9fa5]{1}|\b[a-zA-Z]+\b)', min_df=0.5, stop_words=stopwords, analyzer='word')
+	print('stopwords', stopwords[:10])
+
+	trigram_vectorizer = CountVectorizer(ngram_range=(2,3),token_pattern=r'([\u4e00-\u9fa5]{1}|\b[a-zA-Z]+\b)', min_df=0.2, max_df=0.7, stop_words=stopwords, analyzer='word')
 	analyzer = trigram_vectorizer.build_analyzer()
 
 	for article in articles:
-		terms = list(map(lambda x: x.replace(' ', ''), analyzer(article.Content))) #get rid of spaces
-		#print(terms)
+		terms = set(map(lambda x: x.replace(' ', ''), analyzer(article.Content))) #get rid of spaces
+		terms -= stopwords
 		doc_terms.append(terms)
 	
 	dictionary = corpora.Dictionary(doc_terms)
