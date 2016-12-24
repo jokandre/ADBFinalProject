@@ -60,7 +60,7 @@ def ida(articles):
 	
 	dictionary = corpora.Dictionary(doc_terms)
 	corpus = [dictionary.doc2bow(text) for text in doc_terms]
-	ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=8, id2word = dictionary, alpha='auto', eval_every=5, iterations=500, passes=60)
+	ldamodel = gensim.models.ldamulticore.LdaMulticore(corpus, num_topics=8, id2word = dictionary, iterations=100, passes=60)
 	ldamodel.save('ldamodel%s.mdl'%str(datetime.now())[5:-7])
 	print(ldamodel.print_topics(num_topics=8, num_words=10))
 
@@ -68,7 +68,7 @@ def ida(articles):
 board, cate = (sys.argv[1], '')
 Articles = getArticlesByDateRange()
 i=0
-ida(Articles)
+ida(Articles[:10])
 '''
 for article in Articles:
 	i+=1;
