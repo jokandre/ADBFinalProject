@@ -66,7 +66,7 @@ def ida(articles):
 board, cate = (sys.argv[1], '')
 Articles = getArticlesByDateRange()
 i=0
-ida(Articles[:20])
+ida(Articles[:100])
 '''
 for article in Articles:
 	i+=1;
