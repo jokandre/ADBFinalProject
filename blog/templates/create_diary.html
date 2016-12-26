@@ -23,7 +23,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- js -->
 <script src="../static/js/jquery-1.11.1.min.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
@@ -39,9 +39,9 @@ google.maps.event.addDomListener(window, 'load', function () {
         var place = places.getPlace();
         var name = place.name;
         var address = place.formatted_address;
-        var latitude = place.geometry.location.A;
-        var longitude = place.geometry.location.F;
-        var mesg = "Address: " + address;
+        var latitude = place.geometry.location.lat();
+        var longitude = place.geometry.location.lng();
+        var mesg = "Name: " + name;
         mesg += "\nLatitude: " + latitude;
         mesg += "\nLongitude: " + longitude;
         alert(mesg);
@@ -94,8 +94,8 @@ google.maps.event.addDomListener(window, 'load', function () {
 					<nav class="cl-effect-1">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="index.html">Home</a></li>
-							<li><a href="about.html">About</a></li>
-							<li><a href="codes.html">Short Codes</a></li>
+							<li><a href="about.html">Friends</a></li>
+							<li><a href="create_diary.html">Create Diary</a></li>
 							<li><a href="services.html">Services</a></li>
 							<li><a href="contact.html">Contact Us</a></li>
 						</ul>
