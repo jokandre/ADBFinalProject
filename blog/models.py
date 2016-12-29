@@ -11,11 +11,13 @@ password = os.environ.get('NEO4J_PASSWORD')
 graph = Graph(url + '/db/data/', username=username, password=password)
 
 class User:
-    def __init__(self, name, email, gender, Fb_id):
+    def __init__(self, name, email, gender, Fb_id, access_token, head_photo):
         self.name = name
         self.email = email
         self.gender = gender
         self.Fb_id = Fb_id
+        self.access_token = access_token
+        self.head_photo = head_photo
 
     def find(self):
         user = graph.find_one('User', 'Fb_id', self.Fb_id)
@@ -23,8 +25,7 @@ class User:
 
     def register(self):
         if not self.find():
-            # TODO: put likes and friends to the neo4j.
-            user = Node('User', name=self.name, email=self.email, gender=self.gender, Fb_id=self.Fb_id)
+            user = Node('User', name=self.name, email=self.email, gender=self.gender, Fb_id=self.Fb_id, access_token=self.access_token, head_photo=self.head_photo)
             graph.create(user)
             return True
         else:

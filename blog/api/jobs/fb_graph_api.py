@@ -1,6 +1,6 @@
 import facebook
 import requests
-from ..invalidusage import InvalidUsage
+from ...invalidusage import InvalidUsage
 
 def get_fb_frends(Fb_id, ACCESS_TOKEN):
 	graph = facebook.GraphAPI(ACCESS_TOKEN)

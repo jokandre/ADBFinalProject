@@ -1,7 +1,7 @@
 from ..models import User   # get_todays_recent_posts
 from ..invalidusage import InvalidUsage
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
-import fb_API
+from jobs import fb_graph_api
 
 def register():
 	json_dict = request.get_json()
@@ -14,12 +14,13 @@ def register():
 			gender = json_dict['gender']
 			Fb_id = json_dict['id']
 			access_token = json_dict['access_token']
+			head_photo = json_dict['head_photo']
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-		me = User(name, email, gender, Fb_id)
+		me = User(name, email, gender, Fb_id, access_token, head_photo)
 		if me.register():
 			#  Not yet register before.
-			me.add_fb_likes(fb_API.get_fb_likes(Fb_id, access_token))
-		me.add_fb_friends(fb_API.get_fb_frends(Fb_id, access_token))
+			me.add_fb_likes(fb_graph_api.get_fb_likes(Fb_id, access_token))
+		me.add_fb_friends(fb_graph_api.get_fb_frends(Fb_id, access_token))
 		session['Fb_id'] = Fb_id
 		return redirect(url_for('main'))
