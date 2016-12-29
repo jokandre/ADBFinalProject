@@ -141,7 +141,7 @@ class Diary(object):
         '''
         return graph.run(query, id=self.owner_id)
 
-    def add_diary(self, title, content, latitude, longitude, category):
+    def add_diary(self, title, content, latitude, longitude, category, location, address):
         user = self.get_owner()
         diary = Node(
             'Diary',
@@ -152,7 +152,9 @@ class Diary(object):
             date=date(),
             lat=latitude,
             lon=longitude,
-            category=category
+            category=category,
+            location=location,
+            address=address
         )
         rel = Relationship(user, 'PUBLISHED', diary)
         graph.create(rel)

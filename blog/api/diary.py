@@ -14,6 +14,8 @@ def create():
 			content = json_dict['content']
 			latitude = json_dict['latitude']
 			longitude = json_dict['longitude']
+			location = json_dict['location']
+			address = json_dict['address']
 			category = json_dict['category']
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
@@ -24,7 +26,7 @@ def create():
 		except ValueError:
 			raise InvalidUsage("id, latitude, longitude should be int!")
 		diary = Diary(id)
-		return diary.add_diary(title, content, latitude, longitude, category)
+		return diary.add_diary(title, content, latitude, longitude, category, location, address)
 
 def get_all_diary():
 	id = request.args.get('id')
