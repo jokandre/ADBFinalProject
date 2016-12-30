@@ -13,7 +13,7 @@ def index():
 
 @app.route('/index', methods=['GET'])
 def main():
-    return render_template('index.html')
+    return render_template('landingPage.html')
 
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
