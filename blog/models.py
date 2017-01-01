@@ -151,6 +151,11 @@ def date():
 def lon_lat_to_wkt(lon, lat):
     return 'POINT (' + str(lon) + ' ' + str(lat) + ')'
 
+def wkt_to_lat_long(wkt):
+    lon = float(wkt[wkt.find('(')+1: wkt.find(' ', beg=wkt.find('('))])
+    lat = float(wkt[wkt.find(' ', beg=wkt.find('('))+1: -1])
+    return lat, lon
+
 class Diary(object):
     """docstring for diary"""
     def __init__(self, owner_id):
@@ -176,6 +181,8 @@ class Diary(object):
             content=content,
             timestamp=timestamp(),
             date=date(),
+            latitude = latitude,
+            longitude = longitude,
             wkt=lon_lat_to_wkt(longitude, latitude),
             category=category,
             location=location,

@@ -41,7 +41,8 @@ def get_all_diary():
 		db_cursor = diary.get_all_diary()
 		return jsonify(db_cursor.data())
 
-def get_diary_within_range():
+def get_nearby_diary():
+	# NOT DONE
 	id = request.args.get('id')
 	if id is None:
 		raise InvalidUsage("Missing Parameters!")
