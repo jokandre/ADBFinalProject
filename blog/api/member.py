@@ -43,3 +43,5 @@ def update_location():
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
 	return (str(result), 200)
+
+def find_members_within_range():
