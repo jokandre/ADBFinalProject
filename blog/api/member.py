@@ -28,3 +28,18 @@ def register():
 		session['id'] = user['id']
 		return ('', 200)
 		# return redirect(url_for('main'))
+
+def update_location():
+	json_dict = request.get_json()
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
+	else:
+		try:
+			latitude = json_dict['latitude']
+			longitude = json_dict['longitude']
+			# latitude = 60
+			# longitude = 23
+			result = User.update_location(session['id'], latitude, longitude)
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+	return (str(result), 200)
