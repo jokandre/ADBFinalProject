@@ -21,10 +21,10 @@ def create():
 			raise InvalidUsage("Missing Parameters: " + str(error))
 		try:
 			id = int(id)
-			latitude = int(latitude)
-			longitude = int(longitude)
+			latitude = float(latitude)
+			longitude = float(longitude)
 		except ValueError:
-			raise InvalidUsage("id, latitude, longitude should be int!")
+			raise InvalidUsage("id should be int, latitude and longitude should be float!")
 		diary = Diary(id)
 		return diary.add_diary(title, content, latitude, longitude, category, location, address)
 
@@ -41,6 +41,15 @@ def get_all_diary():
 		db_cursor = diary.get_all_diary()
 		return jsonify(db_cursor.data())
 
-# TODO
 def get_diary_within_range():
-	return
+	id = request.args.get('id')
+	if id is None:
+		raise InvalidUsage("Missing Parameters!")
+	else:
+		try:
+			id = int(id)
+		except ValueError:
+			raise InvalidUsage("id should be int!")
+		diary = Diary(id)
+		db_cursor = diary.get_all_diary()
+		return jsonify(db_cursor.data())

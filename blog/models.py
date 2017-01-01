@@ -115,6 +115,20 @@ class User:
 
         return graph.run(query, they=other.username, you=self.username).next
 
+    @staticmethod
+    def update_location(node_id, lat, lon):
+        query = '''
+        MATCH (u) WHERE ID(u) = {which}
+        SET u.wkt = {wkt}
+        WITH u AS u
+        CALL spatial.addNode('geom', u) YIELD node
+        RETURN COUNT(node)
+        '''
+
+        return graph.run(query, which=node_id, wkt=lon_lat_to_wkt(lon, lat))
+
+
+
 def get_todays_recent_posts():
     query = '''
     MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
@@ -133,6 +147,9 @@ def timestamp():
 
 def date():
     return datetime.now().strftime('%Y-%m-%d')
+
+def lon_lat_to_wkt(lon, lat):
+    return 'POINT (' + str(lon) + ' ' + str(lat) + ')'
 
 class Diary(object):
     """docstring for diary"""
@@ -159,12 +176,21 @@ class Diary(object):
             content=content,
             timestamp=timestamp(),
             date=date(),
-            lat=latitude,
-            lon=longitude,
+            wkt=lon_lat_to_wkt(longitude, latitude),
             category=category,
             location=location,
             address=address
         )
         rel = Relationship(user, 'PUBLISHED', diary)
         graph.create(rel)
+
+        query = '''
+        MATCH (d:Diary) WHERE d.id = {which}
+        WITH d AS d
+        CALL spatial.addNode('geom', d)
+        RETURN count(*)
+        '''
+
+        graph.run(query, which=str(uuid.uuid4()))
+
         return ('', 200)
