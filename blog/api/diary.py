@@ -40,3 +40,7 @@ def get_all_diary():
 		diary = Diary(id)
 		db_cursor = diary.get_all_diary()
 		return jsonify(db_cursor.data())
+
+# TODO
+def get_diary_within_range():
+	return
