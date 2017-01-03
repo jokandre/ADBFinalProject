@@ -1,4 +1,4 @@
-id:ID(User),gender,email,name,nickname,access_token,user_ip
+id,gender,email,name,nickname,access_token,user_ip
 30000,male,imported30000@ptt.cc,DELETE001,板橋的山下智久,imported_password,36.234.52.149
 30001,female,imported30001@ptt.cc,candy1234,candy,imported_password,117.19.196.199
 30002,male,imported30002@ptt.cc,nebula,玥兒,imported_password,219.71.235.41
