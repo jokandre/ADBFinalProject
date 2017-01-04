@@ -122,7 +122,7 @@ class User:
         return graph.run(query, they=other.username, you=self.username).next
 
     @staticmethod
-    def update_location(node_id, lat, lon):
+    def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
         SET u.wkt = {wkt}
@@ -131,7 +131,11 @@ class User:
         RETURN COUNT(node)
         '''
 
-        return graph.run(query, which=node_id, wkt=lon_lat_to_wkt(lon, lat))
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
+
+    # @staticmethod
+    # def get_nearby_member(uid, distance):
+
 
 
 def get_todays_recent_posts():
