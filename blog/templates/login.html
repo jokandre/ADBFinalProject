@@ -13,68 +13,21 @@
   <span class="root col-md-8 col-md-offset-2">
     <main>
       <article>
-        <div class="main_pic rootL col-md-6" align="center">
-          <img src="../static/images/main.png">
-        </div>
-        <div class="rootLR col-md-6" align="center">
-          <h1>。D.Day。</h1>
-          <h3 style="color: #999;">- Dat Day we met -</h3>
-          <!--registration form-->
-          <div id="registration_form">
-            <form>
-              <div class="fb_button"><a href="javascript: fb_login();">Login with Facebook</a></div>
-              <div id="status"></div>
-
-              <div></br><div>OR</div></br></div>
-
-              <div class="login_input">
-                <div>
-                  <input type="text" class="form-control" aria-describedby="" aria-label="手機號碼或電子郵件" aria-required="true" autocapitalize="off" autocorrect="off" name="emailOrPhone" placeholder="Cellphone number of Email" value=""/>
-                </div>
-
-                <div>
-                  <input type="text" class="form-control" aria-describedby="" aria-label="全名" aria-required="false" autocapitalize="sentences" autocorrect="off" name="fullName" placeholder="Full Name" value=""/>
-                </div>
-
-                <div>
-                  <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="Username" value=""/>
-                </div>
-
-                <div>
-                  <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="Password" value=""/>
-                </div>
-              </div>
-
-              <div class="login_button">
-                  <a href="">Continue</a>
-              </div>
-
-              <p class="_rpioj">Once registerd, you agree to our <a class="_m4qul" href="/legal/terms/" target="_blank">Terms of Use </a>ie <a class="_m4qul" href="/legal/privacy/" target="_blank">Privacy Policy</a></p>
-            </form>
-            <div>
-              <p>Already have an account? <a class="_fcn8k" href="javascript: show_login_form();">Sign in</a></p>
-            </div>
+        <div class="row-height">
+          <div class="main_pic rootL col-md-6 col-height" align="center">
+            <img src="../static/images/main.png">
           </div>
-
-          <!--login form-->
-          <div id="login_form">
-            <form>
-              <div class="input_area">
-                <div>
-                  <input type="text" class="form-control" aria-describedby="" aria-label="用戶名稱" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username" placeholder="用戶名稱" value=""/>
-                </div>
-
-                <div>
-                  <input type="password" class="form-control" aria-describedby="" aria-label="密碼" aria-required="true" autocapitalize="off" autocorrect="off" name="password" placeholder="密碼" value=""/>
-                </div>
+          <div class="col-md-6  col-height" align="center">
+            <div class="rootLR">
+              <h1>。D.Day。</h1>
+              <h3 style="color: #999;">- Dat Day we met -</h3>
+              <!--registration form-->
+              <div id="registration_form">
+                <form>
+                  <div class="fb_button"><a href="javascript: fb_login();">Login with Facebook</a></div>
+                  <p class="_rpioj">Once login, you agree to our <a class="_m4qul" href="/legal/terms/" target="_blank">Terms of Use </a>ie <a class="_m4qul" href="/legal/privacy/" target="_blank">Privacy Policy</a></p>
+                </form>
               </div>
-
-              <div class="login_button">
-                  <a href="">登入</a>
-              </div>
-            </form>
-            <div>
-              <p>沒有帳號嗎？<a class="_fcn8k" href="javascript: show_registration_form();">註冊</a></p>
             </div>
           </div>
         </div>
@@ -90,14 +43,4 @@
 <script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
 <script type="text/javascript" src="../static/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="../static/js/login.js"></script>
-<script>
-function show_login_form(){
-  $('#registration_form').hide();
-  $('#login_form').show();
-}
-function show_registration_form(){
-  $('#login_form').hide();
-  $('#registration_form').show();
-}
-</script>
 </html>

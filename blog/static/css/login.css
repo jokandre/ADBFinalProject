@@ -7,22 +7,27 @@ h1,h2,h3,h4,h5,h6,a{
 	font-family: 'Josefin Sans', sans-serif;
 }
 main{
-  margin-top: 40px;
+	margin-top: 40px;
 }
 p{
-  margin-top: 10px !important;
-  padding-top: 15px;
-  padding-bottom: 15px;
+	margin-top: 10px !important;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 footer{
-  padding-top: 20px;
+	padding-top: 20px;
+}
+.row-height {
+	display: flex;
+	align-items: center;
 }
 .rootL img{
-  width: 90%;
+	width: 80%
 }
 .rootLR{
-  border: solid 1px #DCDCDC;
-  background-color: #FFFFFF;
+	border: solid 1px #DCDCDC;
+	background-color: #FFFFFF;
+	padding: 20px 0 20px 0;
 }
 .fb_button{
 	margin-top: 30px;
@@ -46,9 +51,6 @@ footer{
 }
 .login_input{
 	width: 250px;
-}
-#login_form{
-	display: none;
 }
 input{
   margin-top: 5px !important;
