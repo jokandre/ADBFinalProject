@@ -160,18 +160,21 @@ class Diary(object):
         super(Diary, self).__init__()
         self.owner_id = owner_id
 
-    def get_owner(self):
+    @staticmethod
+    def get_owner(owner_id):
         user = graph.node(self.owner_id)
         return user
 
-    def get_all_diary(self):
+    @staticmethod
+    def get_all_diary(owner_id):
         query = '''
         MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D as Diary LIMIT 25
         '''
-        return graph.run(query, id=self.owner_id)
+        return graph.run(query, id=owner_id)
 
-    def add_diary(self, title, content, latitude, longitude, category, location, address):
-        user = self.get_owner()
+    @staticmethod
+    def add_diary(owner_id, self, title, content, latitude, longitude, category, location, address):
+        user = Diary.get_owner(owner_id)
         diary = Node(
             'Diary',
             id=str(uuid.uuid4()),

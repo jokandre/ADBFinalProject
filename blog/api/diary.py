@@ -25,8 +25,7 @@ def create():
 			longitude = float(longitude)
 		except ValueError:
 			raise InvalidUsage("id should be int, latitude and longitude should be float!")
-		diary = Diary(id)
-		return diary.add_diary(title, content, latitude, longitude, category, location, address)
+		return Diary.add_diary(id, title, content, latitude, longitude, category, location, address)
 
 def get_all_diary():
 	id = request.args.get('id')
@@ -37,8 +36,7 @@ def get_all_diary():
 			id = int(id)
 		except ValueError:
 			raise InvalidUsage("id should be int!")
-		diary = Diary(id)
-		db_cursor = diary.get_all_diary()
+		db_cursor = Diary.get_all_diary(id)
 		return jsonify(db_cursor.data())
 
 def get_nearby_diary():
