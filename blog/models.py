@@ -11,44 +11,42 @@ password = os.environ.get('NEO4J_PASSWORD')
 graph = Graph(url + '/db/data/', username=username, password=password)
 
 class User:
-    def __init__(self, name, email, gender, Fb_id, access_token, head_photo):
+    def __init__(self, name, email, gender, fb_id, access_token, portrait):
         self.name = name
         self.email = email
         self.gender = gender
-        self.Fb_id = Fb_id
+        self.fb_id = fb_id
         self.access_token = access_token
-        self.head_photo = head_photo
+        self.portrait = portrait
 
-    def find(self):
-        user = graph.find_one('User', 'Fb_id', self.Fb_id)
+    @staticmethod
+    def find(fb_id):
+        user = graph.find_one('User', 'fb_id', fb_id)
         return user
 
-    def find_id(self):
-        query = '''
-        MATCH (user:User)
-        WHERE user.Fb_id = {Fb_id}
-        RETURN ID(user) as id
-        '''
-        return graph.run(query, Fb_id=self.Fb_id)
-
-    def register(self):
-        if not self.find():
-            user = Node('User', name=self.name, email=self.email, gender=self.gender, Fb_id=self.Fb_id, access_token=self.access_token, head_photo=self.head_photo)
-            graph.create(user)
-            return True
+    @staticmethod
+    def register(name, email, gender, fb_id, access_token, portrait):
+        if not User.find(fb_id):
+            query = '''
+            CREATE (u:User {name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
+            RETURN ID(u)
+            '''
+            return graph.run(query, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         else:
             return False
 
-    def add_fb_likes(self, likes):
-        user = self.find()
+    @staticmethod
+    def add_fb_likes(uid, likes):
+        user = graph.node(uid)
         for like in likes:
             rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
             graph.merge(rel)
 
-    def add_fb_friends(self, friends):
-        user = self.find()
+    @staticmethod
+    def add_fb_friends(uid, friends):
+        user = graph.node(uid)
         for friend in friends:
-            rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], id=friend['id']))
+            rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], fb_id=friend['id']))
             graph.merge(rel)
 
     def add_post(self, title, tags, text):
