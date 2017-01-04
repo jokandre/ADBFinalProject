@@ -25,6 +25,13 @@ class User:
         return user
 
     @staticmethod
+    def get_db_id(fb_id):
+        query = '''
+        MATCH (n:User {fb_id : {fb_id}}) RETURN ID(n) as id
+        '''
+        return graph.run(query, fb_id=fb_id).evaluate()
+
+    @staticmethod
     def register(name, email, gender, fb_id, access_token, portrait):
         if not User.find(fb_id):
             query = '''

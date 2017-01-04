@@ -20,14 +20,14 @@ def register():
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
 		uid = User.register(name, email, gender, fb_id, access_token, portrait)
-		print(uid)
 		if uid:
 			#  Not yet register before.
 			User.add_fb_likes(uid, fb_graph_api.get_fb_likes(fb_id, access_token))
 			User.add_fb_friends(uid, fb_graph_api.get_fb_frends(fb_id, access_token))
+		else:
+			uid = User.get_db_id(fb_id)
 		session['id'] = uid
 		return ('', 200)
-		# return redirect(url_for('main'))
 
 def update_location():
 	json_dict = request.get_json()

@@ -54,13 +54,14 @@ def logout():
 def diary_API(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
-        # session_check('api')  # when online uncomment this.
+        session_check('api')
         # API GET: /diary/api/v1/get?id=x
         if path == 'api/v1/get':
            return diary.get_all_diary()
         else:
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
+        session_check('api')
         # API POST: /diary/api/v1/create
         if path == 'api/v1/create':
             return diary.create()
