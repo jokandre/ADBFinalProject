@@ -23,6 +23,14 @@ class User:
         user = graph.find_one('User', 'Fb_id', self.Fb_id)
         return user
 
+    def find_id(self):
+        query = '''
+        MATCH (user:User)
+        WHERE user.Fb_id = {Fb_id}
+        RETURN ID(user) as id
+        '''
+        return graph.run(query, Fb_id=self.Fb_id)
+
     def register(self):
         if not self.find():
             user = Node('User', name=self.name, email=self.email, gender=self.gender, Fb_id=self.Fb_id, access_token=self.access_token, head_photo=self.head_photo)
@@ -138,7 +146,7 @@ class Diary(object):
 
     def get_all_diary(self):
         query = '''
-        MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D LIMIT 25
+        MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D as Diary LIMIT 25
         '''
         return graph.run(query, id=self.owner_id)
 

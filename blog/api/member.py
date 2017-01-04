@@ -2,6 +2,8 @@ from ..models import User   # get_todays_recent_posts
 from ..invalidusage import InvalidUsage
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
 from jobs import fb_graph_api
+from flask.json import jsonify
+
 
 def register():
 	json_dict = request.get_json()
@@ -22,5 +24,7 @@ def register():
 			#  Not yet register before.
 			me.add_fb_likes(fb_graph_api.get_fb_likes(Fb_id, access_token))
 		me.add_fb_friends(fb_graph_api.get_fb_frends(Fb_id, access_token))
-		session['Fb_id'] = Fb_id
-		return redirect(url_for('main'))
+		user = me.find_id().data()[0]
+		session['id'] = user['id']
+		return ('', 200)
+		# return redirect(url_for('main'))

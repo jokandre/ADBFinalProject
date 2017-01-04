@@ -98,13 +98,15 @@ function get_user(fb,token) {
         name:fb.name,
         email: fb.email,
         gender: fb.gender,
-        access_token:token
+        access_token:token,
+        head_photo:"http:test"
       }),
       type:'POST',
       contentType:"application/json",
       datatype:'application/json',
       success:function(response){
         console.log("Just registered!")
+        window.location = "http://140.114.77.15:5000/index";
       },
       error:function(error){
         console.log(error);

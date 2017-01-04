@@ -15,7 +15,11 @@ def index():
 @app.route('/index', methods=['GET'])
 def main():
     session_check('render_page')
+<<<<<<< HEAD
     return render_template('index.html')
+=======
+    return render_template('landingPage.html')
+>>>>>>> 7a921ae6c9927b35242f631ef362f4347ba760d2
 
 @app.route('/create_diary', methods=['GET'])
 def create_diary():
