@@ -10,16 +10,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    if 'id' in session:
+        return redirect(url_for('main'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/index', methods=['GET'])
 def main():
     session_check('render_page')
-<<<<<<< HEAD
     return render_template('index.html')
-=======
-    return render_template('landingPage.html')
->>>>>>> 7a921ae6c9927b35242f631ef362f4347ba760d2
 
 @app.route('/create_diary', methods=['GET'])
 def create_diary():
@@ -40,7 +39,10 @@ def send_static(filename):
 def login():
     if request.method == 'POST':
         return member.register()
-    return render_template('login.html')
+    if 'id' in session:
+        return redirect(url_for('main'))
+    else:
+        return render_template('login.html')
 
 @app.route('/logout')
 def logout():

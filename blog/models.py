@@ -126,7 +126,6 @@ class User:
         return graph.run(query, which=node_id, wkt=lon_lat_to_wkt(lon, lat))
 
 
-
 def get_todays_recent_posts():
     query = '''
     MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
@@ -150,8 +149,8 @@ def lon_lat_to_wkt(lon, lat):
     return 'POINT (' + str(lon) + ' ' + str(lat) + ')'
 
 def wkt_to_lat_long(wkt):
-    lon = float(wkt[wkt.find('(')+1: wkt.find(' ', beg=wkt.find('('))])
-    lat = float(wkt[wkt.find(' ', beg=wkt.find('('))+1: -1])
+    lon = float(wkt[wkt.find('(') + 1: wkt.find(' ', beg=wkt.find('('))])
+    lat = float(wkt[wkt.find(' ', beg=wkt.find('(')) + 1: -1])
     return lat, lon
 
 class Diary(object):
@@ -162,7 +161,7 @@ class Diary(object):
 
     @staticmethod
     def get_owner(owner_id):
-        user = graph.node(self.owner_id)
+        user = graph.node(owner_id)
         return user
 
     @staticmethod
@@ -173,7 +172,7 @@ class Diary(object):
         return graph.run(query, id=owner_id)
 
     @staticmethod
-    def add_diary(owner_id, self, title, content, latitude, longitude, category, location, address):
+    def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
         user = Diary.get_owner(owner_id)
         diary = Node(
             'Diary',
@@ -182,23 +181,24 @@ class Diary(object):
             content=content,
             timestamp=timestamp(),
             date=date(),
-            latitude = latitude,
-            longitude = longitude,
+            latitude=latitude,
+            longitude=longitude,
             wkt=lon_lat_to_wkt(longitude, latitude),
             category=category,
             location=location,
-            address=address
+            address=address,
+            permission=permission
         )
         rel = Relationship(user, 'PUBLISHED', diary)
         graph.create(rel)
 
-        query = '''
-        MATCH (d:Diary) WHERE d.id = {which}
-        WITH d AS d
-        CALL spatial.addNode('geom', d)
-        RETURN count(*)
-        '''
+        # query = '''
+        # MATCH (d:Diary) WHERE d.id = {which}
+        # Yield d
+        # CALL spatial.addNode('geom', d)
+        # RETURN count(*)
+        # '''
 
-        graph.run(query, which=str(uuid.uuid4()))
+        # graph.run(query, which=str(uuid.uuid4()))
 
         return ('', 200)

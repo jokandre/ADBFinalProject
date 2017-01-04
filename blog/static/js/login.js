@@ -99,7 +99,7 @@ function get_user(fb,token) {
         email: fb.email,
         gender: fb.gender,
         access_token:token,
-        head_photo:"http:test"
+        portrait: fb.picture.data.url
       }),
       type:'POST',
       contentType:"application/json",
