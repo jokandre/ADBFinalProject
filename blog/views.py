@@ -97,12 +97,18 @@ def diary_api(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
         session_check('api')
-        # API GET: /diary/api/v1/get?id=x
-        if path == 'api/v1/get':
-           return diary.get_all_diary()
-        # API GET: /diary/api/v1/search/nearby?distance_km=x
-        elif path == 'api/v1/search/nearby':
-            return diary.get_nearby_diary()
+        if 'api/v1/' in path:
+            # API GET: /diary/api/v1/me
+            if path == 'api/v1/me':
+                return diary.get_all_diary()
+            # API GET: /diary/api/v1/friends
+            elif path == 'api/v1/friends':
+                return diary.get_friends_diary()
+            # API GET: /diary/api/v1/search/nearby?distance_km=x
+            elif path == 'api/v1/search/nearby':
+                return diary.get_nearby_diary()
+            else:
+                raise InvalidUsage("Wrong URL", 404)
         else:
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
