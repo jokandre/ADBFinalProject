@@ -34,9 +34,9 @@ def get_my_friends():
 	friends = User.get_my_friends(id)
 	return jsonify(friends)
 
-def get_common_friends():
+def get_friends_of_friends():
 	id = session['id']
-	common_friends = User.get_common_friends(id)
+	common_friends = User.get_friends_of_friends(id)
 	return jsonify(common_friends)
 
 def get_common_likes_users():
