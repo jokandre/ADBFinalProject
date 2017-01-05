@@ -260,9 +260,19 @@ class Diary(object):
         CALL spatial.addNode('diary', d) YIELD node
         RETURN count(node)
         '''
-
+        
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
 
         return ('', 200)
+
+    @staticmethod
+    def get_nearby_diary(uid, distance_km):
+        user = graph.find_one('User', 'id', uid)
+        query = '''
+        CALL spatial.withinDistance('diary', 
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
+        RETURN d
+        '''
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
