@@ -20,7 +20,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
 <link href="/static/css/addition.css" rel="stylesheet" type="text/css" media="all" />
 <link href="/static/css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
-<link href="/static/css/friends.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/my_friends.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->
 <script src="/static/js/jquery-1.11.1.min.js"></script>
 <script src="/static/js/jquery-ui.js"></script>
@@ -35,7 +35,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	$(function() {
         $.ajax({
-	        url: 'http://140.114.77.15:5000/member/api/v1/friends/me',
+	        url: '',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {
@@ -108,88 +108,82 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //header -->
 	<div class="banner-bottom">
 		<div class="container">
-			<div class="category">
-				<div class="category_item" align="Center">ＡＬＬ</div>
-				<div class="category_item" align="Center">Complain & Crap</div>
-				<div class="category_item" align="Center">Daily Philosophy</div>
-				<div class="category_item" align="Center">Anxiety&Tiredness</div>
-				<div class="category_item" align="Center">Optimism & Hope</div>
-				<div class="category_item" align="Center">Joy and Blessing</div>
-				<div class="category_item" align="Center">Miss and Regret</div>
-				<div class="category_item" align="Center">Good night</div>
-				<div class="category_item" align="Center">Idling and Life</div>
-				<div class="category_item" align="Center">Other</div>
-			</div>
-
-			<div class="all_diary">
-				<div class="each_diary">
-					<div class="user_intro">
-						<img src="/static/images/2.png">
-						<div class="user_intro_detail">
-							<p class="user_name">周子瑜</p>
-							<img class="user_location_icon" src="/static/images/location.png">
-							<p class="user_location">my house</p>
-						</div>
+			<div class="all_friends">
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
 					</div>
-					
-					<div style="border: solid 1px silver; float: left;width: 60px;margin-top: 10px;"></div>
-
-					<div class="content">
-						<div class="content_title"><h4>THIS IS A TITLE FOR THIS DIARY</h4></div>
-						<div class="content_detail">
-							<h5>
-								女神在進階資料庫課上講了兩個類似但不盡相同的故事：E.F. Cobb 和 Peter Chen。兩位都是當代資料庫模型之父，前者提出了關聯式模型（Relational Model），後者提出了 實體關係模型（Entity-Relationship Model）。兩位有非常類似的遭遇：在 IBM 當工程師，提出革命性的資料庫模型，然後被 IBM 上層打槍。於是他們便直接說服需要這些模型的顧客，讓他們回過頭向公司證明自己模型的價值。 
-							</h5>
-						</div>
-					</div>
-					<p style="color: #87CEFA;width:100%;font-size: 13px;float:left;">read more</p>
 				</div>
 
-				<div class="each_diary">
-					<div class="user_intro">
-						<img src="/static/images/2.png">
-						<div class="user_intro_detail">
-							<p class="user_name">周子瑜</p>
-							<img class="user_location_icon" src="/static/images/location.png">
-							<p class="user_location">my house</p>
-						</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
 					</div>
-					
-					<div style="border: solid 1px silver; float: left;width: 60px;margin-top: 10px;"></div>
-
-					<div class="content">
-						<div class="content_title"><h4>THIS IS A TITLE FOR THIS DIARY</h4></div>
-						<div class="content_detail">
-							<h5>
-								女神在進階資料庫課上講了兩個類似但不盡相同的故事：E.F. Cobb 和 Peter Chen。兩位都是當代資料庫模型之父，前者提出了關聯式模型（Relational Model），後者提出了 實體關係模型（Entity-Relationship Model）。兩位有非常類似的遭遇：在 IBM 當工程師，提出革命性的資料庫模型，然後被 IBM 上層打槍。於是他們便直接說服需要這些模型的顧客，讓他們回過頭向公司證明自己模型的價值。 
-							</h5>
-						</div>
-					</div>
-					<p style="color: #87CEFA;width:100%;font-size: 13px;float:left;">read more</p>
 				</div>
 
-				<div class="each_diary">
-					<div class="user_intro">
-						<img src="/static/images/2.png">
-						<div class="user_intro_detail">
-							<p class="user_name">周子瑜</p>
-							<img class="user_location_icon" src="/static/images/location.png">
-							<p class="user_location">my house</p>
-						</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
 					</div>
-					
-					<div style="border: solid 1px silver; float: left;width: 60px;margin-top: 10px;"></div>
-
-					<div class="content">
-						<div class="content_title"><h4>THIS IS A TITLE FOR THIS DIARY</h4></div>
-						<div class="content_detail">
-							<h5>
-								女神在進階資料庫課上講了兩個類似但不盡相同的故事：E.F. Cobb 和 Peter Chen。兩位都是當代資料庫模型之父，前者提出了關聯式模型（Relational Model），後者提出了 實體關係模型（Entity-Relationship Model）。兩位有非常類似的遭遇：在 IBM 當工程師，提出革命性的資料庫模型，然後被 IBM 上層打槍。於是他們便直接說服需要這些模型的顧客，讓他們回過頭向公司證明自己模型的價值。 
-							</h5>
-						</div>
-					</div>
-					<p style="color: #87CEFA;width:100%;font-size: 13px;float:left;">read more</p>
 				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				<div class="each_friend">
+					<img class="profile_img" src="/ADBimages/2.jpg">
+					<div class="profile_detail">
+						<div class="name">AKA KAI</div>
+						<div class="nick_name">AKAI</div>
+						<div class="gender">MALE</div>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	</div>

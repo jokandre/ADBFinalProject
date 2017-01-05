@@ -29,6 +29,15 @@ def register():
 		session['id'] = uid
 		return ('', 200)
 
+
+#returns User Profile Info
+def get_my_info():
+	try:
+		result = User.user_info(session['id'])
+	except (ValueError, KeyError, TypeError) as error:
+		raise InvalidUsage("Missing Parameters: " + str(error))
+	return result#jsonify(result)
+
 def get_my_friends():
 	id = session['id']
 	friends = User.get_my_friends(id)
