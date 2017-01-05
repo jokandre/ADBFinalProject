@@ -193,10 +193,11 @@ class User:
         user = graph.find_one('User', 'id', uid)
         query = '''
         CALL spatial.withinDistance('member',
-        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
-        RETURN d.gender as gender, d.name as name, d.portrait as portrait, d.id as id, d.nickname as nickname
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS m
+        MATCH (m) WHERE m.id <> {id}
+        RETURN m.gender as gender, m.name as name, m.portrait as portrait, m.id as id, m.nickname as nickname
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
 
 def get_todays_recent_posts():
     query = '''
@@ -283,6 +284,9 @@ class Diary(object):
         query = '''
         CALL spatial.withinDistance('diary',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
-        RETURN d
+        OPTIONAL MATCH (d2:Diary)-[r:PUBLISHED]-(m:User)
+        WHERE m.id <> {id}
+        RETURN d2
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)
+        # TODO what to return?
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)

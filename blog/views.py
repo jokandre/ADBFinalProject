@@ -100,6 +100,9 @@ def diary_api(path):
         # API GET: /diary/api/v1/get?id=x
         if path == 'api/v1/get':
            return diary.get_all_diary()
+        # API GET: /diary/api/v1/search/nearby?distance_km=x
+        elif path == 'api/v1/search/nearby':
+            return diary.get_nearby_diary()
         else:
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
