@@ -48,6 +48,8 @@ def get_nearby_diary():
 			raise InvalidUsage("Missing Parameters: " + str(error))
 		try:
 			distance_km = float(distance_km)
+			if distance_km < 0:
+				raise ValueError('')
 		except ValueError:
 			raise InvalidUsage("latitude and longitude should be positive float!")
 		db_cursor = Diary.get_nearby_diary(session['id'], distance_km)
