@@ -80,6 +80,8 @@ def get_nearby_member():
 			raise InvalidUsage("Missing Parameters: " + str(error))
 		try:
 			distance_km = float(distance_km)
+			if distance_km < 0:
+				raise ValueError('')
 		except ValueError:
 			raise InvalidUsage("latitude and longitude should be positive float!")
 		db_cursor = User.get_nearby_member(session['id'], distance_km)
