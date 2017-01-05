@@ -20,66 +20,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
 <link href="../static/css/addition.css" rel="stylesheet" type="text/css" media="all" />
 <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/swipe.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->
 <script src="../static/js/jquery-1.11.1.min.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
-<script src="../static/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
+<script src="../static/js/bootstrap-tagsinput.js"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
-
-<script>
-google.maps.event.addDomListener(window, 'load', function () {
-    var places = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
-    google.maps.event.addListener(places, 'place_changed', function () {
-        var place = places.getPlace();
-        var name = place.name;
-        var address = place.formatted_address;
-        var latitude = place.geometry.location.lat();
-        var longitude = place.geometry.location.lng();
-        // var mesg = "Name: " + name;
-        // mesg += "\nLatitude: " + latitude;
-        // mesg += "\nLongitude: " + longitude;
-        // alert(mesg);
-        document.getElementById('temp_information').innerHTML = name + " " + address + " " + latitude + " " + longitude; 
-    });
-});
-
-function create_diary(){
-	var title = $("input[name=diary_title]").val();
-	var location_information = $("#temp_information").text();
-	var arr = location_information.split(" ")
-	var location = arr[0];
-	var address = arr[1];
-	var latitude = arr[2];
-	var longitude = arr[3];
-	var category = $("#diary_category").find(":selected").val();
-	var authority = $('input[name="authority"]:checked').val();
-	var content = CKEDITOR.instances['diary_content'].getData();
-	
-	$.post("http://140.114.77.15:5000/diary/api/v1/create",{
-		title: title,
-	 	location: location,
-	 	address: address,
-	 	latitude: latitude,
-	 	longitude: longitude,
-	 	category: category,
-	 	authority: authority,
-	 	content: content
-	}, function(response){ 
- 		//alert(response);
-	});
-	window.location.reload();
-}
-</script>
+</head>
 <style>
-#cke_diary_content{
-	margin-top: 0px !important;
+div#map,
+#map div {
+	overflow: visible;
+}
+#map,
+#map {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+@media print {
+    #map,
+    #map {
+      	height: 500px;
+    }
+}
+#panel {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: -180px;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
 }
 </style>
-</head>
-	
 <body>
 <!-- header -->
 	<div class="header">
@@ -99,7 +75,7 @@ function create_diary(){
 					<a class="profile-select" cursor="pointer"><img class="user_icon" src="../static/images/co.png"/><span>▾</span></a>
 					<div class="dropdown-content">
 						<a href="profile">Your Profile</a>
-						<a href="#">Your Diary</a>
+						<a href="#">Your Diary
 					    <a href="#">Logout</a>
 					</div>
 				</li>
@@ -126,8 +102,8 @@ function create_diary(){
 						<ul class="nav navbar-nav">
 							<li><a href="index">Home</a></li>
 							<li><a href="about">Friends</a></li>
-							<li class="active"><a href="create_diary">Create Diary</a></li>
-							<li><a href="search">Nearby</a></li>
+							<li><a href="create_diary">Create Diary</a></li>
+							<li class="active"><a href="search">Nearby</a></li>
 						</ul>
 					</nav>
 				</div><!-- /.navbar-collapse -->	
@@ -137,46 +113,21 @@ function create_diary(){
 <!-- //header -->
 	<div class="banner-bottom">
 		<div class="container">
-			<h3>CREATE YOUR DIARY</h3>
-			<div class="col-md-6 col-md-offset-3 diary_input">
-				<div>
-					<img src="../static/images/tag.svg"/>
-					<input type="text" class="form-design" name="diary_title" placeholder="Diary title"/>
+			<div id="search_slide">
+		    	<ul>
+			    	<li class="li_item li_active"><a class="slide_button slide_active" href="#slide_one">Nearby People</a></li>
+			    	<li class="li_item"><a class="slide_button" href="#slide_two">Nearby Diary</a></li>
+			    </ul>
+			</div>
+			<div class="pageWrapper">
+				<div id="pageContentWrapper"  class="pageContentWrapper" style="margin-top:60px;"> 
+					<div id="slide_one" class="slide_content slide active">
+						hello!!!!! show
+					</div>
+					<div id="slide_two" class="slide_content slide">
+				        <div id="map"></div>
+					</div>
 				</div>
-				<div>
-					<img src="../static/images/location.svg"/>
-					<input type="text" id="autocomplete" class="form-design" name="diary_location" placeholder="Search location"/>
-					<div id="temp_information" style="display: none;"></div>
-				</div>
-				<div>
-					<img src="../static/images/category.svg"/>
-					<select id="diary_category" class="form-design">
-						<option value="" disabled selected style="display: none;"></option>
-						<option value="life">Life</option>
-						<option value="work">Work</option>
-						<option value="music">Music</option>
-						<option value="movie">Movie</option>
-					</select>
-				</div>
-				<div style="color:#000;">
-					<img src="../static/images/lock.svg"/>
-					<input type="radio" name="authority" value="public"/> Public&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="authority" value="friends"/> Only friends&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="authority" value="private"/> Only you 
-				</div>
-				<div>
-					<img src="../static/images/pencil.svg">Content
-					<form> 
-						<textarea name="diary_content" id="diary_content" rows="15"></textarea>
-			            <script>
-			          		CKEDITOR.replace('diary_content', {
-							    //輸入客製化條
-								
-							});
-			            </script>
-			        </form>
-				</div>
-				<div class="diary_button"><a href="javascript: create_diary();">Submit</a></div>
 			</div>
 		</div>
 	</div>
@@ -231,5 +182,76 @@ function create_diary(){
 <!-- for bootstrap working -->
 <script src="../static/js/bootstrap.js"> </script>
 <!-- //for bootstrap working -->
+<script type="text/javascript" src="../static/js/jquery.event.move.js"></script>
+<script type="text/javascript" src="../static/js/jquery.event.swipe.js"></script>
+<script type="text/javascript" src="../static/js/map.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+$(function() {
+	var w_height = screen.height;
+	var height = w_height-180;
+	$("#map").height(height+"px");
+});
+
+(function(jQuery, undefined) {
+	jQuery(document).ready(function() {
+		var wrap = jQuery('.pageContentWrapper'),
+		    slides = wrap.find('.slide_content'),
+		    active = slides.filter('.active'),
+		    nav_item = jQuery('.li_item'),
+		    buttons = jQuery('.slide_button'),
+		    dynamic = jQuery('#dynamic_slide'),
+		    i = slides.index(active),
+		    width = wrap.width();
+
+		// Listen for swipe events on slides, and use a custom 'activate'
+		// event to add and remove the class 'active' to the previous
+		// or next slide, and to keep the index up-to-date. The class
+		// 'active' uses CSS transitions to make the slide move.
+
+		slides
+
+		/*.on('swipeleft', function(e) {
+			if (i === slides.length - 1) { return; }
+			slides.eq(i + 1).trigger('activate');
+		})
+
+		.on('swiperight', function(e) {
+			if (i === 0) { return; }
+			slides.eq(i - 1).trigger('activate');
+		})*/
+
+		.on('activate', function(e) {
+			slides.eq(i).removeClass('active');
+			nav_item.eq(i).removeClass('li_active');
+			buttons.eq(i).removeClass('slide_active');
+
+			jQuery(e.target).addClass('active');
+
+			// Update the active slide index
+			i = slides.index(e.target);
+
+			// select active class for slide button
+			buttons.eq(i).addClass('slide_active');
+			nav_item.eq(i).addClass('li_active');
+			$('html, body').scrollTop(0);
+		});
+
+		jQuery(document)
+		.on('click', '.slide_button', function(e) {
+			var href = e.currentTarget.hash;
+
+			jQuery(href).trigger('activate');
+
+			e.preventDefault();
+		});
+	});
+})(jQuery);
+
+google.maps.event.addDomListener(window, 'load', getusergeo);
+
+</script>
 </body>
 </html>

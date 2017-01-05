@@ -25,6 +25,16 @@ def create_diary():
     session_check('render_page')
     return render_template('create_diary.html')
 
+@app.route('/friends', methods=['GET'])
+def friends():
+    session_check('render_page')
+    return render_template('friends.html')
+
+@app.route('/search', methods=['GET'])
+def profile():
+    session_check('render_page')
+    return render_template('search.html')
+
 @app.route('/profile', methods=['GET'])
 def profile():
     session_check('render_page')
