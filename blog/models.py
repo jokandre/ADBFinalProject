@@ -42,10 +42,7 @@ class User:
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         elif 'id' not in user:
-<<<<<<< HEAD
             print 'Giving user an ID'
-=======
->>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
             id = str(uuid.uuid1())
             query = '''
             MATCH (u:User) WHERE u.fb_id = {fb_id}
@@ -61,6 +58,10 @@ class User:
         user = graph.find_one('User', 'id', uid)
         return user
 
+    @staticmethod
+    def update_user_info(uid):
+        user = graph.find_one('User', 'id', uid)
+        return user
 
     @staticmethod
     def add_fb_likes(uid, likes):
@@ -191,7 +192,7 @@ class User:
     def get_nearby_member(uid, distance_km):
         user = graph.find_one('User', 'id', uid)
         query = '''
-        CALL spatial.withinDistance('member', 
+        CALL spatial.withinDistance('member',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''
@@ -269,7 +270,7 @@ class Diary(object):
         CALL spatial.addNode('diary', d) YIELD node
         RETURN count(node)
         '''
-        
+
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
@@ -280,7 +281,7 @@ class Diary(object):
     def get_nearby_diary(uid, distance_km):
         user = graph.find_one('User', 'id', uid)
         query = '''
-        CALL spatial.withinDistance('diary', 
+        CALL spatial.withinDistance('diary',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''

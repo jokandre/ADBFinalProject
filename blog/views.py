@@ -65,8 +65,10 @@ def member_api(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
         session_check('api')
+        if path == 'api/v1/me/info':
+            return member.get_my_info()
         # API GET: /member/api/v1/friends/me
-        if path == 'api/v1/friends/me':
+        elif path == 'api/v1/friends/me':
            return member.get_my_friends()
         # API GET: /member/api/v1/frineds/common-friends
         elif path == 'api/v1/friends/common-friends':
@@ -109,24 +111,8 @@ def diary_api(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
+        
 
-<<<<<<< HEAD
-@app.route('/user/<path:path>', methods=['GET', 'POST'])
-def user_API(path):
-    print 'Request path: %s' % path
-    if request.method == 'GET':
-        #session_check('api')
-        # API GET: /user/api/v1/get?id=x
-        if path == 'api/v1/get':
-            return member.get_user_info()
-        else:
-            raise InvalidUsage("Wrong URL", 404)
-    elif request.method == 'POST':
-        session_check('api')
-        # API POST: /diary/api/v1/create
-        if path == 'api/v1/create':
-            return 'not defined'#diary.create()
-=======
 @app.route('/member/<path:path>', methods=['GET'])
 def member_API(path):
     print 'Request path: %s' % path
@@ -135,16 +121,13 @@ def member_API(path):
         session_check('api')
         if path == 'api/v1/get':
             return member.get_nearby_member()
->>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
+
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
 # @app.route('/pair/<path:path>', methods=['GET', 'POST'])
 # def pair_API(path):
 #     print 'Request path: %s' % path

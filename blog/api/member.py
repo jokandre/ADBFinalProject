@@ -29,15 +29,15 @@ def register():
 		session['id'] = uid
 		return ('', 200)
 
-<<<<<<< HEAD
+
 #returns User Profile Info
-def get_user_info():
+def get_my_info():
 	try:
 		result = User.user_info(session['id'])
 	except (ValueError, KeyError, TypeError) as error:
 		raise InvalidUsage("Missing Parameters: " + str(error))
 	return jsonify(result)
-=======
+
 def get_my_friends():
 	id = session['id']
 	friends = User.get_my_friends(id)
@@ -58,7 +58,6 @@ def get_common_likes():
 	other_id = request.args.get('other_id')
 	common_likes = User.get_common_likes(id, other_id)
 	return jsonify(common_likes)
->>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
 
 def update_location():
 	json_dict = request.get_json()
@@ -88,9 +87,6 @@ def get_nearby_member():
 			# distance_km = 1
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-<<<<<<< HEAD
-	return (str(result), 200)
-=======
 		try:
 			distance_km = float(distance_km)
 			if distance_km < 0:
@@ -99,4 +95,3 @@ def get_nearby_member():
 			raise InvalidUsage("latitude and longitude should be positive float!")
 		db_cursor = User.get_nearby_member(session['id'], distance_km)
 		return jsonify(db_cursor.data())
->>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
