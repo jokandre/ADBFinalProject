@@ -9,7 +9,7 @@ function statusChangeCallback(response) {
     // Logged into your app and Facebook.
     console.log(response.authResponse.accessToken);
      token = response.authResponse.accessToken;
-    FB.api('/me', {fields: 'name,gender,email,friends,likes'}, function(response) {
+    FB.api('/me', {fields: 'name,gender,email,friends,likes,picture'}, function(response) {
       //user的資料在這裡
       console.log(response);
       get_user(response, token)
