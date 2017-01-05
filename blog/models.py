@@ -175,18 +175,17 @@ class User:
         CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
-
-        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat = lat, lon = lon)
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat=lat, lon=lon)
 
     @staticmethod
     def get_nearby_member(uid, distance_km):
         user = graph.find_one('User', 'id', uid)
         query = '''
-        CALL spatial.withinDistance('member', 
+        CALL spatial.withinDistance('member',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)
 
 def get_todays_recent_posts():
     query = '''
@@ -260,7 +259,6 @@ class Diary(object):
         CALL spatial.addNode('diary', d) YIELD node
         RETURN count(node)
         '''
-        
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
@@ -271,8 +269,8 @@ class Diary(object):
     def get_nearby_diary(uid, distance_km):
         user = graph.find_one('User', 'id', uid)
         query = '''
-        CALL spatial.withinDistance('diary', 
+        CALL spatial.withinDistance('diary',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)

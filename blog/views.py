@@ -84,6 +84,7 @@ def member_api(path):
         elif 'api/v1/search' in path:
             # API GET: /member/api/v1/search/nearby
             if path == 'api/v1/search/nearby':
+                # params: distance_km
                 return member.get_nearby_member()
             else:
                 raise InvalidUsage("Wrong URL", 404)

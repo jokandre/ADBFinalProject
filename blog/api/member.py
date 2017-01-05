@@ -47,8 +47,11 @@ def get_common_likes_users():
 def get_common_likes():
 	id = session['id']
 	other_id = request.args.get('other_id')
-	common_likes = User.get_common_likes(id, other_id)
-	return jsonify(common_likes)
+	if other_id is None:
+		raise InvalidUsage("Missing Parameters: other_id")
+	else:
+		common_likes = User.get_common_likes(id, other_id)
+		return jsonify(common_likes)
 
 def update_location():
 	json_dict = request.get_json()
@@ -69,15 +72,10 @@ def update_location():
 		return (str(result), 200)
 
 def get_nearby_member():
-	json_dict = request.get_json()
-	if json_dict is None:
-		raise InvalidUsage("Mimetype is not application/json!")
+	distance_km = request.args.get('distance_km')
+	if distance_km is None:
+		raise InvalidUsage("Missing Parameters: distance_km")
 	else:
-		try:
-			distance_km = json_dict['distance_km']
-			# distance_km = 1
-		except (ValueError, KeyError, TypeError) as error:
-			raise InvalidUsage("Missing Parameters: " + str(error))
 		try:
 			distance_km = float(distance_km)
 			if distance_km < 0:
