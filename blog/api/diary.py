@@ -33,15 +33,20 @@ def get_all_diary():
 	return jsonify(db_cursor.data())
 
 def get_nearby_diary():
-	# NOT DONE
-	id = request.args.get('id')
-	if id is None:
-		raise InvalidUsage("Missing Parameters!")
+	json_dict = request.get_json()
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
 	else:
 		try:
-			id = int(id)
+			distance_km = json_dict['distance_km']
+			# distance_km = 1
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+		try:
+			distance_km = float(distance_km)
+			if distance_km < 0:
+				raise ValueError('')
 		except ValueError:
-			raise InvalidUsage("id should be int!")
-		diary = Diary(id)
-		db_cursor = diary.get_all_diary()
+			raise InvalidUsage("latitude and longitude should be positive float!")
+		db_cursor = Diary.get_nearby_diary(session['id'], distance_km)
 		return jsonify(db_cursor.data())
