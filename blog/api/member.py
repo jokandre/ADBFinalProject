@@ -36,7 +36,7 @@ def get_my_info():
 		result = User.user_info(session['id'])
 	except (ValueError, KeyError, TypeError) as error:
 		raise InvalidUsage("Missing Parameters: " + str(error))
-	return jsonify(result)
+	return result#jsonify(result)
 
 def get_my_friends():
 	id = session['id']

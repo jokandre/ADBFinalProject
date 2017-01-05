@@ -38,7 +38,7 @@ def search():
 @app.route('/profile', methods=['GET'])
 def profile():
     session_check('render_page')
-    return render_template('profile.html')
+    return render_template('profile.html', me=member.get_my_info())
 
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
@@ -111,7 +111,7 @@ def diary_api(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
-        
+
 
 @app.route('/member/<path:path>', methods=['GET'])
 def member_API(path):
