@@ -27,18 +27,19 @@ class User:
     @staticmethod
     def get_db_id(fb_id):
         query = '''
-        MATCH (n:User {fb_id : {fb_id}}) RETURN ID(n) as id
+        MATCH (n:User {fb_id : {fb_id}}) RETURN n.id as id
         '''
         return graph.run(query, fb_id=fb_id).evaluate()
 
     @staticmethod
     def register(name, email, gender, fb_id, access_token, portrait):
         if not User.find(fb_id):
+            id = str(uuid.uuid1())
             query = '''
-            CREATE (u:User {name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
-            RETURN ID(u)
+            CREATE (u:User {id: {id}name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
+            RETURN u.id
             '''
-            return graph.run(query, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
+            return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         else:
             return False
 
@@ -123,7 +124,7 @@ class User:
     @staticmethod
     def update_location(node_id, lat, lon):
         query = '''
-        MATCH (u) WHERE ID(u) = {which}
+        MATCH (u) WHERE u.id = {which}
         SET u.wkt = {wkt}
         WITH u AS u
         CALL spatial.addNode('geom', u) YIELD node
@@ -174,7 +175,7 @@ class Diary(object):
     @staticmethod
     def get_all_diary(owner_id):
         query = '''
-        MATCH (n:User) - [:PUBLISHED] - (D)  where ID(n)={id} RETURN D as Diary LIMIT 25
+        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary LIMIT 25
         '''
         return graph.run(query, id=owner_id)
 
@@ -183,7 +184,7 @@ class Diary(object):
         user = Diary.get_owner(owner_id)
         diary = Node(
             'Diary',
-            id=str(uuid.uuid4()),
+            id=str(uuid.uuid1()),
             title=title,
             content=content,
             timestamp=timestamp(),
