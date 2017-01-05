@@ -59,9 +59,16 @@ class User:
         return user
 
     @staticmethod
-    def update_user_info(uid):
+    def update_user_info(uid, name, birthday, residence, height, weight, interest):
         user = graph.find_one('User', 'id', uid)
-        return user
+        if user:
+            query = '''
+            MATCH (u:User) WHERE u.id = {id}
+            SET u.name= {name}, u.birthday = {birthday},
+            u.height={height}, u.weight={weight}, u.residence = {residence}, u.interest = {interest}
+            RETURN u.id
+            '''
+            return graph.run(query, id=uid, name=name, birthday=birthday, height=height, weight=weight, residence=residence, interest=interest).evaluate()
 
     @staticmethod
     def add_fb_likes(uid, likes):

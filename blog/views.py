@@ -86,7 +86,7 @@ def member_api(path):
         session_check('api')
         # API TODO POST- update user info
         if path == 'api/v1/me/update-info':
-            pass
+            return member.update_my_info()
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
