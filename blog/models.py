@@ -133,10 +133,16 @@ class User:
 
         return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
 
+<<<<<<< HEAD
     @staticmethod
     def get_nearby_member(uid, distance_km):
         user = graph.node(uid)
         return (u.wkt,200)
+=======
+    # @staticmethod
+    # def get_nearby_member(uid, distance):
+
+>>>>>>> 8ddf477694d4a22af3bb191cf97adcb67af3d5a3
 
 
 
