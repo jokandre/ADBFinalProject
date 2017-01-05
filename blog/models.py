@@ -144,16 +144,6 @@ class User:
         post = graph.find_one('Post', 'id', post_id)
         graph.merge(Relationship(user, 'LIKED', post))
 
-    def get_recent_posts(self):
-        query = '''
-        MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
-        WHERE user.username = {username}
-        RETURN post, COLLECT(tag.name) AS tags
-        ORDER BY post.timestamp DESC LIMIT 5
-        '''
-
-        return graph.run(query, username=self.username)
-
     def get_similar_users(self):
         # Find three users who are most similar to the logged-in user
         # based on tags they've both blogged about.
@@ -246,9 +236,22 @@ class Diary(object):
     @staticmethod
     def get_all_diary(owner_id):
         query = '''
-        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary
+        MATCH (n:User) - [:PUBLISHED] - (D)
+        where n.id={id}
+        RETURN D as Diary
+        ORDER BY Diary.timestamp DESC
         '''
         return graph.run(query, id=owner_id)
+
+    @staticmethod
+    def get_friends_diary(uid, timestamp):
+        query = '''
+        MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
+        WHERE diary.timestamp <= {timestamp} and diary.permission <> 'private'
+        RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
+        ORDER BY diary.timestamp DESC LIMIT 20
+        '''
+        return graph.run(query, uid=uid, timestamp=timestamp)
 
     @staticmethod
     def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
