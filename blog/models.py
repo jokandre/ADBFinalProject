@@ -194,7 +194,7 @@ class User:
         query = '''
         CALL spatial.withinDistance('member',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
-        RETURN d
+        RETURN d.gender as gender, d.name as name, d.portrait as portrait, d.id as id, d.nickname as nickname
         '''
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)
 

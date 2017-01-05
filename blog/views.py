@@ -117,7 +117,7 @@ def diary_api(path):
 def member_API(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
-        # API GET: /member/api/v1/get?id=x
+        # API GET: /member/api/v1/get?distance_km=x
         session_check('api')
         if path == 'api/v1/get':
             return member.get_nearby_member()
