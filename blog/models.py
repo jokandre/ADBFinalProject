@@ -42,7 +42,6 @@ class User:
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         elif 'id' not in user:
-            print 'asdasdasdas'
             id = str(uuid.uuid1())
             query = '''
             MATCH (u:User) WHERE u.fb_id = {fb_id}
@@ -135,18 +134,25 @@ class User:
     def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
-        SET u.wkt = {wkt}
+        SET u.wkt = {wkt},
+        u.latitude = {lat},
+        u.longitude = {lon},
         WITH u AS u
-        CALL spatial.addNode('geom', u) YIELD node
+        CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
 
-        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat = lat, lon = lon)
 
     @staticmethod
     def get_nearby_member(uid, distance_km):
-        user = graph.node(uid)
-        return (u.wkt,200)
+        user = graph.find_one('User', 'id', uid)
+        query = '''
+        CALL spatial.withinDistance('member', 
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
+        RETURN d
+        '''
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
 
 
 
@@ -219,7 +225,7 @@ class Diary(object):
 
         query = '''
         MATCH (d:Diary) WHERE d.id = {which}
-        CALL spatial.addNode('geom', d) YIELD node
+        CALL spatial.addNode('diary', d) YIELD node
         RETURN count(node)
         '''
 
