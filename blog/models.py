@@ -230,3 +230,13 @@ class Diary(object):
         '''
 
         return (str(graph.run(query, which=uuid_diary).evaluate()), 200)
+
+    @staticmethod
+    def get_nearby_diary(uid, distance_km):
+        user = graph.find_one('User', 'id', uid)
+        query = '''
+        CALL spatial.withinDistance('diary', 
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
+        RETURN d
+        '''
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
