@@ -33,10 +33,20 @@ class User:
 
     @staticmethod
     def register(name, email, gender, fb_id, access_token, portrait):
-        if not User.find(fb_id):
+        user = User.find(fb_id)
+        if not user:
             id = str(uuid.uuid1())
             query = '''
             CREATE (u:User {id: {id}, name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
+            RETURN u.id
+            '''
+            return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
+        elif 'id' not in user:
+            print 'asdasdasdas'
+            id = str(uuid.uuid1())
+            query = '''
+            MATCH (u:User) WHERE u.fb_id = {fb_id}
+            SET u.id= {id}, u.name= {name}, u.email= {email}, u.gender= {gender}, u.fb_id= {fb_id}, u.access_token= {access_token}, u.portrait= {portrait}
             RETURN u.id
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
@@ -47,7 +57,7 @@ class User:
     def add_fb_likes(uid, likes):
         user = graph.find_one('User', 'id', uid)
         for like in likes:
-            rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
+            rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']))
             graph.merge(rel)
 
     @staticmethod
