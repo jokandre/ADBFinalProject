@@ -25,7 +25,7 @@ class User:
         return user
 
     @staticmethod
-    def get_db_id(fb_id):
+    def get_id(fb_id):
         query = '''
         MATCH (n:User {fb_id : {fb_id}}) RETURN n.id as id
         '''
@@ -42,7 +42,10 @@ class User:
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         elif 'id' not in user:
+<<<<<<< HEAD
             print 'Giving user an ID'
+=======
+>>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
             id = str(uuid.uuid1())
             query = '''
             MATCH (u:User) WHERE u.fb_id = {fb_id}
@@ -72,6 +75,39 @@ class User:
         for friend in friends:
             rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], fb_id=friend['id']))
             graph.merge(rel)
+
+    @staticmethod
+    def get_my_friends(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [r] - (u:User)
+        WITH DISTINCT(u) as friends
+        RETURN friends.id as id, friends.name as name, friends.gender as gender, friends.portrait as portrait
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_friends(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) -[r:FRIEND]- (u:User) - [r2:FRIEND] - (v)
+        where NOT (n) - [:FRIEND] - (v) AND NOT (n) = (v)
+        return DISTINCT v as common_friends
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_likes_users(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [:LIKE] - (k) - [:LIKE]- (v:User)
+        return v.gender as gender, v.name as name, v.portrait as portrait, v.id as id, count(k) as amount_of_common_likes
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_likes(uid, other_uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [:LIKE] - (k) - [:LIKE]- (v:User {id:{other_uid}}) return k as common_likes
+        '''
+        return graph.run(query, uid=uid, other_uid=other_uid).data()
 
     def add_post(self, title, tags, text):
         user = self.find()
@@ -141,20 +177,25 @@ class User:
     def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
-        SET u.wkt = {wkt}
+        SET u.wkt = {wkt},
+        u.latitude = {lat},
+        u.longitude = {lon},
         WITH u AS u
-        CALL spatial.addNode('geom', u) YIELD node
+        CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
 
-        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat = lat, lon = lon)
 
     @staticmethod
     def get_nearby_member(uid, distance_km):
-        user = graph.node(uid)
-        return (u.wkt,200)
-
-
+        user = graph.find_one('User', 'id', uid)
+        query = '''
+        CALL spatial.withinDistance('member', 
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
+        RETURN d
+        '''
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
 
 def get_todays_recent_posts():
     query = '''
@@ -191,13 +232,13 @@ class Diary(object):
 
     @staticmethod
     def get_owner(owner_id):
-        user = graph.node(owner_id)
+        user = graph.find_one('User', 'id', owner_id)
         return user
 
     @staticmethod
     def get_all_diary(owner_id):
         query = '''
-        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary LIMIT 25
+        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary
         '''
         return graph.run(query, id=owner_id)
 
@@ -225,8 +266,22 @@ class Diary(object):
 
         query = '''
         MATCH (d:Diary) WHERE d.id = {which}
-        CALL spatial.addNode('geom', d) YIELD node
+        CALL spatial.addNode('diary', d) YIELD node
         RETURN count(node)
         '''
+        
+        result = str(graph.run(query, which=uuid_diary).evaluate())
+        if result != '1':
+            print "spatial addNode error!" + result
 
-        return (str(graph.run(query, which=uuid_diary).evaluate()), 200)
+        return ('', 200)
+
+    @staticmethod
+    def get_nearby_diary(uid, distance_km):
+        user = graph.find_one('User', 'id', uid)
+        query = '''
+        CALL spatial.withinDistance('diary', 
+        {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
+        RETURN d
+        '''
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)

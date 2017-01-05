@@ -25,10 +25,11 @@ def register():
 			User.add_fb_likes(uid, fb_graph_api.get_fb_likes(fb_id, access_token))
 			User.add_fb_friends(uid, fb_graph_api.get_fb_frends(fb_id, access_token))
 		else:
-			uid = User.get_db_id(fb_id)
+			uid = User.get_id(fb_id)
 		session['id'] = uid
 		return ('', 200)
 
+<<<<<<< HEAD
 #returns User Profile Info
 def get_user_info():
 	try:
@@ -36,6 +37,28 @@ def get_user_info():
 	except (ValueError, KeyError, TypeError) as error:
 		raise InvalidUsage("Missing Parameters: " + str(error))
 	return jsonify(result)
+=======
+def get_my_friends():
+	id = session['id']
+	friends = User.get_my_friends(id)
+	return jsonify(friends)
+
+def get_common_friends():
+	id = session['id']
+	common_friends = User.get_common_friends(id)
+	return jsonify(common_friends)
+
+def get_common_likes_users():
+	id = session['id']
+	common_likes = User.get_common_likes_users(id)
+	return jsonify(common_likes)
+
+def get_common_likes():
+	id = session['id']
+	other_id = request.args.get('other_id')
+	common_likes = User.get_common_likes(id, other_id)
+	return jsonify(common_likes)
+>>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
 
 def update_location():
 	json_dict = request.get_json()
@@ -45,12 +68,15 @@ def update_location():
 		try:
 			latitude = json_dict['latitude']
 			longitude = json_dict['longitude']
-			# latitude = 60
-			# longitude = 23
-			result = User.update_location(session['id'], latitude, longitude)
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-	return (str(result), 200)
+		try:
+			latitude = float(latitude)
+			longitude = float(longitude)
+		except ValueError:
+			raise InvalidUsage("latitude and longitude should be float!")
+		result = User.update_location(session['id'], latitude, longitude)
+		return (str(result), 200)
 
 def get_nearby_member():
 	json_dict = request.get_json()
@@ -59,7 +85,18 @@ def get_nearby_member():
 	else:
 		try:
 			distance_km = json_dict['distance_km']
-			result = User.get_nearby_member(session['id'], distance_km)
+			# distance_km = 1
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
+<<<<<<< HEAD
 	return (str(result), 200)
+=======
+		try:
+			distance_km = float(distance_km)
+			if distance_km < 0:
+				raise ValueError('')
+		except ValueError:
+			raise InvalidUsage("latitude and longitude should be positive float!")
+		db_cursor = User.get_nearby_member(session['id'], distance_km)
+		return jsonify(db_cursor.data())
+>>>>>>> 03a6508280b64e12f753a40fe3c9fa1a16a2960a
