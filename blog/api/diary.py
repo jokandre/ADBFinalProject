@@ -1,4 +1,5 @@
-from ..models import Diary   # get_todays_recent_posts
+from ..models import Diary
+from ..models import timestamp as get_timestamp
 from ..invalidusage import InvalidUsage
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
 from flask.json import jsonify
@@ -30,6 +31,14 @@ def create():
 def get_all_diary():
 	id = session['id']
 	db_cursor = Diary.get_all_diary(id)
+	return jsonify(db_cursor.data())
+
+def get_friends_diary():
+	id = session['id']
+	timestamp = float(request.args.get('timestamp'))
+	if timestamp is None:
+		timestamp = get_timestamp()
+	db_cursor = Diary.get_friends_diary(id, timestamp)
 	return jsonify(db_cursor.data())
 
 def get_nearby_diary():
