@@ -30,13 +30,13 @@ def register():
 		return ('', 200)
 
 
-#returns User Profile Info
+# returns User Profile Info
 def get_my_info():
 	try:
 		result = User.user_info(session['id'])
 	except (ValueError, KeyError, TypeError) as error:
 		raise InvalidUsage("Missing Parameters: " + str(error))
-	return result#jsonify(result)
+	return result
 
 def get_my_friends():
 	id = session['id']
