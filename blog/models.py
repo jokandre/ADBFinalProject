@@ -82,16 +82,17 @@ class User:
         query = '''
         MATCH (n:User {id:{uid}}) - [r] - (u:User)
         WITH DISTINCT(u) as friends
-        RETURN friends.id as id, friends.name as name, friends.gender as gender, friends.portrait as portrait
+        RETURN friends.id as id, friends.name as name, friends.gender as gender, friends.portrait as portrait, friends.nickname as nickname
         '''
         return graph.run(query, uid=uid).data()
 
     @staticmethod
-    def get_common_friends(uid):
+    def get_friends_of_friends(uid):
         query = '''
         MATCH (n:User {id:{uid}}) -[r:FRIEND]- (u:User) - [r2:FRIEND] - (v)
         where NOT (n) - [:FRIEND] - (v) AND NOT (n) = (v)
-        return DISTINCT v as common_friends
+        with DISTINCT v as friends_of_friends
+        RETURN friends_of_friends.id as id, friends_of_friends.name as name, friends_of_friends.gender as gender, friends_of_friends.portrait as portrait, friends_of_friends.nickname as nickname
         '''
         return graph.run(query, uid=uid).data()
 
@@ -185,8 +186,7 @@ class User:
         CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
-
-        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat = lat, lon = lon)
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat=lat, lon=lon)
 
     @staticmethod
     def get_nearby_member(uid, distance_km):
@@ -196,7 +196,7 @@ class User:
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)
 
 def get_todays_recent_posts():
     query = '''
@@ -285,4 +285,4 @@ class Diary(object):
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
         RETURN d
         '''
-        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
+        return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km)

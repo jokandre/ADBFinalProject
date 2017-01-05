@@ -84,9 +84,9 @@ def member_api(path):
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
         session_check('api')
-        # API POST: /diary/api/v1/create
-        if path == 'api/v1/create':
-            return diary.create()
+        # API TODO POST- update user info
+        if path == 'api/v1/me/update-info':
+            pass
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
@@ -146,6 +146,7 @@ def member_API(path):
 #             raise InvalidUsage("Wrong URL", 404)
 #     else:
 #         raise InvalidUsage("Something Wrong.", 404)
+
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
