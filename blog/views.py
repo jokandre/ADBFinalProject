@@ -26,7 +26,7 @@ def create_diary():
     return render_template('create_diary.html')
 
 @app.route('/friends', methods=['GET'])
-def create_diary():
+def friends():
     session_check('render_page')
     return render_template('friends.html')
 
