@@ -50,5 +50,8 @@ def get_nearby_member():
 		raise InvalidUsage("Mimetype is not application/json!")
 	else:
 		try:
-			result = User.get_nearby_member(session['id'], distance)
+			distance_km = json_dict['distance_km']
+			result = User.get_nearby_member(session['id'], distance_km)
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
 	return (str(result), 200)

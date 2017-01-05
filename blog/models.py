@@ -133,8 +133,10 @@ class User:
 
         return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
 
-    # @staticmethod
-    # def get_nearby_member(uid, distance):
+    @staticmethod
+    def get_nearby_member(uid, distance_km):
+        user = graph.node(uid)
+        return (u.wkt,200)
 
 
 
@@ -186,9 +188,10 @@ class Diary(object):
     @staticmethod
     def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
         user = Diary.get_owner(owner_id)
+        uuid_diary = str(uuid.uuid1())
         diary = Node(
             'Diary',
-            id=str(uuid.uuid1()),
+            id=uuid_diary,
             title=title,
             content=content,
             timestamp=timestamp(),
@@ -204,13 +207,10 @@ class Diary(object):
         rel = Relationship(user, 'PUBLISHED', diary)
         graph.create(rel)
 
-        # query = '''
-        # MATCH (d:Diary) WHERE d.id = {which}
-        # Yield d
-        # CALL spatial.addNode('geom', d)
-        # RETURN count(*)
-        # '''
+        query = '''
+        MATCH (d:Diary) WHERE d.id = {which}
+        CALL spatial.addNode('geom', d) YIELD node
+        RETURN count(node)
+        '''
 
-        # graph.run(query, which=str(uuid.uuid4()))
-
-        return ('', 200)
+        return (str(graph.run(query, which=uuid_diary).evaluate()), 200)
