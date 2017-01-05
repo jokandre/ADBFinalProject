@@ -25,11 +25,6 @@ def create_diary():
     session_check('render_page')
     return render_template('create_diary.html')
 
-@app.route('/friends', methods=['GET'])
-def create_diary():
-    session_check('render_page')
-    return render_template('friends.html')
-
 @app.route('/profile', methods=['GET'])
 def profile():
     session_check('render_page')
@@ -74,6 +69,27 @@ def diary_API(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
+
+@app.route('/user/<path:path>', methods=['GET', 'POST'])
+def user_API(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        #session_check('api')
+        # API GET: /user/api/v1/get?id=x
+        if path == 'api/v1/get':
+            return member.get_user_info()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'POST':
+        session_check('api')
+        # API POST: /diary/api/v1/create
+        if path == 'api/v1/create':
+            return 'not defined'#diary.create()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
+
 
 # @app.route('/pair/<path:path>', methods=['GET', 'POST'])
 # def pair_API(path):

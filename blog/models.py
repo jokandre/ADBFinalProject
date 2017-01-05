@@ -42,7 +42,7 @@ class User:
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         elif 'id' not in user:
-            print 'asdasdasdas'
+            print 'Giving user an ID'
             id = str(uuid.uuid1())
             query = '''
             MATCH (u:User) WHERE u.fb_id = {fb_id}
@@ -52,6 +52,12 @@ class User:
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
         else:
             return False
+
+    @staticmethod
+    def user_info(uid):
+        user = graph.find_one('User', 'id', uid)
+        return user
+
 
     @staticmethod
     def add_fb_likes(uid, likes):

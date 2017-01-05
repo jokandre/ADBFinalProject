@@ -29,6 +29,14 @@ def register():
 		session['id'] = uid
 		return ('', 200)
 
+#returns User Profile Info
+def get_user_info():
+	try:
+		result = User.user_info(session['id'])
+	except (ValueError, KeyError, TypeError) as error:
+		raise InvalidUsage("Missing Parameters: " + str(error))
+	return jsonify(result)
+
 def update_location():
 	json_dict = request.get_json()
 	if json_dict is None:
