@@ -25,7 +25,7 @@ class User:
         return user
 
     @staticmethod
-    def get_db_id(fb_id):
+    def get_id(fb_id):
         query = '''
         MATCH (n:User {fb_id : {fb_id}}) RETURN n.id as id
         '''
@@ -66,6 +66,39 @@ class User:
         for friend in friends:
             rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], fb_id=friend['id']))
             graph.merge(rel)
+
+    @staticmethod
+    def get_my_friends(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [r] - (u:User)
+        WITH DISTINCT(u) as friends
+        RETURN friends.id as id, friends.name as name, friends.gender as gender, friends.portrait as portrait
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_friends(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) -[r:FRIEND]- (u:User) - [r2:FRIEND] - (v)
+        where NOT (n) - [:FRIEND] - (v) AND NOT (n) = (v)
+        return DISTINCT v as common_friends
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_likes_users(uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [:LIKE] - (k) - [:LIKE]- (v:User)
+        return v.gender as gender, v.name as name, v.portrait as portrait, v.id as id, count(k) as amount_of_common_likes
+        '''
+        return graph.run(query, uid=uid).data()
+
+    @staticmethod
+    def get_common_likes(uid, other_uid):
+        query = '''
+        MATCH (n:User {id:{uid}}) - [:LIKE] - (k) - [:LIKE]- (v:User {id:{other_uid}}) return k as common_likes
+        '''
+        return graph.run(query, uid=uid, other_uid=other_uid).data()
 
     def add_post(self, title, tags, text):
         user = self.find()
@@ -147,7 +180,6 @@ class User:
     def get_nearby_member(uid, distance_km):
         user = graph.node(uid)
         return (u.wkt,200)
-
 
 
 def get_todays_recent_posts():

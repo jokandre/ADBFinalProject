@@ -50,8 +50,35 @@ def logout():
     session.pop('id', None)
     return redirect(url_for('login'))
 
+@app.route('/member/<path:path>', methods=['GET', 'POST'])
+def member_api(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        session_check('api')
+        # API GET: /member/api/v1/friends/me
+        if path == 'api/v1/friends/me':
+           return member.get_my_friends()
+        elif path == 'api/v1/frineds/common-friends':
+            return member.get_common_friends()
+        elif path == 'api/v1/friends/common-likes/users':
+            return member.get_common_likes_users()
+        elif path == 'api/v1/frineds/common-likes':
+            # params: other_id
+            return member.get_common_likes()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'POST':
+        session_check('api')
+        # API POST: /diary/api/v1/create
+        if path == 'api/v1/create':
+            return diary.create()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
+
 @app.route('/diary/<path:path>', methods=['GET', 'POST'])
-def diary_API(path):
+def diary_api(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
         session_check('api')
