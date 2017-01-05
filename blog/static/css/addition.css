@@ -64,6 +64,16 @@
 	padding: 6px 10px 6px 10px;
 	text-align:center;
 }
+.protrait{
+    margin-top: 25px;
+}
+.profile_image{
+    width: 200px;
+    display: block;
+    margin: auto;
+    border-radius:50%;
+    box-shadow:3px 3px 12px gray;
+}
 .diary_input a{
 	padding: 6px 60px 6px 60px;
 	color: #ffffff;
