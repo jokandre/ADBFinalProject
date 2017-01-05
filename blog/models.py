@@ -186,6 +186,10 @@ class User:
         RETURN d
         '''
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance = distance_km)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7ca0d94b3f45de09eb4482a8136f3ef101ce2c06
 
 
 def get_todays_recent_posts():
