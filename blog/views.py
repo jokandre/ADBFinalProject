@@ -31,7 +31,7 @@ def friends():
     return render_template('friends.html')
 
 @app.route('/search', methods=['GET'])
-def profile():
+def search():
     session_check('render_page')
     return render_template('search.html')
 
@@ -68,10 +68,13 @@ def member_api(path):
         # API GET: /member/api/v1/friends/me
         if path == 'api/v1/friends/me':
            return member.get_my_friends()
+        # API GET: /member/api/v1/frineds/common-friends
         elif path == 'api/v1/frineds/common-friends':
             return member.get_common_friends()
+        # API GET: /member/api/v1/friends/common-likes/users
         elif path == 'api/v1/friends/common-likes/users':
             return member.get_common_likes_users()
+        # API GET: /member/pi/v1/frineds/common-likes?other_id=x
         elif path == 'api/v1/frineds/common-likes':
             # params: other_id
             return member.get_common_likes()

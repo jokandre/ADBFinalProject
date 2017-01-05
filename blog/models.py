@@ -217,13 +217,13 @@ class Diary(object):
 
     @staticmethod
     def get_owner(owner_id):
-        user = graph.node(owner_id)
+        user = graph.find_one('User', 'id', owner_id)
         return user
 
     @staticmethod
     def get_all_diary(owner_id):
         query = '''
-        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary LIMIT 25
+        MATCH (n:User) - [:PUBLISHED] - (D)  where n.id={id} RETURN D as Diary
         '''
         return graph.run(query, id=owner_id)
 
@@ -255,4 +255,8 @@ class Diary(object):
         RETURN count(node)
         '''
 
-        return (str(graph.run(query, which=uuid_diary).evaluate()), 200)
+        result = str(graph.run(query, which=uuid_diary).evaluate())
+        if result != '1':
+            print "spatial addNode error!" + result
+
+        return ('', 200)

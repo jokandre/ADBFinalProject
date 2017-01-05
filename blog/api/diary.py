@@ -29,10 +29,6 @@ def create():
 
 def get_all_diary():
 	id = session['id']
-	try:
-		id = int(id)
-	except ValueError:
-		raise InvalidUsage("id should be int!")
 	db_cursor = Diary.get_all_diary(id)
 	return jsonify(db_cursor.data())
 
