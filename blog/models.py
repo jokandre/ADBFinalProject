@@ -287,7 +287,7 @@ class Diary(object):
         query = '''
         CALL spatial.withinDistance('diary',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
-        OPTIONAL MATCH (d2:Diary)-[r:PUBLISHED]-(m:User)
+        MATCH (d2:Diary)-[r:PUBLISHED]-(m:User)
         WHERE m.id <> {id}
         RETURN d2
         '''
