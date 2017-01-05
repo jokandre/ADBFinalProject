@@ -58,12 +58,15 @@ def update_location():
 		try:
 			latitude = json_dict['latitude']
 			longitude = json_dict['longitude']
-			# latitude = 60
-			# longitude = 23
-			result = User.update_location(session['id'], latitude, longitude)
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-	return (str(result), 200)
+		try:
+			latitude = float(latitude)
+			longitude = float(longitude)
+		except ValueError:
+			raise InvalidUsage("latitude and longitude should be float!")
+		result = User.update_location(session['id'], latitude, longitude)
+		return (str(result), 200)
 
 def get_nearby_member():
 	json_dict = request.get_json()
@@ -72,7 +75,12 @@ def get_nearby_member():
 	else:
 		try:
 			distance_km = json_dict['distance_km']
-			result = User.get_nearby_member(session['id'], distance_km)
+			# distance_km = 1
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-	return (str(result), 200)
+		try:
+			distance_km = float(distance_km)
+		except ValueError:
+			raise InvalidUsage("latitude and longitude should be positive float!")
+		db_cursor = User.get_nearby_member(session['id'], distance_km)
+		return jsonify(db_cursor.data())

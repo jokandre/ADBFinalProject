@@ -110,6 +110,18 @@ def diary_api(path):
     else:
         raise InvalidUsage("Something Wrong.", 404)
 
+@app.route('/member/<path:path>', methods=['GET'])
+def member_API(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        # API GET: /member/api/v1/get?id=x
+        session_check('api')
+        if path == 'api/v1/get':
+            return member.get_nearby_member()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
 # @app.route('/pair/<path:path>', methods=['GET', 'POST'])
 # def pair_API(path):
 #     print 'Request path: %s' % path
