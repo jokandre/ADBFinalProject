@@ -1,0 +1,72 @@
+#search_slide{
+  overflow: visible;
+  height: 50px;
+  background-color: #ffffff;
+}
+#search_slide li{
+  float: left;
+  list-style : none;
+  width: 40%;
+  padding: 20px 50px 10px 30px;
+  border-bottom: 6px solid #F0F0F0;
+}
+#search_slide li a{
+  line-height: 1.42857143;
+  color: #000;
+  text-decoration: none;
+  font-size: 18px;
+}
+.li_active{
+  border-bottom: 6px solid #f9d780 !important;
+}
+.slide_content.slide{
+  left: -100%;
+  overflow: hidden;
+  position: fixed;
+  -webkit-transition-property: left,height;
+  -moz-transition-property: left,height;
+  -ms-transition-property: left,height;
+  -o-transition-property: left,height;
+  transition-property: left,height;
+  -webkit-transition-duration: 333ms;
+  -moz-transition-duration: 333ms;
+  -ms-transition-duration: 333ms;
+  -o-transition-duration: 333ms;
+  transition-duration: 333ms;
+  -webkit-transition-timing-function: cubic-bezier(0.1,0.7,0.7,1);
+  -moz-transition-timing-function: cubic-bezier(0.1,0.7,0.7,1);
+  -ms-transition-timing-function: cubic-bezier(0.1,0.7,0.7,1);
+  -o-transition-timing-function: cubic-bezier(0.1,0.7,0.7,1);
+  transition-timing-function: cubic-bezier(0.1,0.7,0.7,1);
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -ms-transform: translate3d(0,0,0);
+  -o-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
+.slide_content.slide.active{
+  left: 0;
+  overflow: visible;
+  position: relative;
+}
+.slide_content.slide.active ~ .slide_content.slide {
+  left: 100%;
+}
+.slide_content{
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  margin-right: -100%;
+}
+.notransition,
+.notransition .slide {
+  -webkit-transition-duration: 0 !important;
+     -moz-transition-duration: 0 !important;
+      -ms-transition-duration: 0 !important;
+          transition-duration: 0 !important;
+
+  -webkit-transition-delay: 0 !important;
+     -moz-transition-delay: 0 !important;
+      -ms-transition-delay: 0 !important;
+          transition-delay: 0 !important;
+}
