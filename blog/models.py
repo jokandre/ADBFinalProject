@@ -36,7 +36,7 @@ class User:
         if not User.find(fb_id):
             id = str(uuid.uuid1())
             query = '''
-            CREATE (u:User {id: {id}name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
+            CREATE (u:User {id: {id}, name: {name}, email: {email}, gender: {gender}, fb_id: {fb_id}, access_token: {access_token}, portrait: {portrait}})
             RETURN u.id
             '''
             return graph.run(query, id=id, name=name, email=email, gender=gender, fb_id=fb_id, access_token=access_token, portrait=portrait).evaluate()
@@ -45,14 +45,14 @@ class User:
 
     @staticmethod
     def add_fb_likes(uid, likes):
-        user = graph.node(uid)
+        user = graph.find_one('User', 'id', uid)
         for like in likes:
             rel = Relationship(user, 'LIKE', Node('Likes', name=like['name'], id=like['id']), created_time=like['created_time'])
             graph.merge(rel)
 
     @staticmethod
     def add_fb_friends(uid, friends):
-        user = graph.node(uid)
+        user = graph.find_one('User', 'id', uid)
         for friend in friends:
             rel = Relationship(user, 'FRIEND', Node('User', name=friend['name'], fb_id=friend['id']))
             graph.merge(rel)
@@ -122,7 +122,7 @@ class User:
         return graph.run(query, they=other.username, you=self.username).next
 
     @staticmethod
-    def update_location(node_id, lat, lon):
+    def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
         SET u.wkt = {wkt}
@@ -131,7 +131,13 @@ class User:
         RETURN COUNT(node)
         '''
 
-        return graph.run(query, which=node_id, wkt=lon_lat_to_wkt(lon, lat))
+        return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat))
+
+    @staticmethod
+    def get_nearby_member(uid, distance_km):
+        user = graph.node(uid)
+        return (u.wkt,200)
+
 
 
 def get_todays_recent_posts():
@@ -182,9 +188,10 @@ class Diary(object):
     @staticmethod
     def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
         user = Diary.get_owner(owner_id)
+        uuid_diary = str(uuid.uuid1())
         diary = Node(
             'Diary',
-            id=str(uuid.uuid1()),
+            id=uuid_diary,
             title=title,
             content=content,
             timestamp=timestamp(),
@@ -200,13 +207,10 @@ class Diary(object):
         rel = Relationship(user, 'PUBLISHED', diary)
         graph.create(rel)
 
-        # query = '''
-        # MATCH (d:Diary) WHERE d.id = {which}
-        # Yield d
-        # CALL spatial.addNode('geom', d)
-        # RETURN count(*)
-        # '''
+        query = '''
+        MATCH (d:Diary) WHERE d.id = {which}
+        CALL spatial.addNode('geom', d) YIELD node
+        RETURN count(node)
+        '''
 
-        # graph.run(query, which=str(uuid.uuid4()))
-
-        return ('', 200)
+        return (str(graph.run(query, which=uuid_diary).evaluate()), 200)

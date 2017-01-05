@@ -44,4 +44,14 @@ def update_location():
 			raise InvalidUsage("Missing Parameters: " + str(error))
 	return (str(result), 200)
 
-# def get_nearby_member():
+def get_nearby_member():
+	json_dict = request.get_json()
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
+	else:
+		try:
+			distance_km = json_dict['distance_km']
+			result = User.get_nearby_member(session['id'], distance_km)
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+	return (str(result), 200)
