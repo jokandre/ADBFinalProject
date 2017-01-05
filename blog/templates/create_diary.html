@@ -23,6 +23,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- js -->
 <script src="../static/js/jquery-1.11.1.min.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
+<script src="../static/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -54,22 +55,29 @@ function create_diary(){
 	var latitude = arr[2];
 	var longitude = arr[3];
 	var category = $("#diary_category").find(":selected").val();
-	var content = $("textarea[name=diary_content]").val();
+	var authority = $('input[name="authority"]:checked').val();
+	var content = CKEDITOR.instances['diary_content'].getData();
 	
 	$.post("http://140.114.77.15:5000/diary/api/v1/create",{
 		title: title,
-		location: location,
-		address: address,
-		latitude: latitude,
-		longitude: longitude,
-		category: category,
-		content: content
+	 	location: location,
+	 	address: address,
+	 	latitude: latitude,
+	 	longitude: longitude,
+	 	category: category,
+	 	authority: authority,
+	 	content: content
 	}, function(response){ 
-		//alert(response);
+ 		//alert(response);
 	});
 	window.location.reload();
 }
 </script>
+<style>
+#cke_diary_content{
+	margin-top: 0px !important;
+}
+</style>
 </head>
 	
 <body>
@@ -83,14 +91,15 @@ function create_diary(){
 		</div>
 		-->
 		<div class="logo">
-			<a href="index.html">。D.Day。 <span>A Dating For You</span></a>
+			<a href="index">。D.Day。 <span>A Dating For You</span></a>
 		</div>
 		<div class="logo-right">
 			<ul>
 				<li class="dropdown">
 					<a class="profile-select" cursor="pointer"><img class="user_icon" src="../static/images/co.png"/><span>▾</span></a>
 					<div class="dropdown-content">
-						<a href="profile.html">Your Profile</a>
+						<a href="profile">Your Profile</a>
+						<a href="#">Your Diary</a>
 					    <a href="#">Logout</a>
 					</div>
 				</li>
@@ -115,11 +124,10 @@ function create_diary(){
 				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 					<nav class="cl-effect-1">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="index.html">Home</a></li>
-							<li><a href="about.html">Friends</a></li>
-							<li><a href="create_diary.html">Create Diary</a></li>
-							<li><a href="services.html">Services</a></li>
-							<li><a href="contact.html">Contact Us</a></li>
+							<li><a href="index">Home</a></li>
+							<li><a href="about">Friends</a></li>
+							<li class="active"><a href="create_diary">Create Diary</a></li>
+							<li><a href="search">Nearby</a></li>
 						</ul>
 					</nav>
 				</div><!-- /.navbar-collapse -->	
@@ -150,9 +158,23 @@ function create_diary(){
 						<option value="movie">Movie</option>
 					</select>
 				</div>
+				<div style="color:#000;">
+					<img src="../static/images/lock.svg"/>
+					<input type="radio" name="authority" value="public"/> Public&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="authority" value="friends"/> Only friends&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="authority" value="private"/> Only you 
+				</div>
 				<div>
-					<img src="../static/images/pencil.svg">Content 
-					<textarea class="form-control" styel="resize:none" rows="15" name="diary_content"></textarea>
+					<img src="../static/images/pencil.svg">Content
+					<form> 
+						<textarea name="diary_content" id="diary_content" rows="15"></textarea>
+			            <script>
+			          		CKEDITOR.replace('diary_content', {
+							    //輸入客製化條
+								
+							});
+			            </script>
+			        </form>
 				</div>
 				<div class="diary_button"><a href="javascript: create_diary();">Submit</a></div>
 			</div>
