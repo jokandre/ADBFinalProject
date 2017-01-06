@@ -67,26 +67,36 @@ def member_api(path):
         session_check('api')
         if path == 'api/v1/me/info':
             return member.get_my_info()
-        # API GET: /member/api/v1/friends/me
-        elif path == 'api/v1/friends/me':
-           return member.get_my_friends()
-        # API GET: /member/api/v1/frineds/common-friends
-        elif path == 'api/v1/friends/common-friends':
-            return member.get_common_friends()
-        # API GET: /member/api/v1/friends/common-likes/users
-        elif path == 'api/v1/friends/common-likes/users':
-            return member.get_common_likes_users()
-        # API GET: /member/pi/v1/frineds/common-likes?other_id=x
-        elif path == 'api/v1/friends/common-likes':
-            # params: other_id
-            return member.get_common_likes()
+        elif 'api/v1/friends' in path:
+            # API GET: /member/api/v1/friends/me
+            if path == 'api/v1/friends/me':
+               return member.get_my_friends()
+            # API GET: /member/api/v1/frineds/common-friends
+            elif path == 'api/v1/friends/of-friends':
+                return member.get_friends_of_friends()
+            # API GET: /member/api/v1/friends/common-likes/users
+            elif path == 'api/v1/friends/common-likes/users':
+                return member.get_common_likes_users()
+            # API GET: /member/pi/v1/frineds/common-likes?other_id=x
+            elif path == 'api/v1/friends/common-likes':
+                # params: other_id
+                return member.get_common_likes()
+            else:
+                raise InvalidUsage("Wrong URL", 404)
+        elif 'api/v1/search' in path:
+            # API GET: /member/api/v1/search/nearby
+            if path == 'api/v1/search/nearby':
+                # params: distance_km
+                return member.get_nearby_member()
+            else:
+                raise InvalidUsage("Wrong URL", 404)
         else:
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
         session_check('api')
         # API TODO POST- update user info
         if path == 'api/v1/me/update-info':
-            pass
+            return member.update_my_info()
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
@@ -121,7 +131,6 @@ def diary_api(path):
     else:
         raise InvalidUsage("Something Wrong.", 404)
 
-
 @app.route('/member/<path:path>', methods=['GET'])
 def member_API(path):
     print 'Request path: %s' % path
@@ -155,7 +164,6 @@ def member_API(path):
 #             raise InvalidUsage("Wrong URL", 404)
 #     else:
 #         raise InvalidUsage("Something Wrong.", 404)
-
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):

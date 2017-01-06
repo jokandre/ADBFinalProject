@@ -30,13 +30,34 @@ def register():
 		return ('', 200)
 
 
-#returns User Profile Info
+# returns User Profile Info
 def get_my_info():
 	try:
 		result = User.user_info(session['id'])
 	except (ValueError, KeyError, TypeError) as error:
 		raise InvalidUsage("Missing Parameters: " + str(error))
-	return result#jsonify(result)
+	return result
+
+def update_my_info():
+	json_dict = request.get_json()
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
+	else:
+		try:
+			name = json_dict['name']
+			weight = json_dict['weight']
+			birthday = json_dict['birthday']
+			height = json_dict['height']
+			residence = json_dict['residence']
+			interest = json_dict['interest']
+			#email = json_dict['email']
+
+
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+
+		User.update_user_info(session['id'], name, birthday, residence, height, weight, interest)
+	return ('', 200)
 
 def get_my_friends():
 	id = session['id']
