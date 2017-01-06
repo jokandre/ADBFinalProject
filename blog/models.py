@@ -235,7 +235,7 @@ class Diary(object):
         return user
 
     @staticmethod
-    def get_all_diary(owner_id):
+    def get_my_diary(owner_id):
         query = '''
         MATCH (n:User) - [:PUBLISHED] - (D)
         where n.id={id}
@@ -243,6 +243,33 @@ class Diary(object):
         ORDER BY Diary.timestamp DESC
         '''
         return graph.run(query, id=owner_id)
+
+    @staticmethod
+    def get_someone_diary(id, someone_id):
+        is_friend_query = '''
+        MATCH (n:User {id:{id}})
+        OPTIONAL MATCH (n) - [friend:FRIEND] - (u:User {id:{someone_id}})
+        RETURN CASE WHEN count(friend) > 0 THEN TRUE
+        ELSE False
+        END
+        '''
+        is_friend = graph.run(is_friend_query, id=id, someone_id=someone_id).evaluate()
+        if is_friend:
+            friend_diary_query = '''
+            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            WHERE diary.permission <> 'private'
+            RETURN diary
+            ORDER BY diary.timestamp DESC
+            '''
+            return graph.run(friend_diary_query, someone_id=someone_id).data()
+        else:
+            public_diary_query = '''
+            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            WHERE diary.permission = 'public'
+            RETURN diary
+            ORDER BY diary.timestamp DESC
+            '''
+            return graph.run(public_diary_query, someone_id=someone_id).data()
 
     @staticmethod
     def get_friends_diary(uid, timestamp):

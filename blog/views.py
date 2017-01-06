@@ -108,15 +108,18 @@ def diary_api(path):
     if request.method == 'GET':
         session_check('api')
         if 'api/v1/' in path:
-            # API GET: /diary/api/v1/me
-            if path == 'api/v1/me':
-                return diary.get_all_diary()
-            # API GET: /diary/api/v1/friends
-            elif path == 'api/v1/friends':
+            if path == 'api/v1/me':  # API GET: /diary/api/v1/me
+                return diary.get_my_diary()
+
+            elif path == 'api/v1/someone':  # API GET: /diary/api/v1/someone?id=x
+                return diary.get_someone_diary()
+
+            elif path == 'api/v1/friends':  # API GET: /diary/api/v1/friends
                 return diary.get_friends_diary()
-            # API GET: /diary/api/v1/search/nearby?distance_km=x
-            elif path == 'api/v1/search/nearby':
+
+            elif path == 'api/v1/search/nearby':  # API GET: /diary/api/v1/search/nearby?distance_km=x
                 return diary.get_nearby_diary()
+
             else:
                 raise InvalidUsage("Wrong URL", 404)
         else:

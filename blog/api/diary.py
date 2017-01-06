@@ -28,10 +28,19 @@ def create():
 			raise InvalidUsage("latitude and longitude should be float!")
 		return Diary.add_diary(id, title, content, latitude, longitude, category, location, address, permission)
 
-def get_all_diary():
+def get_my_diary():
 	id = session['id']
-	db_cursor = Diary.get_all_diary(id)
+	db_cursor = Diary.get_my_diary(id)
 	return jsonify(db_cursor.data())
+
+def get_someone_diary():
+	id = session['id']
+	someone_id = request.args.get('id')
+	if someone_id is None:
+		raise InvalidUsage("Missing Parameters: id")
+	else:
+		someone_id = str(someone_id)
+		return jsonify(Diary.get_someone_diary(id, someone_id))
 
 def get_friends_diary():
 	id = session['id']
