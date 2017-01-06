@@ -49,8 +49,7 @@ def get_friends_diary():
 		timestamp = get_timestamp()
 	else:
 		timestamp = float(timestamp)
-	db_cursor = Diary.get_friends_diary(id, timestamp)
-	return jsonify(db_cursor.data())
+	return jsonify(Diary.get_friends_diary(id, timestamp))
 
 def get_diary_by_category():
 	category = request.args.get('category')

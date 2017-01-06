@@ -31,6 +31,11 @@ def friends():
     session_check('render_page')
     return render_template('friends.html')
 
+@app.route('/my_friends', methods=['GET'])
+def my_friends():
+    session_check('render_page')
+    return render_template('my_friends.html')
+
 @app.route('/search', methods=['GET'])
 def search():
     session_check('render_page')
