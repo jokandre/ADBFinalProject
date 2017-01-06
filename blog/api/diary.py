@@ -35,9 +35,11 @@ def get_all_diary():
 
 def get_friends_diary():
 	id = session['id']
-	timestamp = float(request.args.get('timestamp'))
+	timestamp = request.args.get('timestamp')
 	if timestamp is None:
 		timestamp = get_timestamp()
+	else:
+		timestamp = float(timestamp)
 	db_cursor = Diary.get_friends_diary(id, timestamp)
 	return jsonify(db_cursor.data())
 
