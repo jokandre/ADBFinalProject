@@ -275,7 +275,7 @@ class Diary(object):
     def get_friends_diary(uid, timestamp):
         query = '''
         MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
-        WHERE diary.timestamp <= {timestamp} and diary.permission <> 'private'
+        WHERE diary.timestamp < {timestamp} and diary.permission <> 'private'
         RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
