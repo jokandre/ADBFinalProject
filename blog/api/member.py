@@ -50,9 +50,7 @@ def update_my_info():
 			height = json_dict['height']
 			residence = json_dict['residence']
 			interest = json_dict['interest']
-			#email = json_dict['email']
-
-
+			# email = json_dict['email']
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
 
