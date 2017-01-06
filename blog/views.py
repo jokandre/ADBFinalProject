@@ -109,7 +109,10 @@ def diary_api(path):
     if request.method == 'GET':
         session_check('api')
         if 'api/v1/' in path:
-            if path == 'api/v1/me':  # API GET: /diary/api/v1/me
+            if path == 'api/v1/get':  # API GET: /diary/api/v1/get
+                return diary.get_diary_and_comment()
+
+            elif path == 'api/v1/me':  # API GET: /diary/api/v1/me
                 return diary.get_my_diary()
 
             elif path == 'api/v1/someone':  # API GET: /diary/api/v1/someone?id=x
@@ -138,17 +141,17 @@ def diary_api(path):
 @app.route('/comment/<path:path>', methods=['GET', 'POST'])
 def comment_api(path):
     print 'Request path: %s' % path
-    if request.method == 'GET':
-        session_check('api')
-        if 'api/v1/' in path:
-            # API GET: /comment/api/vi/get
-            if path == 'api/v1/get':
-                return comment.get_diary_comment()
-            else:
-                raise InvalidUsage("Wrong URL", 404)
-        else:
-            raise InvalidUsage("Wrong URL", 404)
-    elif request.method == 'POST':
+    # if request.method == 'GET':
+    #     session_check('api')
+    #     if 'api/v1/' in path:
+    #         # API GET: /comment/api/vi/get
+    #         if path == 'api/v1/get':
+    #             return comment.get_diary_comment()
+    #         else:
+    #             raise InvalidUsage("Wrong URL", 404)
+    #     else:
+    #         raise InvalidUsage("Wrong URL", 404)
+    if request.method == 'POST':
         session_check('api')
         # API POST: /diary/api/v1/create
         if path == 'api/v1/create':
