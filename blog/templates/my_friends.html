@@ -34,16 +34,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 	$(function() {
+
+		var each_friend = "<div class='each_friend'><img class='profile_img' src='";
+		var each_friend_2 = "'><div class='profile_detail'><div class='name'>";
+		var each_friend_3 = "</div><div class='nick_name'>";
+		var each_friend_4 = "</div><div class='gender'>";
+		var each_friend_5 = "</div></div></div>";
+
         $.ajax({
-	        url: '',
+	        url: 'http://140.114.77.15:5000/member/api/v1/friends/me',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {
-	            	console.log(result[i]['gender']);
+	            	var combine = each_friend+result[i]['portrait']+each_friend_2+result[i]['name']+each_friend_3+result[i]['nickname']+each_friend_4+result[i]['gender']+each_friend_5;
+	            	$(".all_friends").append(combine);
 	            }
 	        },
 	        error: function (jqXHR, exception) {
-	        	//alert("fail");
+	        	alert("fail");
 	        }
 	    });
 		//window.location.href = "http://140.114.77.15:5050/login";
@@ -109,80 +117,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="banner-bottom">
 		<div class="container">
 			<div class="all_friends">
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
-				<div class="each_friend">
-					<img class="profile_img" src="/ADBimages/2.jpg">
-					<div class="profile_detail">
-						<div class="name">AKA KAI</div>
-						<div class="nick_name">AKAI</div>
-						<div class="gender">MALE</div>
-					</div>
-				</div>
+				 
 				
 			</div>
 		</div>
