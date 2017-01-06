@@ -114,6 +114,9 @@ def diary_api(path):
             # API GET: /diary/api/v1/friends
             elif path == 'api/v1/friends':
                 return diary.get_friends_diary()
+            # API GET: /diary/api/v1/search/nearby?distance_km=x
+            elif path == 'api/v1/search/nearby':
+                return diary.get_nearby_diary()
             else:
                 raise InvalidUsage("Wrong URL", 404)
         else:
@@ -127,6 +130,40 @@ def diary_api(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
+
+@app.route('/member/<path:path>', methods=['GET'])
+def member_API(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        # API GET: /member/api/v1/get?distance_km=x
+        session_check('api')
+        if path == 'api/v1/get':
+            return member.get_nearby_member()
+
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
+
+
+# @app.route('/pair/<path:path>', methods=['GET', 'POST'])
+# def pair_API(path):
+#     print 'Request path: %s' % path
+#     if request.method == 'GET':
+#         # session_check('api')  # when online uncomment this.
+#         # API GET: /pair/api/v1/get?id=x
+#         if path == 'api/v1/get':
+#            return pair.get_all_diary()
+#         else:
+#             raise InvalidUsage("Wrong URL", 404)
+#     elif request.method == 'POST':
+#         # API POST: /pair/api/v1/create
+#         if path == 'api/v1/create':
+#             return pair.create()
+#         else:
+#             raise InvalidUsage("Wrong URL", 404)
+#     else:
+#         raise InvalidUsage("Something Wrong.", 404)
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
