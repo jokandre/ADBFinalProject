@@ -52,6 +52,26 @@ def get_friends_diary():
 	db_cursor = Diary.get_friends_diary(id, timestamp)
 	return jsonify(db_cursor.data())
 
+def get_diary_by_category():
+	category = request.args.get('category')
+	timestamp = request.args.get('timestamp')
+
+	if category is None:
+		raise InvalidUsage("Missing Parameters: category")
+	else:
+		try:
+			category = int(category)
+			if category < 0 or category > 8:
+				raise ValueError('')
+		except ValueError:
+			raise InvalidUsage("category should be 0~8!")
+		if timestamp is None:
+			timestamp = get_timestamp()
+		else:
+			timestamp = float(timestamp)
+		categories = ["Complain and Crap", "Daily Philosophy", "Anxiety and Tiredness", "Optimism and Hope", "Joy and Blessing", "Miss and Regret", "Fortitutde and Good night", "Idling and Life", "Others"]
+		return jsonify(Diary.get_diary_by_category(str(categories[category]), timestamp))
+
 def get_nearby_diary():
 	distance_km = request.args.get('distance_km')
 	if distance_km is None:

@@ -275,11 +275,21 @@ class Diary:
     def get_friends_diary(uid, timestamp):
         query = '''
         MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
-        WHERE diary.timestamp <= {timestamp} and diary.permission <> 'private'
+        WHERE diary.timestamp < {timestamp} and diary.permission <> 'private'
         RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
-        return graph.run(query, uid=uid, timestamp=timestamp)
+        return graph.run(query, uid=uid, timestamp=timestamp).data()
+
+    @staticmethod
+    def get_diary_by_category(category, timestamp):
+        query = '''
+        MATCH (diary:Diary)
+        WHERE diary.permission = 'public' and diary.category = {category} and diary.timestamp < {timestamp}
+        RETURN diary
+        ORDER BY diary.timestamp DESC LIMIT 20
+        '''
+        return graph.run(query, category=category, timestamp=timestamp).data()
 
     @staticmethod
     def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
