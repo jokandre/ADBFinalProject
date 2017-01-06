@@ -1,3 +1,4 @@
+/*下拉式選單*/
 .dropdown {
     position: relative;
     display: inline-block;
@@ -23,19 +24,25 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+/*Create Diary*/
 .diary_input{
 	margin-top: 30px;
 	margin-bottom: 50px;
 }
 .diary_input div{
 	margin-top: 24px;
-	color: #B7B6B6;
+    color: #000;
 }
 .diary_input div img{
 	width: 26px;
 	height: 26px;
 	margin-right: 8px;
 	padding-bottom: 4px;
+}
+.diary_input a{
+    padding: 6px 60px 6px 60px;
+    color: #ffffff;
+    text-decoration: none;
 }
 .form-design{
 	display: inline;
@@ -64,18 +71,107 @@
 	padding: 6px 10px 6px 10px;
 	text-align:center;
 }
-.protrait{
+/*Profile image*/
+.portrait{
     margin-top: 25px;
 }
 .profile_image{
-    width: 200px;
+    width: 128px;
     display: block;
     margin: auto;
     border-radius:50%;
     box-shadow:3px 3px 12px gray;
 }
-.diary_input a{
-	padding: 6px 60px 6px 60px;
-	color: #ffffff;
-	text-decoration: none;
+/*Display full content of diary*/
+.diary_full{
+    overflow: hidden;
+    border: 2px #F5F5F5 solid;
+    border-radius: 6px;
+    display: block; 
+    margin-bottom: 40px;
+}
+#diary_title{
+    margin-top: 15px;
+    margin-left: 15px;
+    font-size: 28px;
+}
+#diary_info{
+    color: #999;
+    font-size: 12px;
+}
+#diary_info img{
+    width: 30px;
+    display: block;
+    border-radius:50%;
+    margin: 15px 10px 15px 24px;
+    float: left;
+}
+.author{
+    padding-top: 13px;
+}
+#diary_content{
+    margin: 25px 10px 40px 24px;
+}
+/*Diary Comment*/
+.full_comment{
+    padding-bottom: 25px;
+}
+.comment_item{
+    margin: 3em 1em 0;
+}
+#comment_info{
+    color: #999;
+    font-size: 12px;
+}
+#comment_info img{
+    width: 30px;
+    display: block;
+    border-radius:50%;
+    margin-bottom: 5px;
+}
+#comment_content{
+    color: #999;
+}
+#comment_content p:before{
+    background: url(../images/5.png) no-repeat 0px 0px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    content: '';
+}
+#comment_content p{
+    position: relative;
+    padding-left: 2em;
+    font-size: 14px;
+}
+.write_comment{
+    margin: 25px 10px 40px 24px;
+}
+.textarea-design{
+    display: inline;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.comment_button{
+    width: 150px;
+    background-color: #66D5DE;
+    padding: 6px 10px 6px 10px;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.comment_button a{
+    color: #ffffff;
 }
