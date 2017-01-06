@@ -103,6 +103,8 @@ def member_api(path):
         # API TODO POST- update user info
         if path == 'api/v1/me/update-info':
             return member.update_my_info()
+        elif path == 'api/v1/me/update-location':
+            return member.update_location()
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
