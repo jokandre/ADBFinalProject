@@ -85,3 +85,14 @@ def get_nearby_diary():
 			raise InvalidUsage("latitude and longitude should be positive float!")
 		db_cursor = Diary.get_nearby_diary(session['id'], distance_km)
 		return jsonify(db_cursor.data())
+
+
+def get_diary_and_comment():
+	did = request.args.get('did')
+	if did is None:
+		raise InvalidUsage("Missing Parameters: did")
+	elif not Comment.check_permission(session['id'], did):
+		raise InvalidUsage("unauthorized", 401)
+	else:
+		db_cursor = diary.get_diar_and_comment(did)
+		return jsonify(db_cursor.data())
