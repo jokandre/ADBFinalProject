@@ -1,5 +1,6 @@
 from .api import member
 from .api import diary
+from .api import comment
 # from .api import pair
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory, jsonify
 from invalidusage import InvalidUsage
@@ -126,6 +127,29 @@ def diary_api(path):
         # API POST: /diary/api/v1/create
         if path == 'api/v1/create':
             return diary.create()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
+
+@app.route('/comment/<path:path>', methods=['GET', 'POST'])
+def comment_api(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        session_check('api')
+        if 'api/v1/' in path:
+            # API GET: /comment/api/vi/get
+            if path == 'api/v1/get':
+                return comment.get_diary_comment()
+            else:
+                raise InvalidUsage("Wrong URL", 404)
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'POST':
+        session_check('api')
+        # API POST: /diary/api/v1/create
+        if path == 'api/v1/create':
+            return comment.create()
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
