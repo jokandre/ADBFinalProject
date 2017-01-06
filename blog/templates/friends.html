@@ -35,11 +35,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	$(function() {
         $.ajax({
-	        url: 'http://140.114.77.15:5000/member/api/v1/friends/me',
+	        url: 'http://140.114.77.15:5000/diary/api/v1/friends',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {
-	            	console.log(result[i]['gender']);
+	            	console.log(result[i]);
 	            }
 	        },
 	        error: function (jqXHR, exception) {
