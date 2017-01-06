@@ -95,3 +95,16 @@ def get_diary_and_comment():
 	else:
 		db_cursor = diary.get_diar_and_comment(did)
 		return jsonify(db_cursor.data())
+
+def create_comment():
+	id=session['id']
+	json_dict = request.get_json()
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
+	else:
+		try:
+			content = json_dict['content']
+			did = json_dict['did']
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+		return Diary.create_comment(id,did,content)

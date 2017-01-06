@@ -362,9 +362,8 @@ class Diary:
         '''
         return graph.run(query, did=did)
 
-class Comment:
     @staticmethod
-    def create(uid,did,content):
+    def create_comment(uid,did,content):
         user = graph.find_one('User', 'id', uid)
         diary = graph.find_one('Diary', 'id', did)
         uuid_comment = str(uuid.uuid1())
@@ -380,11 +379,3 @@ class Comment:
         graph.create(rel)
         graph.create(rel2)
         return ('', 200)
-
-    # @staticmethod
-    # def get_diary_comment(did):
-    #     query = '''
-    #     MATCH (:Diary {id:{did}})-[:HAS]-(comment:Comment)-[:COMMENTED]-(u:User)
-    #     RETURN comment, {gender: u.gender, name: u.name, portrait: u.portrait, id: u.id} as commentator
-    #     '''
-    #     return graph.run(query, did=did)
