@@ -29,4 +29,4 @@ config.py
 .DS_Store
 
 #testing
-blog/psql_test.py
+psql_test.py
