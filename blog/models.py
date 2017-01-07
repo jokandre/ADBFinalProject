@@ -1,5 +1,6 @@
 from py2neo import Graph, Node, Relationship
 from passlib.hash import bcrypt
+import psycopg2
 from datetime import datetime
 import os
 import uuid
@@ -9,6 +10,9 @@ username = os.environ.get('NEO4J_USERNAME')
 password = os.environ.get('NEO4J_PASSWORD')
 
 graph = Graph(url + '/db/data/', username=username, password=password)
+
+psqlconn = psycopg2.connect("dbname='dday' user=\'{0}\' host= 'localhost' password = \'{1}\'".format(os.environ.get("PSQL_USERNAME"), os.environ.get("PSQL_PASSWORD")))
+psql = psqlconn.cursor()
 
 class User:
     def __init__(self, name, email, gender, fb_id, access_token, portrait):
@@ -176,6 +180,30 @@ class User:
         '''
 
         return graph.run(query, they=other.username, you=self.username).next
+
+    @staticmethod
+    def create_friendship(my_id, other_uid):
+        query = '''
+        OPTIONAL Match (me:User {id: {my_id}})
+        OPTIONAL Match (other:User {id: {other_uid}})
+        WITH me, other
+        WHERE me is not null and other is not null
+        MERGE (me) - [:FRIEND] -> (other)
+        MERGE (other) - [:FRIEND] -> (me)
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
+
+    @staticmethod
+    def delete_friendship(my_id, other_uid):
+        query = '''
+        optional Match (me:User {id:{my_id}}) - [r:FRIEND] - (other:User {id: {other_uid}})
+        with r as friendship
+        where friendship is not null
+        delete friendship
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
 
     @staticmethod
     def update_location(uid, lat, lon):
@@ -398,6 +426,32 @@ class Diary:
         MATCH (d:Diary) WHERE d.title=~ {keyword} OR d.content=~ {keyword} RETURN d
         '''
         return graph.run(query, keyword=keyword_f ).data()
+
+    def get_similar_diary(uid, did):
+        query = """
+        SELECT * from diary_vectors
+        WHERE did != \'{0}\' AND permission = 'public' ORDER BY
+            (SELECT vector FROM diary_vectors
+            WHERE did=\'{0}\')
+        <-> vector ASC LIMIT 50
+        """.format(did)
+        psql.execute(query)
+        candidates_tmp = psql.fetchall()
+        candidates = []
+        for i in candidates_tmp:
+            candidates.append(i[0])
+        query = '''
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary) WHERE diary.id IN ''' + str(candidates) + '''
+        AND NOT (diary:Diary)-[:PUBLISHED]-(:User{id: {id}})
+        AND NOT (diary:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
+        RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
+        {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, category: diary.category,
+        location: diary.location, latitude: diary.latitude, longitude:diary.longitude} as diary limit 10
+        '''
+
+        return graph.run(query, id = uid)
+
+
 
 class Comment:
     @staticmethod

@@ -97,6 +97,7 @@ def get_diary_by_did():
 		db_cursor = Diary.get_diary_by_did(did)
 		return jsonify(db_cursor.data())
 
+
 def search_diary():
 	try:
 		keyword = request.args.get('keyword')
@@ -105,3 +106,13 @@ def search_diary():
 		raise InvalidUsage("Missing Parameters: " + str(error))
 
 	return jsonify(result)
+
+def get_similar_diary():
+	did = request.args.get('did')
+	if did is None:
+		raise InvalidUsage("Missing Parameters: did")
+	elif not check_permission(session['id'], did):
+		raise InvalidUsage("unauthorized", 401)
+	else:
+		db_cursor = Diary.get_similar_diary(session['id'], did)
+		return jsonify(db_cursor.data())

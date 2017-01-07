@@ -66,11 +66,11 @@ def logout():
     session.pop('id', None)
     return redirect(url_for('login'))
 
-@app.route('/member/<path:path>', methods=['GET', 'POST'])
+@app.route('/member/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def member_api(path):
     print 'Request path: %s' % path
+    session_check('api')
     if request.method == 'GET':
-        session_check('api')
         if path == 'api/v1/me/info':
             return member.get_my_info()
         elif 'api/v1/friends' in path:
@@ -108,8 +108,13 @@ def member_api(path):
             return member.update_my_info()
         elif path == 'api/v1/me/update-location':
             return member.update_location()
+        elif path == 'api/v1/befriend':
+            return member.create_friendship()
         else:
             raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'DELETE':
+        if path == 'api/v1/unfriend':
+            return member.delete_friendship()
     else:
         raise InvalidUsage("Something Wrong.", 404)
 
@@ -140,6 +145,8 @@ def diary_api(path):
 
             elif path == 'api/v1/friends':  # API GET: /diary/api/v1/friends
                 return diary.get_friends_diary()
+            elif path == 'api/v1/similar': #API GET: /diary/api/v1/similar
+                return diary.get_similar_diary()
 
             else:
                 raise InvalidUsage("Wrong URL", 404)
@@ -159,13 +166,14 @@ def diary_api(path):
 def comment_api(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
-        # session_check('api')
+        session_check('api')
         # API GET: /comment/api/v1/get
         if path == 'api/v1/get':
             return comment.get()
         else:
             raise InvalidUsage("Wrong URL", 404)
     elif request.method == 'POST':
+        session_check('api')
         # API POST: /comment/api/v1/create
         if path == 'api/v1/create':
             return comment.create()
