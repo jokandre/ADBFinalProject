@@ -381,6 +381,16 @@ class Diary:
         if result != '1':
             print "spatial addNode error!" + result
 
+        #evaluate diary vectors and save it to psql
+        import lda
+        vectors = lda.lda(content)
+        query = """
+        INSERT diary_vectors
+        VALUES ('{0}', cube(ARRAY[{1}]), '{2}')
+        """.format(uuid_diary, ', '.join(vectors), permission)
+        psql.execute(query)
+        psqlconn.commit()
+
         return ('', 200)
 
     @staticmethod
