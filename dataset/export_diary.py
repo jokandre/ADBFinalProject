@@ -78,8 +78,8 @@ class Article:
 		if f:
 			while len(f) <= 6:
 				f += str(random.randint(0, 9))
-			f = float(f) * 0.000001
-			return math.floor(target)+f
+			f = float(f) * 0.0000001
+			return math.floor(target)+round(f, 6)
 		else:
 			return target
 
@@ -112,7 +112,8 @@ def exportAritcle(article, writter):
 	Location = article.City
 	Addr = article.City+', '+article.Region
 	Timestamp = article.get_timestamp()
-	writter.writerow([Aid, Title, Perm, Content, Lat, Lon, Cate, Location, Addr, Timestamp])
+	wkt = 'POINT (%.6f %.6f)'%(Lon, Lat)
+	writter.writerow([Aid, Title, Perm, Content, Lat, Lon, Cate, Location, Addr, Timestamp,wkt])
 
 conn = sqlite3.connect('data/ptt_category.db')
 c = conn.cursor()
@@ -120,9 +121,9 @@ board, cate = ('diary', '')
 Articles = getArticlesByDateRange()
 i=0
 
-with open('data/Diary.csv', 'w') as f:
+with open('data/Diary_v2.csv', 'w') as f:
 	writter = csv.writer(f)
-	writter.writerow(['id', 'title', 'permission', 'content', 'latitude', 'longitude', 'category', 'location', 'address', 'timestamp'])
+	writter.writerow(['id', 'title', 'permission', 'content', 'latitude', 'longitude', 'category', 'location', 'address', 'timestamp', 'wkt'])
 	for article in Articles:
 		i+=1;
 		print('Dealing %d out of %d' % (i, len(Articles)))
