@@ -1,4 +1,5 @@
 from ..models import Diary
+from ..models import check_permission as check_permission
 from ..models import timestamp as get_timestamp
 from ..invalidusage import InvalidUsage
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
@@ -49,8 +50,7 @@ def get_friends_diary():
 		timestamp = get_timestamp()
 	else:
 		timestamp = float(timestamp)
-	db_cursor = Diary.get_friends_diary(id, timestamp)
-	return jsonify(db_cursor.data())
+	return jsonify(Diary.get_friends_diary(id, timestamp))
 
 def get_diary_by_category():
 	category = request.args.get('category')
@@ -87,12 +87,12 @@ def get_nearby_diary():
 		return jsonify(db_cursor.data())
 
 
-def get_diary_and_comment():
+def get_diary_by_did():
 	did = request.args.get('did')
 	if did is None:
 		raise InvalidUsage("Missing Parameters: did")
-	elif not Comment.check_permission(session['id'], did):
+	elif not check_permission(session['id'], did):
 		raise InvalidUsage("unauthorized", 401)
 	else:
-		db_cursor = diary.get_diar_and_comment(did)
+		db_cursor = Diary.get_diary_by_did(did)
 		return jsonify(db_cursor.data())

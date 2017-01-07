@@ -71,6 +71,11 @@ class User:
             return graph.run(query, id=uid, name=name, birthday=birthday, height=height, weight=weight, residence=residence, interest=interest).evaluate()
 
     @staticmethod
+    def search_by_name(name):
+        user = graph.find_one('User', 'name', name)
+        return user
+
+    @staticmethod
     def add_fb_likes(uid, likes):
         user = graph.find_one('User', 'id', uid)
         for like in likes:
@@ -223,6 +228,31 @@ def wkt_to_lat_long(wkt):
     lat = float(wkt[wkt.find(' ', beg=wkt.find('(')) + 1: -1])
     return lat, lon
 
+def check_permission(uid, did):
+    diary = graph.find_one('Diary', 'id', did)
+    if diary['permission'] == 'public':
+        return True
+    else:
+        query = '''
+        MATCH (u:User)-[:PUBLISHED]-(d:Diary {id:{did}})
+        RETURN u.id
+        '''
+        owner_id = graph.run(query, did = did).evaluate()
+        if uid == owner_id:
+            return True
+        elif diary['permission'] == 'private':
+            return False
+        else:
+            query = '''
+            MATCH (u:User {id:{uid}})-[:FRIEND]-(:User {id: {owner_id}})
+            RETURN u.id
+            '''
+            id = graph.run(query, uid = uid, owner_id = owner_id).evaluate()
+            if id == uid:
+                return True
+            else:
+                return False
+
 class Diary:
     """docstring for diary"""
     def __init__(self, owner_id):
@@ -256,17 +286,17 @@ class Diary:
         is_friend = graph.run(is_friend_query, id=id, someone_id=someone_id).evaluate()
         if is_friend:
             friend_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission <> 'private'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(friend_diary_query, someone_id=someone_id).data()
         else:
             public_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission = 'public'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(public_diary_query, someone_id=someone_id).data()
@@ -347,22 +377,29 @@ class Diary:
         MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
         RETURN d.permission AS permission, u.id AS uid
         '''
-        result = graph.run(query, did = did)
+        result = graph.run(query, did = did).data()
         print result
         return True
 
     @staticmethod
-    def get_diary_and_comment(did):
+    def get_diary_by_did(did):
         query = '''
-        MATCH (p:User)-[:PUBLISHED]-(diary:Diary {id:{did}})-[:HAS]-(comment:Comment)-[:COMMENTED]-(u:User)
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary {id:{did}})
         RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
-        {id: diary:diary, title: diary:title, content: diary:content, timestamp: diary.timestamp, date: diary.date, category: diary.category,
-        location: diary.location, latitude: diary.latitude, longitude:diary.longitude} as diary,
-        comment, {gender: u.gender, name: u.name, portrait: u.portrait, id: u.id} as commentator
+        {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, category: diary.category,
+        location: diary.location, latitude: diary.latitude, longitude:diary.longitude} as diary
         '''
         return graph.run(query, did=did)
 
 class Comment:
+    @staticmethod
+    def get(did):
+        query = '''
+        MATCH (diary:Diary {id:{did}})-[:HAS]-(comment:Comment)-[:COMMENTED]-(u:User)
+        RETURN comment, {gender: u.gender, name: u.name, portrait: u.portrait, id: u.id} as commentator
+        '''
+        return graph.run(query, did=did)
+
     @staticmethod
     def create(uid,did,content):
         user = graph.find_one('User', 'id', uid)
@@ -380,11 +417,3 @@ class Comment:
         graph.create(rel)
         graph.create(rel2)
         return ('', 200)
-
-    # @staticmethod
-    # def get_diary_comment(did):
-    #     query = '''
-    #     MATCH (:Diary {id:{did}})-[:HAS]-(comment:Comment)-[:COMMENTED]-(u:User)
-    #     RETURN comment, {gender: u.gender, name: u.name, portrait: u.portrait, id: u.id} as commentator
-    #     '''
-    #     return graph.run(query, did=did)
