@@ -225,9 +225,9 @@ class User:
         MATCH (u:User) WHERE u.id = {which}
         SET u.wkt = {wkt},
         u.latitude = {lat},
-        u.longitude = {lon},
-        WITH u AS us
-        CALL spatial.addNode('member', us) YIELD node
+        u.longitude = {lon}
+        WITH u AS u
+        CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
         return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat=lat, lon=lon)
