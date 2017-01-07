@@ -11,5 +11,79 @@
 }
 .avatar{
 	width: 100%;
-	border-radius: 30px;
+	border-radius: 70px;
+}
+.common_diary{
+	margin-top: 30px !important;
+	padding-top: 15px !important;
+}
+.diary_area{
+	padding-bottom: 15px !important;
+}
+.each_diary{
+	width: 48%;
+	padding: 8px;
+	padding-top: 13px;
+	margin-left: 1.5%;
+	margin-bottom: 30px;
+	float: left;
+	border: solid 1px lightgray;
+}
+.each_diary:hover{
+	background-color: 	#E6E6FA;
+}
+.user_intro{
+	width: 100%;
+	float: left;
+}
+.user_intro img{
+	width: 60px;
+	border-radius: 5px;
+	float: left;
+}
+
+.user_intro_detail{
+	min-width: 300px;
+	margin-left: 18px;
+	float: left;
+}
+
+.user_name{
+	width: 100%;
+}
+
+.user_location{
+	width: 100%;
+}
+.user_location_icon{
+	margin-top: 10px;
+	width: 22px !important;
+	float: left;
+}
+.user_location{
+	width: auto;
+	margin-top: 10px !important;
+	float: left !important;
+	margin-left: 10px;
+}
+
+.content{
+	width: 100%;
+	margin-top: 15px;
+	float: left;
+	padding-bottom: 10px;
+	overflow-y: hidden;
+}
+
+.content_title{
+	width: 100%;
+	float: left;
+}
+.content_detail{
+	width: 100%;
+	margin-top: 30px;
+	max-height: 50px;
+}
+.welcome-bottom{
+	background-color: red !important;
 }
