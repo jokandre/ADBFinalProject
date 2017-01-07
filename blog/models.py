@@ -196,7 +196,7 @@ class User:
         query = '''
         CALL spatial.withinDistance('member',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS m
-        MATCH (m) WHERE m.id <> {id}
+        MATCH (m) WHERE m.id <> {id} AND NOT (m:User)-[:FRIEND]-(:User{id: {id}})
         RETURN m.gender as gender, m.name as name, m.portrait as portrait, m.id as id, m.nickname as nickname
         '''
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
@@ -228,7 +228,32 @@ def wkt_to_lat_long(wkt):
     lat = float(wkt[wkt.find(' ', beg=wkt.find('(')) + 1: -1])
     return lat, lon
 
-class Diary(object):
+def check_permission(uid, did):
+    diary = graph.find_one('Diary', 'id', did)
+    if diary['permission'] == 'public':
+        return True
+    else:
+        query = '''
+        MATCH (u:User)-[:PUBLISHED]-(d:Diary {id:{did}})
+        RETURN u.id
+        '''
+        owner_id = graph.run(query, did = did).evaluate()
+        if uid == owner_id:
+            return True
+        elif diary['permission'] == 'private':
+            return False
+        else:
+            query = '''
+            MATCH (u:User {id:{uid}})-[:FRIEND]-(:User {id: {owner_id}})
+            RETURN u.id
+            '''
+            id = graph.run(query, uid = uid, owner_id = owner_id).evaluate()
+            if id == uid:
+                return True
+            else:
+                return False
+
+class Diary:
     """docstring for diary"""
     def __init__(self, owner_id):
         super(Diary, self).__init__()
@@ -240,7 +265,7 @@ class Diary(object):
         return user
 
     @staticmethod
-    def get_all_diary(owner_id):
+    def get_my_diary(owner_id):
         query = '''
         MATCH (n:User) - [:PUBLISHED] - (D)
         where n.id={id}
@@ -250,14 +275,51 @@ class Diary(object):
         return graph.run(query, id=owner_id)
 
     @staticmethod
+    def get_someone_diary(id, someone_id):
+        is_friend_query = '''
+        MATCH (n:User {id:{id}})
+        OPTIONAL MATCH (n) - [friend:FRIEND] - (u:User {id:{someone_id}})
+        RETURN CASE WHEN count(friend) > 0 THEN TRUE
+        ELSE False
+        END
+        '''
+        is_friend = graph.run(is_friend_query, id=id, someone_id=someone_id).evaluate()
+        if is_friend:
+            friend_diary_query = '''
+            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            WHERE diary.permission <> 'private'
+            RETURN diary
+            ORDER BY diary.timestamp DESC
+            '''
+            return graph.run(friend_diary_query, someone_id=someone_id).data()
+        else:
+            public_diary_query = '''
+            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            WHERE diary.permission = 'public'
+            RETURN diary
+            ORDER BY diary.timestamp DESC
+            '''
+            return graph.run(public_diary_query, someone_id=someone_id).data()
+
+    @staticmethod
     def get_friends_diary(uid, timestamp):
         query = '''
         MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
-        WHERE diary.timestamp <= {timestamp} and diary.permission <> 'private'
+        WHERE diary.timestamp < {timestamp} and diary.permission <> 'private'
         RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
-        return graph.run(query, uid=uid, timestamp=timestamp)
+        return graph.run(query, uid=uid, timestamp=timestamp).data()
+
+    @staticmethod
+    def get_diary_by_category(category, timestamp):
+        query = '''
+        MATCH (diary:Diary)
+        WHERE diary.permission = 'public' and diary.category = {category} and diary.timestamp < {timestamp}
+        RETURN diary
+        ORDER BY diary.timestamp DESC LIMIT 20
+        '''
+        return graph.run(query, category=category, timestamp=timestamp).data()
 
     @staticmethod
     def add_diary(owner_id, title, content, latitude, longitude, category, location, address, permission):
@@ -299,9 +361,59 @@ class Diary(object):
         query = '''
         CALL spatial.withinDistance('diary',
         {latitude: {lat}, longitude: {lon}}, {distance}) YIELD node AS d
-        MATCH (d2:Diary)-[r:PUBLISHED]-(m:User)
-        WHERE m.id <> {id}
-        RETURN d2
+        MATCH (d)
+        WHERE NOT (d:Diary)-[:PUBLISHED]-(:User{id: {id}})
+        AND NOT (d:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
+        AND (d.permission = "public")
+        RETURN d.id AS id, d.title AS title, d.content AS content, d.timestamp AS timestamp, d.date AS date, d.category AS category, d.location AS location, d.latitude AS latitude,
+        d.longitude AS longitude
         '''
         # TODO what to return?
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
+
+    @staticmethod
+    def check_permission(id, did):
+        query = '''
+        MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
+        RETURN d.permission AS permission, u.id AS uid
+        '''
+        result = graph.run(query, did = did).data()
+        print result
+        return True
+
+    @staticmethod
+    def get_diary_by_did(did):
+        query = '''
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary {id:{did}})
+        RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
+        {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, category: diary.category,
+        location: diary.location, latitude: diary.latitude, longitude:diary.longitude} as diary
+        '''
+        return graph.run(query, did=did)
+
+class Comment:
+    @staticmethod
+    def get(did):
+        query = '''
+        MATCH (diary:Diary {id:{did}})-[:HAS]-(comment:Comment)-[:COMMENTED]-(u:User)
+        RETURN comment, {gender: u.gender, name: u.name, portrait: u.portrait, id: u.id} as commentator
+        '''
+        return graph.run(query, did=did)
+
+    @staticmethod
+    def create(uid,did,content):
+        user = graph.find_one('User', 'id', uid)
+        diary = graph.find_one('Diary', 'id', did)
+        uuid_comment = str(uuid.uuid1())
+        comment = Node(
+            'Comment',
+            id=uuid_comment,
+            content=content,
+            timestamp=timestamp(),
+            date=date()
+            )
+        rel = Relationship(user, 'COMMENTED', comment)
+        rel2 = Relationship(diary, 'HAS', comment)
+        graph.create(rel)
+        graph.create(rel2)
+        return ('', 200)

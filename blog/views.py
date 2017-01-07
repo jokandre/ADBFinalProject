@@ -1,6 +1,6 @@
 from .api import member
 from .api import diary
-from .api import search
+from .api import comment
 # from .api import pair
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory, jsonify
 from invalidusage import InvalidUsage
@@ -30,6 +30,11 @@ def create_diary():
 def friends():
     session_check('render_page')
     return render_template('friends.html')
+
+@app.route('/my_friends', methods=['GET'])
+def my_friends():
+    session_check('render_page')
+    return render_template('my_friends.html')
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -101,6 +106,8 @@ def member_api(path):
         # API TODO POST- update user info
         if path == 'api/v1/me/update-info':
             return member.update_my_info()
+        elif path == 'api/v1/me/update-location':
+            return member.update_location()
         else:
             raise InvalidUsage("Wrong URL", 404)
     else:
@@ -112,15 +119,25 @@ def diary_api(path):
     if request.method == 'GET':
         session_check('api')
         if 'api/v1/' in path:
-            # API GET: /diary/api/v1/me
-            if path == 'api/v1/me':
-                return diary.get_all_diary()
-            # API GET: /diary/api/v1/friends
-            elif path == 'api/v1/friends':
+            if 'api/v1/search/' in path:
+                if path == 'api/v1/search/category':  # API GET: /diary/api/v1/search/category?category=x&timestamp=x
+                    return diary.get_diary_by_category()
+
+                elif path == 'api/v1/search/nearby':  # API GET: /diary/api/v1/search/nearby?distance_km=x
+                    return diary.get_nearby_diary()
+
+            if path == 'api/v1/me':  # API GET: /diary/api/v1/me
+                return diary.get_my_diary()
+
+            elif path == 'api/v1/get':
+                return diary.get_diary_by_did()
+
+            elif path == 'api/v1/someone':  # API GET: /diary/api/v1/someone?id=x
+                return diary.get_someone_diary()
+
+            elif path == 'api/v1/friends':  # API GET: /diary/api/v1/friends
                 return diary.get_friends_diary()
-            # API GET: /diary/api/v1/search/nearby?distance_km=x
-            elif path == 'api/v1/search/nearby':
-                return diary.get_nearby_diary()
+
             else:
                 raise InvalidUsage("Wrong URL", 404)
         else:
@@ -134,6 +151,27 @@ def diary_api(path):
             raise InvalidUsage("Wrong URL", 404)
     else:
         raise InvalidUsage("Something Wrong.", 404)
+
+@app.route('/comment/<path:path>', methods=['GET', 'POST'])
+def comment_api(path):
+    print 'Request path: %s' % path
+    if request.method == 'GET':
+        # session_check('api')
+        # API GET: /comment/api/v1/get
+        if path == 'api/v1/get':
+            return comment.get()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'POST':
+        # API POST: /comment/api/v1/create
+        if path == 'api/v1/create':
+            return comment.create()
+        else:
+            raise InvalidUsage("Wrong URL", 404)
+    else:
+        raise InvalidUsage("Something Wrong.", 404)
+
+
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):

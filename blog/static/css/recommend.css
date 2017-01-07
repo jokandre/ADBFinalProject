@@ -1,0 +1,15 @@
+.recommend_people{
+	width: 70%;
+	margin-left: 15%;
+	margin-top: 10px;
+	float: left;
+}
+.person{
+	width: 20%;
+	float: left;
+	padding: 10px;
+}
+.avatar{
+	width: 100%;
+	border-radius: 30px;
+}

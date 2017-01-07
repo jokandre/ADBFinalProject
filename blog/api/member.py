@@ -105,7 +105,7 @@ def update_location():
 		except ValueError:
 			raise InvalidUsage("latitude and longitude should be float!")
 		result = User.update_location(session['id'], latitude, longitude)
-		return (str(result), 200)
+		return ('', 200)
 
 def get_nearby_member():
 	distance_km = request.args.get('distance_km')
