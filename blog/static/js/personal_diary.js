@@ -1,7 +1,8 @@
+var currentURL = window.location;
 function initPersonal(){
     $.ajax({
         type:'GET',
-        url: 'http://140.114.77.15:5000/diary/api/v1/me',
+        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/me',
         success:function(response){
             result = response;
             for(var i=0; i<result.length; i++){
@@ -88,7 +89,7 @@ function full_diary(){
     //alert(id);
     $.ajax({
         type:'GET',
-        url: 'http://140.114.77.15:5000/diary/api/v1/get?did='+id,
+        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/get?did='+id,
         success:function(response){
             result = response
             
@@ -114,7 +115,7 @@ function full_diary(){
 
     $.ajax({
         type:'GET',
-        url: 'http://140.114.77.15:5000/comment/api/v1/get?did='+id,
+        url: 'http://140.114.77.15:'+currentURL.port+'/comment/api/v1/get?did='+id,
         success:function(response){
             comment_res = response;
             for(var j=0; j<comment_res.length; j++){
@@ -139,7 +140,7 @@ function makeComment(){
     //alert(content);
 
     $.ajax({
-        url: 'http://140.114.77.15:5000/comment/api/v1/create',
+        url: 'http://140.114.77.15:'+currentURL.port+'/comment/api/v1/create',
         data:JSON.stringify({
             content: content,
             did: id
