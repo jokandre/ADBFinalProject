@@ -237,7 +237,7 @@ def check_permission(uid, did):
         MATCH (u:User)-[:PUBLISHED]-(d:Diary {id:{did}})
         RETURN u.id
         '''
-        owner_id = graph.run(query, did = did).evaluate()
+        owner_id = graph.run(query, did=did).evaluate()
         if uid == owner_id:
             return True
         elif diary['permission'] == 'private':
@@ -247,7 +247,7 @@ def check_permission(uid, did):
             MATCH (u:User {id:{uid}})-[:FRIEND]-(:User {id: {owner_id}})
             RETURN u.id
             '''
-            id = graph.run(query, uid = uid, owner_id = owner_id).evaluate()
+            id = graph.run(query, uid=uid, owner_id=owner_id).evaluate()
             if id == uid:
                 return True
             else:
@@ -377,7 +377,7 @@ class Diary:
         MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
         RETURN d.permission AS permission, u.id AS uid
         '''
-        result = graph.run(query, did = did).data()
+        result = graph.run(query, did=did).data()
         print result
         return True
 
@@ -401,7 +401,7 @@ class Comment:
         return graph.run(query, did=did)
 
     @staticmethod
-    def create(uid,did,content):
+    def create(uid, did, content):
         user = graph.find_one('User', 'id', uid)
         diary = graph.find_one('Diary', 'id', did)
         uuid_comment = str(uuid.uuid1())
@@ -411,7 +411,7 @@ class Comment:
             content=content,
             timestamp=timestamp(),
             date=date()
-            )
+        )
         rel = Relationship(user, 'COMMENTED', comment)
         rel2 = Relationship(diary, 'HAS', comment)
         graph.create(rel)
