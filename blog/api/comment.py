@@ -8,20 +8,20 @@ from flask.json import jsonify
 def create():
 	id=session['id']
 	json_dict = request.get_json()
-	# if json_dict is None:
-	# 	raise InvalidUsage("Mimetype is not application/json!")
-	# else:
-	try:
-		# content = json_dict['content']
-		# did = json_dict['did']
-		content = 'Good post'
-		did = 'ptt99180'
-	except (ValueError, KeyError, TypeError) as error:
-		raise InvalidUsage("Missing Parameters: " + str(error))
-	if not check_permission(session['id'], did):
-		raise InvalidUsage("unauthorized", 401)
+	if json_dict is None:
+		raise InvalidUsage("Mimetype is not application/json!")
 	else:
-		return Comment.create(id,did,content)
+		try:
+			content = json_dict['content']
+			did = json_dict['did']
+			# content = 'Good post'
+			# did = 'ptt99180'
+		except (ValueError, KeyError, TypeError) as error:
+			raise InvalidUsage("Missing Parameters: " + str(error))
+		if not check_permission(session['id'], did):
+			raise InvalidUsage("unauthorized", 401)
+		else:
+			return Comment.create(id,did,content)
 
 def get():
 	did = request.args.get('did')

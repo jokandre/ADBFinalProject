@@ -27,3 +27,6 @@ config.py
 
 # Mac
 .DS_Store
+
+#testing
+blog/psql_test.py

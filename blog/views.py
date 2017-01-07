@@ -151,7 +151,7 @@ def diary_api(path):
 def comment_api(path):
     print 'Request path: %s' % path
     if request.method == 'GET':
-        # session_check('api')
+        session_check('api')
         # API GET: /comment/api/v1/get
         if path == 'api/v1/get':
             return comment.get()
