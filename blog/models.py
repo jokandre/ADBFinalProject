@@ -390,7 +390,6 @@ class Diary:
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
-
         #evaluate diary vectors and save it to psql
         import lda
         vectors = lda.lda(content)
@@ -400,7 +399,6 @@ class Diary:
         """.format(uuid_diary, ', '.join(vectors), permission)
         psql.execute(query)
         psqlconn.commit()
-
         return ('', 200)
 
     @staticmethod
