@@ -56,7 +56,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var title = "";
 
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port'/diary/api/v1/friends',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/friends',
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
