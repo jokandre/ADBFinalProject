@@ -30,32 +30,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 
 <script>
+var place;
+
 google.maps.event.addDomListener(window, 'load', function () {
     var places = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
     google.maps.event.addListener(places, 'place_changed', function () {
-        var place = places.getPlace();
-        var name = place.name;
-        var address = place.formatted_address;
-        var latitude = place.geometry.location.lat();
-        var longitude = place.geometry.location.lng();
-        var mesg = "Name: " + name;
-        mesg += "\nLatitude: " + latitude;
-        mesg += "\nLongitude: " + longitude;
-        // alert(mesg);
-        document.getElementById('temp_information').innerHTML = name + " " + address + " " + latitude + " " + longitude; 
+        place = places.getPlace();
+
+        console.log(place);
     });
 });
 
 function create_diary(){
 	var title = $("input[name=diary_title]").val();
-	var location_information = $("#temp_information").text();
-	var arr = location_information.split(" ")
-	var location = arr[0];
-	var address = arr[1];
-	var latitude = arr[2];
-	var longitude = arr[3];
+	var location = place.name;
+	var address = place.formatted_address;
+	var latitude = place.geometry.location.lat();
+	var longitude = place.geometry.location.lng();
+	// var mesg = "Name: " + location;
+	// mesg += "\nAddress: " + address;
+ //    mesg += "\nLatitude: " + latitude;
+ //    mesg += "\nLongitude: " + longitude;
+ //    alert(mesg);
 	var category = $("#diary_category").find(":selected").val();
-	var permission = $('input[name="permission"]:checked').val();
+	var permission = $('input[name="authority"]:checked').val();
 	var content = CKEDITOR.instances['diary_content'].getData();
 
 	$.ajax({
@@ -74,7 +72,7 @@ function create_diary(){
       	contentType:"application/json",
       	datatype:'application/json',
       	success:function(response){
-        	window.location.reload();
+        	window.location = "http://140.114.77.15:5000/personal";
       	},
       	error:function(error){
         	console.log(error);
@@ -156,7 +154,6 @@ function create_diary(){
 				<div>
 					<img src="../static/images/location.svg"/>
 					<input type="text" id="autocomplete" class="form-design" name="diary_location" placeholder="Search location"/>
-					<div id="temp_information" style="display: none;"></div>
 				</div>
 				<div>
 					<img src="../static/images/category.svg"/>
@@ -174,9 +171,9 @@ function create_diary(){
 				</div>
 				<div style="color:#000;">
 					<img src="../static/images/lock.svg"/>
-					<input type="radio" name="permission" value="public"/> Public&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="permission" value="friends"/> Only friends&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="permission" value="private"/> Only you 
+					<input type="radio" name="authority" value="public"/> Public&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="authority" value="friends"/> Only friends&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="authority" value="private"/> Only you 
 				</div>
 				<div>
 					<img src="../static/images/pencil.svg">Content

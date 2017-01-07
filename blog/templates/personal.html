@@ -20,65 +20,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
 <link href="../static/css/addition.css" rel="stylesheet" type="text/css" media="all" />
 <link href="../static/css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
-<link href="../static/css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->
 <script src="../static/js/jquery-1.11.1.min.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
-<script src="../static/js/bootstrap-tagsinput.js"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
-
-<script text="javascript">
-$(function(){
-    if ("{{me['birthday']}}" == "None") {
-    	$("[name=birthday]").val('');
-    }
-    if ("{{me['height']}}" == "None") {
-    	$("[name=height]").val('');
-    }
-    if ("{{me['weight']}}" == "None") {
-    	$("[name=weight]").val('');
-    }
-    if ("{{me['residence']}}" == "None") {
-    	$("[name=residence]").val('');
-    }
-    if ("{{me['interest']}}" == "[u&#39;None&#39;]"){
-    	$("[name=interest]").val('');
-    	//alert("{{me['interest']}}");
-    }
-});
-
-function update_profile(){
-	var name = "{{me['name']}}";
-	var birthday = $("[name=birthday]").val();
-	var height = $("[name=height]").val();
-	var weight = $("[name=weight]").val();
-	var residence = $("[name=residence]").val();
-	var interest = $("[name=interest]").val();
-
-	//alert(type0f(interest));
-	$.ajax({
-		type:'POST',
-		url: 'http://140.114.77.15:5000/member/api/v1/me/update-info',
-      	data:JSON.stringify({
-      		name: name,
-        	birthday: birthday,
-	 		height: height,
-	 		weight: weight,
-	 		residence: residence,
-	 		interest: interest
-      	}),
-      	contentType:"application/json",
-      	success:function(response){
-        	window.location.reload();
-      	},
-      	error:function(error){
-        	console.log(error);
-      	}
-	});
-}
-</script>
 </head>
 	
 <body>
@@ -139,44 +86,9 @@ function update_profile(){
 <!-- //header -->
 	<div class="banner-bottom">
 		<div class="container">
-			<h3>My Profile</h3>
-			<div class="col-md-6 col-md-offset-3 portrait">
-				<img src="{{me['portrait']}}" class="profile_image">
-			</div>
-			<div class="col-md-6 col-md-offset-3 diary_input">
-				<div>
-					<img src="../static/images/face.svg"/>
-					{{me['name']}}
-				</div>
-				<div>
-					<img src="../static/images/gender.svg"/>
-					{{me['gender']}}
-				</div>
-				<div>
-					<img src="../static/images/birthday.svg"/>
-					<input type="text" class="form-design" name="birthday" value="{{me['birthday']}}" placeholder="Birthday"/>
-				</div>
-				<div>
-					<img src="../static/images/footprint.svg"/>
-					<input type="text" class="form-design" name="height" value="{{me['height']}}" placeholder="Height" />
-				</div>
-				<div>
-					<img src="../static/images/weight.svg"/>
-					<input type="text" class="form-design" name="weight" value="{{me['weight']}}" placeholder="Weight" />
-				</div>
-				<div>
-					<img src="../static/images/location.svg"/>
-					<input type="text" class="form-design" name="residence" value="{{me['residence']}}" placeholder="Where are you from?">
-				</div>
-				<div>
-					<img src="../static/images/email.svg"/>
-					{{me['email']}}
-				</div>
-				<div>
-					<img src="../static/images/location.svg"/>
-					<input type="text" class="form-design" name="interest" value="{{me['interest']}}" data-role="tagsinput" placeholder="Add interest tags"/>
-				</div>
-				<div class="diary_button"><a href="javascript: update_profile();">Submit</a></div>
+			<h3>My Diary</h3>
+			<div class="col-md-10 col-md-offset-1" id="diary_grids">
+
 			</div>
 		</div>
 	</div>
@@ -231,5 +143,11 @@ function update_profile(){
 <!-- for bootstrap working -->
 <script src="../static/js/bootstrap.js"> </script>
 <!-- //for bootstrap working -->
+<script src="../static/js/personal_diary.js"></script>
+<script text="javascript">
+$(function(){
+	initPersonal();
+});
+</script>
 </body>
 </html>
