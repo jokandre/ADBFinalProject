@@ -281,17 +281,17 @@ class Diary:
         is_friend = graph.run(is_friend_query, id=id, someone_id=someone_id).evaluate()
         if is_friend:
             friend_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission <> 'private'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(friend_diary_query, someone_id=someone_id).data()
         else:
             public_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission = 'public'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(public_diary_query, someone_id=someone_id).data()
