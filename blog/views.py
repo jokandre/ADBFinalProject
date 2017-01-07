@@ -126,6 +126,9 @@ def diary_api(path):
                 elif path == 'api/v1/search/nearby':  # API GET: /diary/api/v1/search/nearby?distance_km=x
                     return diary.get_nearby_diary()
 
+                elif path == 'api/v1/search/all':
+                    return diary.search_diary()
+
             if path == 'api/v1/me':  # API GET: /diary/api/v1/me
                 return diary.get_my_diary()
 

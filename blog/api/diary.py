@@ -96,3 +96,12 @@ def get_diary_by_did():
 	else:
 		db_cursor = Diary.get_diary_by_did(did)
 		return jsonify(db_cursor.data())
+
+def search_diary():
+	try:
+		keyword = request.args.get('keyword')
+		result = Diary.search_for_diary(keyword)
+	except (ValueError, KeyError, TypeError) as error:
+		raise InvalidUsage("Missing Parameters: " + str(error))
+
+	return jsonify(result)

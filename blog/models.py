@@ -391,6 +391,14 @@ class Diary:
         '''
         return graph.run(query, did=did)
 
+    @staticmethod
+    def search_for_diary(keyword):
+        keyword_f= '.*'+keyword+'.*'
+        query = '''
+        MATCH (d:Diary) WHERE d.title=~ {keyword} OR d.content=~ {keyword} RETURN d
+        '''
+        return graph.run(query, keyword=keyword_f ).data()
+
 class Comment:
     @staticmethod
     def get(did):
