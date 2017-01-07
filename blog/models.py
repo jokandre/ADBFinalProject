@@ -178,6 +178,30 @@ class User:
         return graph.run(query, they=other.username, you=self.username).next
 
     @staticmethod
+    def create_friendship(my_id, other_uid):
+        query = '''
+        OPTIONAL Match (me:User {id: {my_id}})
+        OPTIONAL Match (other:User {id: {other_uid}})
+        WITH me, other
+        WHERE me is not null and other is not null
+        MERGE (me) - [:FRIEND] -> (other)
+        MERGE (other) - [:FRIEND] -> (me)
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
+
+    @staticmethod
+    def delete_friendship(my_id, other_uid):
+        query = '''
+        optional Match (me:User {id:{my_id}}) - [r:FRIEND] - (other:User {id: {other_uid}})
+        with r as friendship
+        where friendship is not null
+        delete friendship
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
+
+    @staticmethod
     def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
