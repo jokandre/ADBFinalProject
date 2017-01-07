@@ -63,6 +63,16 @@ class User:
         return user
 
     @staticmethod
+    def get_profile(id, other_uid):
+        query = '''
+        MATCH (other:User {id:{other_uid}})
+        OPTIONAL MATCH (me:User {id:{id}}) - [r:FRIEND] - (other)
+        WITH  other, CASE WHEN count(r) > 0 then True else False end as friendship
+        RETURN friendship, {gender: other.gender, name: other.name, portrait: other.portrait, id: other.id} as owner
+        '''
+        return graph.run(query, id=id, other_uid=other_uid).data()
+
+    @staticmethod
     def update_user_info(uid, name, birthday, residence, height, weight, interest):
         user = graph.find_one('User', 'id', uid)
         if user:
