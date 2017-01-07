@@ -438,6 +438,7 @@ class Diary:
         '''
         return graph.run(query, keyword=keyword_f ).data()
 
+    @staticmethod
     def get_similar_diary(uid, did):
         query = """
         SELECT * from diary_vectors
