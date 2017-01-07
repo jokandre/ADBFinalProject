@@ -423,10 +423,10 @@ class Diary:
     def get_similar_diary(uid, did):
         query = """
         SELECT * from diary_vectors 
-        WHERE did != \'{0}\' ORDER BY 
+        WHERE did != \'{0}\' AND permission = 'public' ORDER BY 
             (SELECT vector FROM diary_vectors 
             WHERE did=\'{0}\') 
-        <-> vector asc limit 100
+        <-> vector ASC LIMIT 50
         """.format(did)
         psql.execute(query)
         candidates_tmp = psql.fetchall()
