@@ -83,6 +83,8 @@ def member_api(path):
     if request.method == 'GET':
         if path == 'api/v1/me/info':
             return member.get_my_info()
+        elif path == 'api/v1/profile':
+            return member.get_profile()
         elif 'api/v1/friends' in path:
             # API GET: /member/api/v1/friends/me
             if path == 'api/v1/friends/me':

@@ -68,7 +68,11 @@ class User:
         MATCH (other:User {id:{other_uid}})
         OPTIONAL MATCH (me:User {id:{id}}) - [r:FRIEND] - (other)
         WITH  other, CASE WHEN count(r) > 0 then True else False end as friendship
-        RETURN friendship, {gender: other.gender, name: other.name, portrait: other.portrait, id: other.id} as owner
+        RETURN friendship,
+            {
+            gender: other.gender, name: other.name, portrait: other.portrait, id: other.id, birthday: other.birthday,
+            email: other.email, height: other.height, weight: other.weight, interest: other.interest, residence:other.residence
+            } as owner
         '''
         return graph.run(query, id=id, other_uid=other_uid).data()
 
