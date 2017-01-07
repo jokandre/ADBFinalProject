@@ -106,7 +106,9 @@ function get_user(fb,token) {
       datatype:'application/json',
       success:function(response){
         console.log("Just registered!")
-        window.location = "http://140.114.77.15:5000/index";
+
+        var currentURL = window.location;
+        window.location = "http://140.114.77.15:"+currentURL.port+"/index";
       },
       error:function(error){
         console.log(error);

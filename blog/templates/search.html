@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -58,9 +58,10 @@ div#map,
 </style>
 <script text="javascript">
 $(function(){
+	var currentURL = window.location;
 	$.ajax({
 		type:'GET',
-		url: 'http://140.114.77.15:5000/member/api/v1/search/nearby?distance_km=10',
+		url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/search/nearby?distance_km=10',
       	success:function(response){
         	result = response;
         	alert(result);
@@ -128,7 +129,7 @@ $(function(){
 							<li class="active"><a href="search">Nearby</a></li>
 						</ul>
 					</nav>
-				</div><!-- /.navbar-collapse -->	
+				</div><!-- /.navbar-collapse -->
 			</nav>
 		</div>
 	</div>
@@ -142,7 +143,7 @@ $(function(){
 			    </ul>
 			</div>
 			<div class="pageWrapper">
-				<div id="pageContentWrapper"  class="pageContentWrapper" style="margin-top:60px;"> 
+				<div id="pageContentWrapper"  class="pageContentWrapper" style="margin-top:60px;">
 					<div id="slide_one" class="slide_content slide active">
 						<div class="nearby_people">
 							<div class="col-md-4 people_list">
@@ -192,7 +193,7 @@ $(function(){
 					</ul>
 				</div>
 				<div class="col-md-3 footer-grids">
-					<h3>Navigation</h3>					
+					<h3>Navigation</h3>
 					<ul>
 						<li><a href="index.html">Home</a></li>
 						<li><a href="about.html">About us</a></li>
@@ -208,11 +209,11 @@ $(function(){
 						<li><a href="#">Help Center</a></li>
 					</ul>
 				</div>
-				<div class="col-md-4 footer-grids">	
+				<div class="col-md-4 footer-grids">
 					<h3>Finding the love in the spectrum</h3>
-					<form>					 
+					<form>
 					    <input type="text" class="text" value="GIVE US EMAIL TO LET US UNDERSTAND YOU" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Email';}">
-						<input type="submit" value="Go">					 
+						<input type="submit" value="Go">
 				 </form>
 				</div>
 				<div class="clearfix"> </div>
@@ -220,11 +221,11 @@ $(function(){
 		</div>
 	</div>
 	<div class="footer-bottom">
-		<div class="container">		
-			<p>Copyright © 2017 D.Day. All rights reserved | Design by <a href="http://w3layouts.com">IDEA LAB</a></p>					
+		<div class="container">
+			<p>Copyright © 2017 D.Day. All rights reserved | Design by <a href="http://w3layouts.com">IDEA LAB</a></p>
 		</div>
 	</div>
-<!--//footer-->	
+<!--//footer-->
 
 <!-- for bootstrap working -->
 <script src="../static/js/bootstrap.js"> </script>
