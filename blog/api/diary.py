@@ -96,3 +96,13 @@ def get_diary_by_did():
 	else:
 		db_cursor = Diary.get_diary_by_did(did)
 		return jsonify(db_cursor.data())
+
+def get_similar_diary():
+	did = request.args.get('did')
+	if did is None:
+		raise InvalidUsage("Missing Parameters: did")
+	elif not check_permission(session['id'], did):
+		raise InvalidUsage("unauthorized", 401)
+	else:
+		db_cursor = Diary.get_similar_diary(session['id'], did)
+		return jsonify(db_cursor.data())
