@@ -391,6 +391,16 @@ class Diary:
         if result != '1':
             print "spatial addNode error!" + result
 
+        #evaluate diary vectors and save it to psql
+        import lda
+        vectors = lda.lda(content)
+        query = """
+        INSERT diary_vectors
+        VALUES ('{0}', cube(ARRAY[{1}]), '{2}')
+        """.format(uuid_diary, ', '.join(vectors), permission)
+        psql.execute(query)
+        psqlconn.commit()
+
         return ('', 200)
 
     @staticmethod
@@ -433,22 +443,20 @@ class Diary:
     def get_similar_diary(uid, did):
         query = """
         SELECT * from diary_vectors 
-        WHERE did != \'{0}\' ORDER BY 
+        WHERE did != \'{0}\' AND permission = 'public' ORDER BY 
             (SELECT vector FROM diary_vectors 
             WHERE did=\'{0}\') 
-        <-> vector asc limit 100
+        <-> vector ASC LIMIT 50
         """.format(did)
         psql.execute(query)
         candidates_tmp = psql.fetchall()
         candidates = []
-        target = []
         for i in candidates_tmp:
             candidates.append(i[0])
         query = '''
-        MATCH (p:User)-[:PUBLISHED]-(diary:Diary) WHERE diary.id IN ''' + str(ids) + '''
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary) WHERE diary.id IN ''' + str(candidates) + '''
         AND NOT (diary:Diary)-[:PUBLISHED]-(:User{id: {id}})
         AND NOT (diary:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
-        AND (diary.permission = "public")
         RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
         {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, category: diary.category,
         location: diary.location, latitude: diary.latitude, longitude:diary.longitude} as diary limit 10
