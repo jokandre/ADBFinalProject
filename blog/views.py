@@ -1,5 +1,6 @@
 from .api import member
 from .api import diary
+from .api import search
 # from .api import pair
 from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory, jsonify
 from invalidusage import InvalidUsage
@@ -88,6 +89,9 @@ def member_api(path):
             if path == 'api/v1/search/nearby':
                 # params: distance_km
                 return member.get_nearby_member()
+            elif path == 'api/v1/search/name':
+                #params : name
+                return member.search_name()
             else:
                 raise InvalidUsage("Wrong URL", 404)
         else:

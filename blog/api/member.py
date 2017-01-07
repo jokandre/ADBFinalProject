@@ -57,6 +57,14 @@ def update_my_info():
 		User.update_user_info(session['id'], name, birthday, residence, height, weight, interest)
 	return ('', 200)
 
+def search_name():
+	try:
+		name = request.args.get('name')
+		result = User.search_by_name(name)
+	except (ValueError, KeyError, TypeError) as error:
+		raise InvalidUsage("Missing Parameters: " + str(error))
+	return jsonify(result)
+
 def get_my_friends():
 	id = session['id']
 	friends = User.get_my_friends(id)

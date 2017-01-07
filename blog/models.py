@@ -71,6 +71,11 @@ class User:
             return graph.run(query, id=uid, name=name, birthday=birthday, height=height, weight=weight, residence=residence, interest=interest).evaluate()
 
     @staticmethod
+    def search_by_name(name):
+        user = graph.find_one('User', 'name', name)
+        return user
+
+    @staticmethod
     def add_fb_likes(uid, likes):
         user = graph.find_one('User', 'id', uid)
         for like in likes:
