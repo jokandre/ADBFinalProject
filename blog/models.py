@@ -68,7 +68,11 @@ class User:
         MATCH (other:User {id:{other_uid}})
         OPTIONAL MATCH (me:User {id:{id}}) - [r:FRIEND] - (other)
         WITH  other, CASE WHEN count(r) > 0 then True else False end as friendship
-        RETURN friendship, {gender: other.gender, name: other.name, portrait: other.portrait, id: other.id} as owner
+        RETURN friendship,
+            {
+            gender: other.gender, name: other.name, portrait: other.portrait, id: other.id, birthday: other.birthday,
+            email: other.email, height: other.height, weight: other.weight, interest: other.interest, residence:other.residence
+            } as owner
         '''
         return graph.run(query, id=id, other_uid=other_uid).data()
 
@@ -221,9 +225,9 @@ class User:
         MATCH (u:User) WHERE u.id = {which}
         SET u.wkt = {wkt},
         u.latitude = {lat},
-        u.longitude = {lon},
-        WITH u AS us
-        CALL spatial.addNode('member', us) YIELD node
+        u.longitude = {lon}
+        WITH u AS u
+        CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
         '''
         return graph.run(query, which=uid, wkt=lon_lat_to_wkt(lon, lat), lat=lat, lon=lon)

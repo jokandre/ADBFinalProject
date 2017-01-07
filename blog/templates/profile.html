@@ -50,6 +50,7 @@ $(function(){
 });
 
 function update_profile(){
+	var currentURL = window.location;
 	var name = "{{me['name']}}";
 	var birthday = $("[name=birthday]").val();
 	var height = $("[name=height]").val();
@@ -60,7 +61,7 @@ function update_profile(){
 	//alert(type0f(interest));
 	$.ajax({
 		type:'POST',
-		url: 'http://140.114.77.15:5000/member/api/v1/me/update-info',
+		url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/me/update-info',
       	data:JSON.stringify({
       		name: name,
         	birthday: birthday,
@@ -101,7 +102,7 @@ function update_profile(){
 					<div class="dropdown-content">
 						<a href="profile">My Profile</a>
 						<a href="personal">My Diary</a>
-						<a href="#">My Friends</a>
+						<a href="my_friends">My Friends</a>
 					    <a href="#">Logout</a>
 					</div>
 				</li>
