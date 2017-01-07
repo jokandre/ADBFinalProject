@@ -57,20 +57,29 @@ function create_diary(){
 	var category = $("#diary_category").find(":selected").val();
 	var authority = $('input[name="authority"]:checked').val();
 	var content = CKEDITOR.instances['diary_content'].getData();
-	
-	$.post("http://140.114.77.15:5000/diary/api/v1/create",{
-		title: title,
-	 	location: location,
-	 	address: address,
-	 	latitude: latitude,
-	 	longitude: longitude,
-	 	category: category,
-	 	authority: authority,
-	 	content: content
-	}, function(response){ 
- 		//alert(response);
+
+	$.ajax({
+		url: 'http://140.114.77.15:5000/diary/api/v1/create',
+      	data:JSON.stringify({
+        	title: title,
+		 	location: location,
+		 	address: address,
+		 	latitude: latitude,
+		 	longitude: longitude,
+		 	category: category,
+		 	authority: authority,
+		 	content: content
+      	}),
+      	type:'POST',
+      	contentType:"application/json",
+      	datatype:'application/json',
+      	success:function(response){
+        	window.location.reload();
+      	},
+      	error:function(error){
+        	console.log(error);
+      	}
 	});
-	window.location.reload();
 }
 </script>
 <style>
@@ -98,8 +107,9 @@ function create_diary(){
 				<li class="dropdown">
 					<a class="profile-select" cursor="pointer"><img class="user_icon" src="../static/images/co.png"/><span>▾</span></a>
 					<div class="dropdown-content">
-						<a href="profile">Your Profile</a>
-						<a href="personal">Your Diary</a>
+						<a href="profile">My Profile</a>
+						<a href="personal">My Diary</a>
+						<a href="#">My Friends</a>
 					    <a href="#">Logout</a>
 					</div>
 				</li>
@@ -124,8 +134,8 @@ function create_diary(){
 				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
 					<nav class="cl-effect-1">
 						<ul class="nav navbar-nav">
-							<li><a href="index">Home</a></li>
-							<li><a href="about">Friends</a></li>
+							<li><a href="friends">Spectrum</a></li>
+							<li><a href="index">Recommend</a></li>
 							<li class="active"><a href="create_diary">Create Diary</a></li>
 							<li><a href="search">Nearby</a></li>
 						</ul>

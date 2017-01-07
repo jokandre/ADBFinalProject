@@ -11,14 +11,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 
 <!-- //this_css -->
 <link href="../static/css/friends.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
-	
+
 <body>
 <!-- header -->
 	{% include 'header.html' %}
@@ -39,7 +39,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 	$(function() {
-        var each_diary_0="<a href='http://140.114.77.15:5000/?"
+		var currentURL = window.location;
+        var each_diary_0="<a href='http://140.114.77.15:'"+currentURL.port+"'/?"
         var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
         var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
         var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
@@ -55,7 +56,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var title = "";
 
         $.ajax({
-	        url: 'http://140.114.77.15:5000/diary/api/v1/friends',
+	        url: 'http://140.114.77.15:'+currentURL.port'/diary/api/v1/friends',
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
@@ -114,7 +115,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		    });
 		});
 
-    
+
 </script>
 
 </body>

@@ -6,7 +6,7 @@ from flask import Flask, request, session, redirect, url_for, render_template, f
 from flask.json import jsonify
 
 def create():
-	id=session['id']
+	id = session['id']
 	json_dict = request.get_json()
 	if json_dict is None:
 		raise InvalidUsage("Mimetype is not application/json!")
@@ -19,7 +19,7 @@ def create():
 		if not check_permission(id, did):
 			raise InvalidUsage("unauthorized", 401)
 		else:
-			return Comment.create(id,did,content)
+			return Comment.create(id, did, content)
 
 def get():
 	did = request.args.get('did')

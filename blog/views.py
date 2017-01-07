@@ -66,11 +66,11 @@ def logout():
     session.pop('id', None)
     return redirect(url_for('login'))
 
-@app.route('/member/<path:path>', methods=['GET', 'POST'])
+@app.route('/member/<path:path>', methods=['GET', 'POST', 'DELETE'])
 def member_api(path):
     print 'Request path: %s' % path
+    session_check('api')
     if request.method == 'GET':
-        session_check('api')
         if path == 'api/v1/me/info':
             return member.get_my_info()
         elif 'api/v1/friends' in path:
@@ -94,6 +94,9 @@ def member_api(path):
             if path == 'api/v1/search/nearby':
                 # params: distance_km
                 return member.get_nearby_member()
+            elif path == 'api/v1/search/name':
+                #params : name
+                return member.search_name()
             else:
                 raise InvalidUsage("Wrong URL", 404)
         else:
@@ -105,8 +108,13 @@ def member_api(path):
             return member.update_my_info()
         elif path == 'api/v1/me/update-location':
             return member.update_location()
+        elif path == 'api/v1/befriend':
+            return member.create_friendship()
         else:
             raise InvalidUsage("Wrong URL", 404)
+    elif request.method == 'DELETE':
+        if path == 'api/v1/unfriend':
+            return member.delete_friendship()
     else:
         raise InvalidUsage("Something Wrong.", 404)
 

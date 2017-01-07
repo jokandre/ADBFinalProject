@@ -53,7 +53,7 @@
   left: 100%;
 }
 .slide_content{
-  width: 100%;
+  width: 90%;
   position: relative;
   display: inline-block;
   margin-right: -100%;
@@ -69,4 +69,25 @@
      -moz-transition-delay: 0 !important;
       -ms-transition-delay: 0 !important;
           transition-delay: 0 !important;
+}
+.people_list{
+  position: relative;
+  margin: auto;
+}
+.people_list img{
+  width:200px; 
+  display:block; 
+  margin-bottom: 60px;
+}
+.people_list div{
+  position: absolute;
+  top: 150px;
+  background:rgba(0,0,0,0.5) none repeat scroll !important;
+  /* for IE */
+  filter:alpha(opacity=50);
+  width:180px; 
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #ffffff;
 }

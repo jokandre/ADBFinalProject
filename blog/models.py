@@ -75,6 +75,11 @@ class User:
             return graph.run(query, id=uid, name=name, birthday=birthday, height=height, weight=weight, residence=residence, interest=interest).evaluate()
 
     @staticmethod
+    def search_by_name(name):
+        user = graph.find_one('User', 'name', name)
+        return user
+
+    @staticmethod
     def add_fb_likes(uid, likes):
         user = graph.find_one('User', 'id', uid)
         for like in likes:
@@ -177,6 +182,30 @@ class User:
         return graph.run(query, they=other.username, you=self.username).next
 
     @staticmethod
+    def create_friendship(my_id, other_uid):
+        query = '''
+        OPTIONAL Match (me:User {id: {my_id}})
+        OPTIONAL Match (other:User {id: {other_uid}})
+        WITH me, other
+        WHERE me is not null and other is not null
+        MERGE (me) - [:FRIEND] -> (other)
+        MERGE (other) - [:FRIEND] -> (me)
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
+
+    @staticmethod
+    def delete_friendship(my_id, other_uid):
+        query = '''
+        optional Match (me:User {id:{my_id}}) - [r:FRIEND] - (other:User {id: {other_uid}})
+        with r as friendship
+        where friendship is not null
+        delete friendship
+        '''
+        graph.run(query, my_id=my_id, other_uid=other_uid)
+        return ('', 200)
+
+    @staticmethod
     def update_location(uid, lat, lon):
         query = '''
         MATCH (u) WHERE u.id = {which}
@@ -236,7 +265,7 @@ def check_permission(uid, did):
         MATCH (u:User)-[:PUBLISHED]-(d:Diary {id:{did}})
         RETURN u.id
         '''
-        owner_id = graph.run(query, did = did).evaluate()
+        owner_id = graph.run(query, did=did).evaluate()
         if uid == owner_id:
             return True
         elif diary['permission'] == 'private':
@@ -246,7 +275,7 @@ def check_permission(uid, did):
             MATCH (u:User {id:{uid}})-[:FRIEND]-(:User {id: {owner_id}})
             RETURN u.id
             '''
-            id = graph.run(query, uid = uid, owner_id = owner_id).evaluate()
+            id = graph.run(query, uid=uid, owner_id=owner_id).evaluate()
             if id == uid:
                 return True
             else:
@@ -285,17 +314,17 @@ class Diary:
         is_friend = graph.run(is_friend_query, id=id, someone_id=someone_id).evaluate()
         if is_friend:
             friend_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission <> 'private'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(friend_diary_query, someone_id=someone_id).data()
         else:
             public_diary_query = '''
-            MATCH (u:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
+            MATCH (owner:User {id:{someone_id}}) - [:PUBLISHED] - (diary:Diary)
             WHERE diary.permission = 'public'
-            RETURN diary
+            RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id} as owner
             ORDER BY diary.timestamp DESC
             '''
             return graph.run(public_diary_query, someone_id=someone_id).data()
@@ -376,7 +405,7 @@ class Diary:
         MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
         RETURN d.permission AS permission, u.id AS uid
         '''
-        result = graph.run(query, did = did).data()
+        result = graph.run(query, did=did).data()
         print result
         return True
 
@@ -430,7 +459,7 @@ class Comment:
         return graph.run(query, did=did)
 
     @staticmethod
-    def create(uid,did,content):
+    def create(uid, did, content):
         user = graph.find_one('User', 'id', uid)
         diary = graph.find_one('Diary', 'id', did)
         uuid_comment = str(uuid.uuid1())
@@ -440,7 +469,7 @@ class Comment:
             content=content,
             timestamp=timestamp(),
             date=date()
-            )
+        )
         rel = Relationship(user, 'COMMENTED', comment)
         rel2 = Relationship(diary, 'HAS', comment)
         graph.create(rel)

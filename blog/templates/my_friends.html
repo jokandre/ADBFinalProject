@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+<meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 
 <link href="/static/css/my_friends.css" rel="stylesheet" type="text/css" media="all" />
@@ -26,8 +26,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="banner-bottom">
 		<div class="container">
 			<div class="all_friends">
-				 
-				
+
+
 			</div>
 		</div>
 	</div>
@@ -44,9 +44,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var each_friend_3 = "</div><div class='nick_name'>";
 		var each_friend_4 = "</div><div class='gender'>";
 		var each_friend_5 = "</div></div></div>";
-
+		var currentURL = window.location;
         $.ajax({
-	        url: 'http://140.114.77.15:5000/member/api/v1/friends/me',
+	        url: 'http://140.114.77.15:'+currentURL.port'/member/api/v1/friends/me',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {

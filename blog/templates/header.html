@@ -11,6 +11,12 @@
 <script src="../static/js/jquery-1.11.1.min.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).on('click', '.logout', function() {
+			window.location.href = "http://140.114.77.15:5000/logout";
+		});
+</script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
@@ -33,7 +39,7 @@
 						<a href="profile">My Profile</a>
 						<a href="personal">My Diary</a>
 						<a href="my_friends">My Friends</a>
-					    <a href="#">Logout</a>
+					    <a href="#" class="logout" >Logout</a>
 					</div>
 				</li>
 			</ul>
@@ -60,7 +66,7 @@
 							<li><a href="friends">Spectrum</a></li>
 							<li><a href="index">Recommend</a></li>
 							<li><a href="create_diary">Create Diary</a></li>
-							<li><a href="search">Search</a></li>
+							<li><a href="search">Nearby</a></li>
 						</ul>
 					</nav>
 				</div><!-- /.navbar-collapse -->	
