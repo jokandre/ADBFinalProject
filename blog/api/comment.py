@@ -14,11 +14,9 @@ def create():
 		try:
 			content = json_dict['content']
 			did = json_dict['did']
-			# content = 'Good post'
-			# did = 'ptt99180'
 		except (ValueError, KeyError, TypeError) as error:
 			raise InvalidUsage("Missing Parameters: " + str(error))
-		if not check_permission(session['id'], did):
+		if not check_permission(id, did):
 			raise InvalidUsage("unauthorized", 401)
 		else:
 			return Comment.create(id,did,content)
