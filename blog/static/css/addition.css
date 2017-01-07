@@ -174,4 +174,35 @@
 }
 .comment_button a{
     color: #ffffff;
+    padding: 6px 40px 6px 40px;
+    text-decoration: none;
+}
+/*Show personal diary*/
+#diary_grids{
+    margin-top: 50px;
+}
+.show_date{
+    color: #999;
+    font-size: 24px;
+    border-right: 1px solid #DEDEDE;
+}
+.show_title{
+    color: #66D5DE;
+    font-size: 20px;
+}
+.show_location img{
+    width: 18px;
+}
+.show_location{
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+}
+.diary_abstract{
+    margin-top: 25px;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+.read_btn{
+    margin-bottom: 100px;
 }

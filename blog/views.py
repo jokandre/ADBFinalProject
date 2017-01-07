@@ -46,6 +46,16 @@ def profile():
     session_check('render_page')
     return render_template('profile.html', me=member.get_my_info())
 
+@app.route('/personal', methods=['GET'])
+def personal():
+    session_check('render_page')
+    return render_template('personal.html', me=member.get_my_info())
+
+@app.route('/browse_diary', methods=['GET'])
+def browse_diary():
+    session_check('render_page')
+    return render_template('browse_diary.html')
+
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
 def send_static(filename):

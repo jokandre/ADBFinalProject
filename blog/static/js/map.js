@@ -31,7 +31,25 @@ function getusergeoagain(firerr) {
 function showPosition(data) {
     var inilat = data.coords.latitude + 0;
     var inilng = data.coords.longitude + 0;
-    showmap(inilat, inilng);
+
+    $.ajax({
+        url: 'http://140.114.77.15:5000/member/api/v1/me/update-location',
+        data:JSON.stringify({
+            latitude: inilat,
+            longitude: inilng
+        }),
+        type:'POST',
+        contentType:"application/json",
+        datatype:'application/json',
+        success:function(response){
+            alert('ok');
+            getNearbyPeople();
+            showmap(inilat, inilng);
+        },
+        error:function(error){
+            console.log(error);
+        }
+    });
 }
 
 function showError(error) {
@@ -51,18 +69,18 @@ function showError(error) {
             //alert("An unknown error occurred.");
             break;
     }
-    showmap(inilat, inilng);
+    //showmap(inilat, inilng);
 }
 
 function showmap(inilat, inilng) {
     //map starts
 
     //db initial
-    var db = openDatabase('maplocate', '1.0', 'maps DB', 2 * 1024 * 1024);
-    db.transaction(function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS locate (id,lat, lng)');
-    });
-    var f = 0;
+    // var db = openDatabase('maplocate', '1.0', 'maps DB', 2 * 1024 * 1024);
+    // db.transaction(function(tx) {
+    //     tx.executeSql('CREATE TABLE IF NOT EXISTS locate (id,lat, lng)');
+    // });
+    // var f = 0;
     //db end
     var map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(inilat, inilng),
@@ -88,45 +106,55 @@ function showmap(inilat, inilng) {
     var markers = [];
 
     //markers starts
-    for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-        var lat = object.get("lat");
-        var lng = object.get("lng");
-        var id = object.get("location_id");
+    // for (var i = 0; i < results.length; i++) {
+    //     var object = results[i];
+    //     var lat = object.get("lat");
+    //     var lng = object.get("lng");
+    //     var id = object.get("location_id");
 
-        var ll = new google.maps.LatLng(lat, lng);
-        var marker = new google.maps.Marker({
-            position: ll,
-            map: map
-        });
+    //     var ll = new google.maps.LatLng(lat, lng);
+    //     var marker = new google.maps.Marker({
+    //         position: ll,
+    //         map: map
+    //     });
 
-        //one marker evt
-        google.maps.event.addListener(marker, 'click', function(evt) {
-            var locatelat = null;
-            var locatelng = null;
-            locatelat = this.position.lat();
-            locatelng = this.position.lng();
+    //     //one marker evt
+    //     google.maps.event.addListener(marker, 'click', function(evt) {
+    //         var locatelat = null;
+    //         var locatelng = null;
+    //         locatelat = this.position.lat();
+    //         locatelng = this.position.lng();
 
-            //in db starts
-            db.transaction(function(tx) {
-                tx.executeSql('INSERT INTO locate(id, lat, lng) VALUES(?,?,?)', [1, locatelat, locatelng], function(tx) {
-                    //alert("已成功把" + webname + "加入fv");
-                    f = 1;
-                    mapgo(f);
-                });
-            });
-            //in db ends
-        });
-        //one marker evt
-        markers.push(marker);
-    }
+    //         //in db starts
+    //         db.transaction(function(tx) {
+    //             tx.executeSql('INSERT INTO locate(id, lat, lng) VALUES(?,?,?)', [1, locatelat, locatelng], function(tx) {
+    //                 //alert("已成功把" + webname + "加入fv");
+    //                 f = 1;
+    //             });
+    //         });
+    //         //in db ends
+    //     });
+    //     //one marker evt
+    //     markers.push(marker);
+    // }
     //markers end
 }
-
-function mapgo(f) {
-    if (f == 1) {
-        location.href = "post.html";
-    } else {
-        alert(f);
-    }
+function getNearbyPeople(){
+    $.ajax({
+        type:'GET',
+        url: 'http://140.114.77.15:5000/member/api/v1/search/nearby?distance_km=100000',
+        success:function(response){
+            result = response;
+            alert(result);
+            for(var i=0; i<result.length; i++){
+                var id = result[i]['id'];
+                var portrait = result[i]['portrait'];
+                var name = result[i]['name'];
+                $('.nearby_people').append('<div class="col-md-4 people_list"><img src="'+portrait+'"/><div>'+name+'</div></div>');
+            }
+        },
+        error:function(error){
+            console.log(error);
+        }
+    });
 }
