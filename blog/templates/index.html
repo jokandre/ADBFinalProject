@@ -16,9 +16,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-<!-- //this_css -->
-<link href="../static/css/recommend.css" rel="stylesheet" type="text/css" media="all" />
-
 </head>
 	
 <body>
@@ -50,12 +47,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 			</div>
 		</div>
+
+		<hr>
+
+		<div class="container common_diary">
+			<h3 class="diary_area">DIARY YOU MAY LIKE</h3>
+
+		</div>
 	</div>
 <!-- //banner-bottom -->
 
 <!-- welcome-bottom -->
-	<div class="welcome-bottom" style="background-color: brown">
-		<div class="container">
+	<div class="welcome-bottom" >
+		<div class="container" >
 			<div class="welcome-bottom-grids">
 				<div class="welcome-bottom-grid-l">
 					<div class="more">
@@ -159,6 +163,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
 </body>
+
+<!-- //this_css -->
+<link href="../static/css/recommend.css" rel="stylesheet" type="text/css" media="all" />
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 	$(function() {
@@ -177,9 +185,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
-	            	var combine = person_0+result[i]['portrait']+person_1;
-	            	$(".recommend_people").append(combine);
+	            	//var combine = person_0+result[i]['portrait']+person_1;
+	            	//$(".recommend_people").append(combine);
 	            }
+	            console.log("start get_diary");
+	            get_common_diary();
+	            console.log("finish get_diary");
 	        },
 	        error: function (jqXHR, exception) {
 	        	alert("fail");
@@ -188,7 +199,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		//window.location.href = "http://140.114.77.15:5050/login";
 	});
 </script>
+<script type="text/javascript">
+	function get_common_diary() {
+        var each_diary_0="<a href='http://140.114.77.15:5000/?"
+        var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
+        var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
+        var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
+        var each_diary_4="</p></div></div><div style='border: solid 1px silver; float: left;width: 60px;margin-top: 10px;'></div><div class='content'><div class='content_title'><h4>";
+        var each_diary_5="</h4></div><div class='content_detail'><h5>";
+        var each_diary_6="</h5></div></div><p style='color: #87CEFA;width:100%;font-size: 13px;float:left;''>read more</p></div></a>";
 
+
+		var name = "";
+		var portrait = "";
+		var location = "";
+		var content = "";
+		var title = "";
+
+        $.ajax({
+	        url: 'http://140.114.77.15:5000/diary/api/v1/friends',
+	        success: function(response) {
+	            result = response;
+	            for (var i =  0; i < result.length; i++) {
+	            	console.log("getting diary");
+	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+	            	$(".common_diary").append(combine);
+	            }
+	        },
+	        error: function (jqXHR, exception) {
+	        	alert("fail");
+	        }
+	    });
+		//window.location.href = "http://140.114.77.15:5050/login";
+	}
+</script>
 
 
 
