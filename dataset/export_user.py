@@ -45,8 +45,8 @@ class User:
 		if f:
 			while len(f) <= 6:
 				f += str(random.randint(0, 9))
-			f = float(f) * 0.000001
-			return math.floor(target)+f
+			f = float(f) * 0.0000001
+			return math.floor(target)+round(f, 6)
 		else:
 			return target
 
@@ -160,7 +160,7 @@ board, cate = ('diary', '')
 Articles = getUsers()
 i=0
 
-with open('data/User_Detail.csv', 'w') as f:
+with open('data/User_Detail_v2.csv', 'w') as f:
 	writter = csv.writer(f)
 	writter.writerow(['id', 'height', 'weight', 'age', 'birthday', 'longitude', 'latitude', 'wkt', 'location', 'address'])
 	for article in Articles:
