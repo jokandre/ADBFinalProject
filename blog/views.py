@@ -143,7 +143,7 @@ def diary_api(path):
             elif path == 'api/v1/friends':  # API GET: /diary/api/v1/friends
                 return diary.get_friends_diary()
             elif path == 'api/v1/similar': #API GET: /diary/api/v1/similar
-                return dairy.get_similar_diary()
+                return diary.get_similar_diary()
 
             else:
                 raise InvalidUsage("Wrong URL", 404)
