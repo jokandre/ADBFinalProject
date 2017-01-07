@@ -415,21 +415,10 @@ class Diary:
         WHERE NOT (d:Diary)-[:PUBLISHED]-(:User{id: {id}})
         AND NOT (d:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
         AND (d.permission = "public")
-        RETURN d.id AS id, d.title AS title, d.content AS content, d.timestamp AS timestamp, d.date AS date, d.category AS category, d.location AS location, d.latitude AS latitude,
-        d.longitude AS longitude
+        RETURN {id: d.id, title:d.title, latitude:d.latitude, longitude:d.longitude} AS diary
         '''
         # TODO what to return?
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
-
-    @staticmethod
-    def check_permission(id, did):
-        query = '''
-        MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
-        RETURN d.permission AS permission, u.id AS uid
-        '''
-        result = graph.run(query, did=did).data()
-        print result
-        return True
 
     @staticmethod
     def get_diary_by_did(did):
