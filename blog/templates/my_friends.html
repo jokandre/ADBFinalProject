@@ -46,7 +46,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var each_friend_5 = "</div></div></div>";
 		var currentURL = window.location;
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port'/member/api/v1/friends/me',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/friends/me',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {
