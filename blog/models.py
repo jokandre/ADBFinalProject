@@ -442,8 +442,12 @@ class Diary:
     @staticmethod
     def search_for_diary(keyword):
         keyword_f= '.*'+keyword+'.*'
+
         query = '''
-        MATCH (d:Diary) WHERE d.title=~ {keyword} OR d.content=~ {keyword} RETURN d
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary) WHERE diary.title =~ {keyword} OR diary.content=~ {keyword}
+        RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
+        {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, permission: diary.permission,
+        category:diary.category,location: diary.location, latitude: diary.latitude, longitude:diary.longitude, wkt: diary.wkt} as diary
         '''
         return graph.run(query, keyword=keyword_f ).data()
 
