@@ -356,9 +356,9 @@ class Diary:
     @staticmethod
     def get_diary_by_category(category, timestamp):
         query = '''
-        MATCH (diary:Diary)
+        MATCH (diary:Diary) <- [:PUBLISHED] - (owner:User)
         WHERE diary.permission = 'public' and diary.category = {category} and diary.timestamp < {timestamp}
-        RETURN diary
+        RETURN diary, {gender: owner.gender, name: owner.name, portrait: owner.portrait, id: owner.id, nickname: owner.nickname} as owner
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
         return graph.run(query, category=category, timestamp=timestamp).data()
