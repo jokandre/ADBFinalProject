@@ -32,6 +32,8 @@ function showPosition(data) {
     var inilat = data.coords.latitude + 0;
     var inilng = data.coords.longitude + 0;
 
+    //alert(inilat+'\n'+inilng);
+
     $.ajax({
         url: 'http://140.114.77.15:5000/member/api/v1/me/update-location',
         data:JSON.stringify({
@@ -42,8 +44,8 @@ function showPosition(data) {
         contentType:"application/json",
         datatype:'application/json',
         success:function(response){
-            alert('ok');
             getNearbyPeople();
+            //getNearbyDiary();
             showmap(inilat, inilng);
         },
         error:function(error){
@@ -105,6 +107,39 @@ function showmap(inilat, inilng) {
     //markers starts
     var markers = [];
 
+    $.ajax({
+        type:'GET',
+        url: 'http://140.114.77.15:5000/diary/api/v1/search/nearby?distance_km=10',
+        success:function(response){
+            result = response;
+            for(var i=0; i<result.length; i++){
+                var id = result[i]['diary']['id'];
+                var title = result[i]['diary']['title'];
+                var latitude = result[i]['diary']['latitude'];
+                var longitude = result[i]['diary']['longitude'];
+
+                var ll = new google.maps.LatLng(latitude, longitude);
+                var marker = new google.maps.Marker({
+                    position: ll,
+                    map: map
+                });
+
+                markers.push(marker);
+
+                //one marker evt
+                google.maps.event.addListener(marker, 'click', function() {
+                    window.location = "http://140.114.77.15:5000/browse_diary?id="+id;
+                });
+
+            }
+            var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        },
+        error:function(error){
+            console.log(error);
+        }
+    });
+
+
     //markers starts
     // for (var i = 0; i < results.length; i++) {
     //     var object = results[i];
@@ -125,32 +160,30 @@ function showmap(inilat, inilng) {
     //         locatelat = this.position.lat();
     //         locatelng = this.position.lng();
 
-    //         //in db starts
-    //         db.transaction(function(tx) {
-    //             tx.executeSql('INSERT INTO locate(id, lat, lng) VALUES(?,?,?)', [1, locatelat, locatelng], function(tx) {
-    //                 //alert("已成功把" + webname + "加入fv");
-    //                 f = 1;
-    //             });
-    //         });
-    //         //in db ends
+    //  
     //     });
     //     //one marker evt
     //     markers.push(marker);
     // }
     //markers end
 }
+function attachDiary(marker, id){
+
+}
 function getNearbyPeople(){
     $.ajax({
         type:'GET',
-        url: 'http://140.114.77.15:5000/member/api/v1/search/nearby?distance_km=100000',
+        url: 'http://140.114.77.15:5000/member/api/v1/search/nearby?distance_km=3',
         success:function(response){
             result = response;
-            alert(result);
+            
             for(var i=0; i<result.length; i++){
                 var id = result[i]['id'];
                 var portrait = result[i]['portrait'];
                 var name = result[i]['name'];
-                $('.nearby_people').append('<div class="col-md-4 people_list"><img src="'+portrait+'"/><div>'+name+'</div></div>');
+
+                //alert(id+'\n'+name);
+                $('.nearby_people').append('<a href="http://140.114.77.15:5000/other_profile?id='+id+'"><div class="col-md-4 people_list"><img src="'+portrait+'"/><div>'+name+'</div></div></a>');
             }
         },
         error:function(error){
