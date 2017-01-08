@@ -191,7 +191,7 @@
 }
 .show_title{
     color: #66D5DE;
-    font-size: 20px;
+    font-size: 22px;
 }
 .show_location img{
     width: 18px;
@@ -199,12 +199,24 @@
 .show_location{
     font-size: 14px;
     color: #999;
-    margin-top: 10px;
+    margin-top: 15px;
+}
+.show_owner img{
+    width: 28px;
+    display: block;
+    border-radius:50%;
+    float: left;
+    margin-right: 5px;
+}
+.show_owner{
+    margin-top: 6px;
 }
 .diary_abstract{
     margin-top: 25px;
     margin-bottom: 30px;
     font-size: 14px;
+    overflow: hidden;
+    max-height: 40px;   
 }
 .read_btn{
     margin-bottom: 100px;
@@ -212,6 +224,7 @@
 /*Keyword search*/
 .keyword_search{
     margin-top: 40px;
+    margin-bottom: 30px;
     width: 30%;
 }
 .keyword_search input{
@@ -222,4 +235,16 @@
     width: 100%;
     background: url(../images/search.svg) no-repeat right 10px center;
     background-size: 24px;
+}
+.map_button{
+    width: 60px;
+    background-color: #66D5DE;
+    padding: 3px 5px 3px 5px;
+    text-align:center;
+    margin-top: 5px;
+}
+.map_button a{
+    padding: 3px 6px 3px 6px;
+    color: #ffffff !important;
+    text-decoration: none;
 }
