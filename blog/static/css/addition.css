@@ -71,6 +71,9 @@
 	padding: 6px 10px 6px 10px;
 	text-align:center;
 }
+.diary_button a{
+    padding: 6px 50px 6px 50px;
+}
 /*Profile image*/
 .portrait{
     margin-top: 25px;
@@ -205,4 +208,18 @@
 }
 .read_btn{
     margin-bottom: 100px;
+}
+/*Keyword search*/
+.keyword_search{
+    margin-top: 40px;
+    width: 30%;
+}
+.keyword_search input{
+    padding: 12px 45px 12px 10px;
+    outline:none;
+    border:1px solid #ECECEC;
+    border-radius: 3px;
+    width: 100%;
+    background: url(../images/search.svg) no-repeat right 10px center;
+    background-size: 24px;
 }
