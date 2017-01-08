@@ -39,7 +39,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	$(function() {
 
-		var each_friend = "<a href='#'><div class='each_friend'><img class='profile_img' src='";
+		var each_friend = "<a href='http://140.114.77.15:5000/other_profile?id=";
+		var each_friend_1 = "'><div class='each_friend'><img class='profile_img' src='";
 		var each_friend_2 = "'><div class='profile_detail'><div class='name'>";
 		var each_friend_3 = "</div><div class='nick_name'>";
 		var each_friend_4 = "</div><div class='gender'>";
@@ -50,7 +51,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {
-	            	var combine = each_friend+result[i]['portrait']+each_friend_2+result[i]['name']+each_friend_3+result[i]['nickname']+each_friend_4+result[i]['gender']+each_friend_5;
+	            	if (result[i]['nickname'] == null){
+	            		result[i]['nickname'] = "";
+	            	}
+	            	var combine = each_friend+result[i]['id']+each_friend_1+result[i]['portrait']+each_friend_2+result[i]['name']+each_friend_3+result[i]['nickname']+each_friend_4+result[i]['gender']+each_friend_5;
 	            	$(".all_friends").append(combine);
 	            }
 	        },
