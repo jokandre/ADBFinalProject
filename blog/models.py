@@ -348,7 +348,7 @@ class Diary:
         query = '''
         MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
         WHERE diary.timestamp < {timestamp} and diary.permission <> 'private'
-        RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
+        RETURN DISTINCT(diary), {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
         return graph.run(query, uid=uid, timestamp=timestamp).data()
