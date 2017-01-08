@@ -80,10 +80,19 @@
 .content_title{
 	width: 100%;
 	float: left;
+	padding-bottom: 12px;
 }
 .content_detail{
 	width: 100%;
 	margin-top: 30px;
 	max-height: 50px;
 }
-
+.cate{
+	padding: 3px;
+	margin-top: 0px;
+	width: 220px;
+	font-size: 15px;
+	color: white;
+	border-radius: 11px;
+	background-color: #33CCFF;
+}

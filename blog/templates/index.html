@@ -62,7 +62,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
-	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+"<a class='cate'>"+result[i]['diary']['category']+"</a><br><br>"+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
 	            	$(".all_diary").append(combine);
 
 	            	if (i == result.length-1) {
@@ -103,7 +103,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		        success: function(response) {
 		            result = response;
 		            for (var i =  0; i < result.length; i++) {
-		            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+		            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+"<a class='cate'>"+result[i]['diary']['category']+"</a><br><br>"+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
 		            	$(".all_diary").append(combine);
 
 		            	if (i == result.length-1) {
