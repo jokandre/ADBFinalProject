@@ -24,11 +24,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="banner-bottom">
 		<div class="container">
 			<h3>DIARY YOU WANT</h3>
-			<div class="col-md-10 col-md-offset-1 keyword_search">
+			<div class="col-md-10 col-md-offset-1">
+                <a href="#0" class="cate" onclick="cate(0);">Complain and Crap</a>
+                <a href="#1" class="cate" onclick="cate(1);">Daily Philosophy</a>
+                <a href="#2" class="cate" onclick="cate(2);">Anxiety and Tiredness</a>
+                <a href="#3" class="cate" onclick="cate(3);">Optimism and Hope</a>
+                <a href="#4" class="cate" onclick="cate(4);">Joy and Blessingp</a>
+                <a href="#5" class="cate" onclick="cate(5);">Miss and Regret</a>
+                <a href="#6" class="cate" onclick="cate(6);">Fortitutde and Good night</a>
+                <a href="#7" class="cate" onclick="cate(7);">Idling and Life</a>
+                <a href="#8" class="cate" onclick="cate(8);">Others</a>
+            </div>
+            <div class="col-md-10 col-md-offset-1 keyword_search">
 				<input type="text" id="keyword_textbox" placeholder="Search Here"/>
 			</div>
-			<div id="ajax-loader" class="col-md-10 col-md-offset-1">
-			</div>
+			
 			<div class="col-md-10 col-md-offset-1" id="diary_grids">
 			</div>
 		</div>
@@ -63,7 +73,7 @@ $("#keyword_textbox").keyup(function(event){
             	var name = result[i]['owner']['name'];
             	var portrait = result[i]['owner']['portrait'];
 
-            	$('#diary_grids').append("<div class='col-md-6'><div class='col-xs-6'><div class='show_title'>"+title+"</div><div style='color:#999;font-size: 12px;'>[ "+category+" ]</div></div><div class='col-xs-6' style='border-left: 1px solid #DEDEDE;'><div class='show_owner'><img src='"+portrait+"'/> "+name+"</div><div class='show_location'><img src='../static/images/location.svg'/>"+location+"</div></div><div class='clearfix'> </div><div class='diary_abstract'><p>"+content+"</p></div><div class='more m1 read_btn'><a href='http://140.114.77.15:5000/browse_diary?id="+id+"'>Read More</a></div></div>");
+            	$('#diary_grids').append("<div class='col-md-6 search_key_word'><div class='col-xs-6'><div class='show_title'>"+title+"</div><div style='color:#999;font-size: 12px;'>[ "+category+" ]</div></div><div class='col-xs-6' style='border-left: 1px solid #DEDEDE;'><div class='show_owner'><img src='"+portrait+"'/> "+name+"</div><div class='show_location'><img src='../static/images/location.svg'/>"+location+"</div></div><div class='clearfix'> </div><div class='diary_abstract'><p>"+content+"</p></div><div class='more m1 read_btn'><a href='http://140.114.77.15:5000/browse_diary?id="+id+"'>Read More</a></div></div>");
             }
             
         },   
@@ -74,5 +84,47 @@ $("#keyword_textbox").keyup(function(event){
     }
 });
 </script>
+<script type="text/javascript">
+function cate(num) {
+            var currentURL = window.location;
+            $(".search_key_word").remove();
+            $.ajax({
+                url: 'http://140.114.77.15:5000/diary/api/v1/search/category?category='+num,
+                success: function(response) {
+                    result = response;
+                    for (var i =  0; i < result.length; i++) {
+                        var id = result[i]['diary']['id'];
+                        var location = result[i]['diary']['location'];
+                        var title = result[i]['diary']['title'];
+                        var category = result[i]['diary']['category'];
+                        var content = result[i]['diary']['content'];
+                        var name = result[i]['owner']['name'];
+                        var portrait = result[i]['owner']['portrait'];
+
+                        $('#diary_grids').append("<div class='col-md-6 search_key_word'><div class='col-xs-6'><div class='show_title'>"+title+"</div><div style='color:#999;font-size: 12px;'>[ "+category+" ]</div></div><div class='col-xs-6' style='border-left: 1px solid #DEDEDE;'><div class='show_owner'><img src='"+portrait+"'/> "+name+"</div><div class='show_location'><img src='../static/images/location.svg'/>"+location+"</div></div><div class='clearfix'> </div><div class='diary_abstract'><p>"+content+"</p></div><div class='more m1 read_btn'><a href='http://140.114.77.15:5000/browse_diary?id="+id+"'>Read More</a></div></div>");
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    alert("fail");
+                }
+            });
+        };
+</script>
+<style type="text/css">
+    .cate{
+        float: left;
+        border: solid 1px #CCDDFF;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px !important;
+        margin-left: 10px;
+        margin-bottom: : 20px !important;
+    }
+    .cate:hover{
+        color: white;
+        background-color: #CCDDFF;
+    }
+</style>
+
 </body>
 </html>
