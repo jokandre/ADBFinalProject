@@ -74,7 +74,10 @@ class Article:
 		return 'public' if r < 5 else 'friends' if r < 8 else 'private'
 
 	def rand_generator(self, target):
-		f = str(target).split('.')[1]
+		try:
+			f = str(target).split('.')[1][0]
+		except:
+			f = '0'
 		if f:
 			while len(f) <= 6:
 				f += str(random.randint(0, 9))
@@ -121,7 +124,7 @@ board, cate = ('diary', '')
 Articles = getArticlesByDateRange()
 i=0
 
-with open('data/Diary_v2.csv', 'w') as f:
+with open('data/Diary_v3.csv', 'w') as f:
 	writter = csv.writer(f)
 	writter.writerow(['id', 'title', 'permission', 'content', 'latitude', 'longitude', 'category', 'location', 'address', 'timestamp', 'wkt'])
 	for article in Articles:
