@@ -13,34 +13,207 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Seafaring Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-
-<!-- //this_css -->
-<link href="../static/css/friends.css" rel="stylesheet" type="text/css" media="all" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
 
 </head>
 
 <body>
 <!-- header -->
 	{% include 'header.html' %}
-<!-- //container -->
+
+<!-- banner-bottom -->
 	<div class="banner-bottom">
 		<div class="container">
-			<h3>WHAT's NEW IN SPECTRUM</h3>
-			<div class="all_diary">
-				<input type="hidden" name="" value="" class="hiddenV">
+			<h3>SPECTRUM YOU MAY LIKE</h3>
+			<div class="recommend_people">
+			</div>
+		</div>
+
+		<hr>
+
+		<div class="container common_diary">
+			<h3 class="diary_area">DIARY YOU MAY LIKE</h3>
+
+		</div>
+	</div>
+<!-- //banner-bottom -->
+
+<!-- welcome-bottom -->
+	<div class="welcome-bottom" >
+		<div class="container" >
+			<div class="welcome-bottom-grids">
+				<div class="welcome-bottom-grid-l">
+					<div class="more">
+						<a href="single.html">More Info</a>
+					</div>
+				</div>
+				<div class="welcome-bottom-grid-left">
+					<h3>PLACE TO FIND THE LOVE</h3>
+					<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam
+						corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>
+				</div>
+				<div>
+					<img src="../static/images/couple.png" class="findingLoveIcon">
+				</div>
+				<div class="clearfix"> </div>
 			</div>
 		</div>
 	</div>
+<!-- //welcome-bottom -->
+
+<!-- features -->
+	<div class="features">
+		<div class="container">
+			<div class="features-grids">
+				<div class="col-md-6 features-grid-left">
+					<h3>HOT DIARY TODAY</h3>
+					<div class="features-grids1">
+						<h2>JIM - the day I find that I'm a girl</h2>
+						<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+							consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.
+							sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.
+							sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.
+							sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.
+							sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+						<div class="col-md-6 features-grids1-left">
+							<ul>
+								<li><a href="#">FAMOUS</a></li>
+								<li><a href="#">PLACE</a></li>
+								<li><a href="#">HOBBY</a></li>
+							</ul>
+						</div>
+						<div class="col-md-6 features-grids1-left">
+							<ul>
+								<li><a href="#">8.9 / 10</a></li>
+								<li><a href="#">New Taipei City,...</a></li>
+								<li><a href="#">Guitar,  Girlfriends, ...</a></li>
+							</ul>
+						</div>
+						<div class="clearfix"> </div>
+						<div class="more m1">
+							<a href="single.html">More Info</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 features-grid-right">
+					<h3>New Spectrum Here</h3>
+					<div class="test1">
+						<div class="col-xs-8 test1-right">
+							<p>Adipisci velit, sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.<span>TobyToby</span></p>
+						</div>
+						<div class="col-xs-4 test1-left">
+							<img src="../static/images/3.jpg" alt=" " class="img-responsive" />
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="test11">
+						<div class="col-xs-4 test1-left">
+							<img src="../static/images/2.jpg" alt=" " class="img-responsive" />
+						</div>
+						<div class="col-xs-8 test1-right">
+							<p>Adipisci velit, sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.<span>Jim Sex</span></p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="test11">
+						<div class="col-xs-8 test1-right">
+							<p>Adipisci velit, sed quia non numquam eius modi tempora incidunt
+							ut labore et dolore magnam aliquam quaerat voluptatem.<span>Don't Judge Me</span></p>
+						</div>
+						<div class="col-xs-4 test1-left">
+							<img src="../static/images/4.jpg" alt=" " class="img-responsive" />
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!-- //features -->
 
 <!-- footer -->
 	{% include 'footer.html' %}
 
 
+</body>
+<!-- for bootstrap working -->
+<script src="../static/js/bootstrap.js"> </script>
+<!-- //for bootstrap working -->
+<!-- //this_css -->
+<link href="../static/css/recommend.css" rel="stylesheet" type="text/css" media="all" />
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 	$(function() {
+        var person_0="<a href='http://140.114.77.15:5000/other_profile?id=";
+        var person_01="'><div class='person'><img class='avatar' src='";
+        var person_1="''></div></a>";
+
+
+		var name = "";
+		var portrait = "";
+		var location = "";
+		var content = "";
+		var title = "";
+
 		var currentURL = window.location;
-        var each_diary_0="<a href='http://140.114.77.15:'"+currentURL.port+"'/?"
+
+		var id = '';
+
+        $.ajax({
+	        url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/friends/of-friends',
+	        success: function(response) {
+	            result = response;
+	            for (var i =  0; i < result.length; i++) {
+	            	var combine = person_0+result[i]['id']+person_01+result[i]['portrait']+person_1;
+	            	$(".recommend_people").append(combine);
+	            }
+	            console.log("start get_diary");
+	            id = get_common_diary_id();
+	            console.log(id);
+	            get_common_diary();
+	            console.log("finish get_diary");
+	        },
+	        error: function (jqXHR, exception) {
+	        	alert("fail");
+	        }
+	    });
+		//window.location.href = "http://140.114.77.15:5050/login";
+	});
+</script>
+<script type="text/javascript">
+	function get_common_diary_id() {
+        var currentURL = window.location;
+        var id=''
+        $.ajax({
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/me',
+	        success: function(response) {
+	            result = response;
+	            for (var i =  0; i < 1; i++) {
+	            	id = result[i]['Diary']['id'];
+	            }
+	        },
+	        error: function (jqXHR, exception) {
+	        	alert("fail in get common diary");
+	        }
+	    });
+	    return id;
+		//window.location.href = "http://140.114.77.15:5050/login";
+	}
+</script>
+<script type="text/javascript">
+	function get_common_diary() {
+				var currentURL = window.location;
+        var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?id="
         var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
         var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
         var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
@@ -56,67 +229,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var title = "";
 
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/friends',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/similar?did=ptt99180',
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
-	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
-	            	$(".all_diary").append(combine);
-
-	            	if (i == result.length-1) {
-	            		$(".all_diary").append("<button class='all_more' style='width: 100%; border: solid 1px gray; float: left;'' align='Center'> more </button>");
-	            		$(".hiddenV").val(result[i]['diary']['timestamp']);
-	            	}
+	            	console.log("getting diary");
+	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['owner']['portrait']+each_diary_2+result[i]['owner']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+	            	$(".common_diary").append(combine);
 	            }
 	        },
 	        error: function (jqXHR, exception) {
-	        	alert("fail");
+	        	alert("fail in get common diary");
 	        }
 	    });
 		//window.location.href = "http://140.114.77.15:5050/login";
-	});
-</script>
-<script>
-	$(document).on('click', '.all_more', function() {
-			var each_diary_0="<a href='http://140.114.77.15:5000/?"
-        	var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
-        	var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
-	        var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
-	        var each_diary_4="</p></div></div><div style='border: solid 1px silver; float: left;width: 60px;margin-top: 10px;'></div><div class='content'><div class='content_title'><h4>";
-	        var each_diary_5="</h4></div><div class='content_detail'><h5>";
-	        var each_diary_6="</h5></div></div><p style='color: #87CEFA;width:100%;font-size: 13px;float:left;''>read more</p></div></a>";
-
-
-			var name = "";
-			var portrait = "";
-			var location = "";
-			var content = "";
-			var title = "";
-
-			var timeST = $(".hiddenV").val();
-	    	$(".all_more").remove();
-			$.ajax({
-		        url: 'http://140.114.77.15:5000/diary/api/v1/friends?timestamp='+timeST,
-		        success: function(response) {
-		            result = response;
-		            for (var i =  0; i < result.length; i++) {
-		            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
-		            	$(".all_diary").append(combine);
-
-		            	if (i == result.length-1) {
-		            		$(".all_diary").append("<button class='all_more' style='width: 100%; border: solid 1px gray; float: left;'' align='Center'> more </button>");
-		            		$(".hiddenV").val(result[i]['diary']['timestamp']);
-		            	}
-		            }
-		        },
-		        error: function (jqXHR, exception) {
-		        	alert("fail");
-		        }
-		    });
-		});
-
-
+	}
 </script>
 
-</body>
+
+
 </html>

@@ -348,7 +348,7 @@ class Diary:
         query = '''
         MATCH (:User {id:{uid}})- [:FRIEND] - (friend:User) - [:PUBLISHED]->(diary:Diary)
         WHERE diary.timestamp < {timestamp} and diary.permission <> 'private'
-        RETURN diary, {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
+        RETURN DISTINCT(diary), {gender: friend.gender, name: friend.name, portrait: friend.portrait, id: friend.id} as friend
         ORDER BY diary.timestamp DESC LIMIT 20
         '''
         return graph.run(query, uid=uid, timestamp=timestamp).data()
@@ -394,17 +394,15 @@ class Diary:
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
-
         #evaluate diary vectors and save it to psql
         import lda
         vectors = lda.lda(content)
         query = """
-        INSERT diary_vectors
-        VALUES ('{0}', cube(ARRAY[{1}]), '{2}')
+        INSERT INTO diary_vectors
+        VALUES ('{0}', cube(ARRAY[{1}]), '{2}');
         """.format(uuid_diary, ', '.join(vectors), permission)
         psql.execute(query)
         psqlconn.commit()
-
         return ('', 200)
 
     @staticmethod
@@ -417,21 +415,10 @@ class Diary:
         WHERE NOT (d:Diary)-[:PUBLISHED]-(:User{id: {id}})
         AND NOT (d:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
         AND (d.permission = "public")
-        RETURN d.id AS id, d.title AS title, d.content AS content, d.timestamp AS timestamp, d.date AS date, d.category AS category, d.location AS location, d.latitude AS latitude,
-        d.longitude AS longitude
+        RETURN {id: d.id, title:d.title, latitude:d.latitude, longitude:d.longitude} AS diary
         '''
         # TODO what to return?
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
-
-    @staticmethod
-    def check_permission(id, did):
-        query = '''
-        MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
-        RETURN d.permission AS permission, u.id AS uid
-        '''
-        result = graph.run(query, did=did).data()
-        print result
-        return True
 
     @staticmethod
     def get_diary_by_did(did):
@@ -446,11 +433,16 @@ class Diary:
     @staticmethod
     def search_for_diary(keyword):
         keyword_f= '.*'+keyword+'.*'
+
         query = '''
-        MATCH (d:Diary) WHERE d.title=~ {keyword} OR d.content=~ {keyword} RETURN d
+        MATCH (p:User)-[:PUBLISHED]-(diary:Diary) WHERE diary.title =~ {keyword} OR diary.content=~ {keyword}
+        RETURN {gender: p.gender, name: p.name, portrait: p.portrait, id: p.id} as owner,
+        {id: diary.id, title: diary.title, content: diary.content, timestamp: diary.timestamp, date: diary.date, permission: diary.permission,
+        category:diary.category,location: diary.location, latitude: diary.latitude, longitude:diary.longitude, wkt: diary.wkt} as diary
         '''
         return graph.run(query, keyword=keyword_f ).data()
 
+    @staticmethod
     def get_similar_diary(uid, did):
         query = """
         SELECT * from diary_vectors
