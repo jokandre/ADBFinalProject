@@ -58,24 +58,24 @@ div#map,
 </style>
 <script text="javascript">
 $(function(){
-	var currentURL = window.location;
-	$.ajax({
-		type:'GET',
-		url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/search/nearby?distance_km=10',
-      	success:function(response){
-        	result = response;
-        	alert(result);
-        	for(var i=0; i<result.length; i++){
-        		var id = result[i]['id'];
-        		var portrait = result[i]['portrait'];
-        		var name = result[i]['name'];
-        		$('.nearby_people').append('<div class="col-md-4 people_list"><img src="'+portrait+'"/><div>'+name+'</div></div>');
-        	}
-      	},
-      	error:function(error){
-        	console.log(error);
-      	}
-	});
+	// var currentURL = window.location;
+	// $.ajax({
+	// 	type:'GET',
+	// 	url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/search/nearby?distance_km=10',
+ //      	success:function(response){
+ //        	result = response;
+ //        	//alert(result);
+ //        	for(var i=0; i<result.length; i++){
+ //        		var id = result[i]['id'];
+ //        		var portrait = result[i]['portrait'];
+ //        		var name = result[i]['name'];
+ //        		$('.nearby_people').append('<div class="col-md-4 people_list"><img src="'+portrait+'"/><div>'+name+'</div></div>');
+ //        	}
+ //      	},
+ //      	error:function(error){
+ //        	console.log(error);
+ //      	}
+	// });
 });
 </script>
 <body>
@@ -146,30 +146,6 @@ $(function(){
 				<div id="pageContentWrapper"  class="pageContentWrapper" style="margin-top:60px;">
 					<div id="slide_one" class="slide_content slide active">
 						<div class="nearby_people">
-							<div class="col-md-4 people_list">
-								<img src="../static/images/2.jpg"/>
-								<div>Jim</div>
-							</div>
-							<div class="col-md-4 people_list">
-								<img src="../static/images/4.jpg"/>
-								<div>Eunice</div>
-							</div>
-							<div class="col-md-4 people_list">
-								<img src="../static/images/3.jpg"/>
-								<div>Toby</div>
-							</div>
-							<div class="col-md-4 people_list">
-								<img src="../static/images/2.jpg"/>
-								<div>Jim</div>
-							</div>
-							<div class="col-md-4 people_list">
-								<img src="../static/images/4.jpg"/>
-								<div>Eunice</div>
-							</div>
-							<div class="col-md-4 people_list">
-								<img src="../static/images/3.jpg"/>
-								<div>Toby</div>
-							</div>
 						</div>
 					</div>
 					<div id="slide_two" class="slide_content slide">
@@ -236,6 +212,7 @@ $(function(){
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="../static/js/markerclusterer.js"></script>
 <script type="text/javascript">
 $(function() {
 	var w_height = screen.height;
