@@ -25,7 +25,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //container -->
 	<div class="banner-bottom">
 		<div class="container">
-			<h3>WHAT's NEW IN SPECTRUM</h3>
+			<h3>SIMILAR DIARY</h3>
 			<div class="all_diary">
 				<input type="hidden" name="" value="" class="hiddenV">
 			</div>
@@ -35,12 +35,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- footer -->
 	{% include 'footer.html' %}
 
-<!-- for bootstrap working -->
-<script src="../static/js/bootstrap.js"> </script>
+
 <!-- //for bootstrap working -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 	$(function() {
+		// var pre_id = currentURL.split("?");
+        // var did = pre_id.split("=");
 		var currentURL = window.location;
         var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?id="
         var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
@@ -58,17 +59,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var title = "";
 
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/friends',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/similar?did=ptt99180',
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
-	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+"<a class='cate'>"+result[i]['diary']['category']+"</a><br><br>"+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['owner']['portrait']+each_diary_2+result[i]['owner']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+"<a class='cate'>"+result[i]['diary']['category']+"</a><br><br>"+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
 	            	$(".all_diary").append(combine);
-
-	            	if (i == result.length-1) {
-	            		$(".all_diary").append("<button class='all_more' style='width: 100%; border: solid 1px gray; float: left;'' align='Center'> more </button>");
-	            		$(".hiddenV").val(result[i]['diary']['timestamp']);
-	            	}
 	            }
 	        },
 	        error: function (jqXHR, exception) {
@@ -78,46 +74,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		//window.location.href = "http://140.114.77.15:5050/login";
 	});
 </script>
-<script>
-	$(document).on('click', '.all_more', function() {
-			var currentURL = window.location;
-			var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?"
-        	var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
-        	var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
-	        var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
-	        var each_diary_4="</p></div></div><div style='border: solid 1px silver; float: left;width: 60px;margin-top: 10px;'></div><div class='content'><div class='content_title'><h4>";
-	        var each_diary_5="</h4></div><div class='content_detail'><h5>";
-	        var each_diary_6="</h5></div></div><p style='color: #87CEFA;width:100%;font-size: 13px;float:left;''>read more</p></div></a>";
-
-
-			var name = "";
-			var portrait = "";
-			var location = "";
-			var content = "";
-			var title = "";
-
-			var timeST = $(".hiddenV").val();
-	    	$(".all_more").remove();
-			$.ajax({
-		        url: 'http://140.114.77.15:5000/diary/api/v1/friends?timestamp='+timeST,
-		        success: function(response) {
-		            result = response;
-		            for (var i =  0; i < result.length; i++) {
-		            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+"<a class='cate'>"+result[i]['diary']['category']+"</a><br><br>"+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
-		            	$(".all_diary").append(combine);
-
-		            	if (i == result.length-1) {
-		            		$(".all_diary").append("<button class='all_more' style='width: 100%; border: solid 1px gray; float: left;'' align='Center'> more </button>");
-		            		$(".hiddenV").val(result[i]['diary']['timestamp']);
-		            	}
-		            }
-		        },
-		        error: function (jqXHR, exception) {
-		        	alert("fail");
-		        }
-		    });
-		});
-
+<!-- for bootstrap working -->
+<script src="../static/js/bootstrap.js"> </script>
 
 </script>
 
