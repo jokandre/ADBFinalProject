@@ -39,14 +39,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	$(function() {
 
-		var each_friend = "<div class='each_friend'><img class='profile_img' src='";
+		var each_friend = "<a href='#'><div class='each_friend'><img class='profile_img' src='";
 		var each_friend_2 = "'><div class='profile_detail'><div class='name'>";
 		var each_friend_3 = "</div><div class='nick_name'>";
 		var each_friend_4 = "</div><div class='gender'>";
-		var each_friend_5 = "</div></div></div>";
+		var each_friend_5 = "</div></div></div></a>";
 		var currentURL = window.location;
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port'/member/api/v1/friends/me',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/friends/me',
 	        success: function(response) {
 	            result = response;
 	            for (var i = result.length - 1; i >= 0; i--) {

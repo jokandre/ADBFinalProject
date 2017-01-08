@@ -68,7 +68,11 @@ class User:
         MATCH (other:User {id:{other_uid}})
         OPTIONAL MATCH (me:User {id:{id}}) - [r:FRIEND] - (other)
         WITH  other, CASE WHEN count(r) > 0 then True else False end as friendship
-        RETURN friendship, {gender: other.gender, name: other.name, portrait: other.portrait, id: other.id} as owner
+        RETURN friendship,
+            {
+            gender: other.gender, name: other.name, portrait: other.portrait, id: other.id, birthday: other.birthday,
+            email: other.email, height: other.height, weight: other.weight, interest: other.interest, residence:other.residence
+            } as owner
         '''
         return graph.run(query, id=id, other_uid=other_uid).data()
 
@@ -218,10 +222,10 @@ class User:
     @staticmethod
     def update_location(uid, lat, lon):
         query = '''
-        MATCH (u) WHERE u.id = {which}
+        MATCH (u:User) WHERE u.id = {which}
         SET u.wkt = {wkt},
         u.latitude = {lat},
-        u.longitude = {lon},
+        u.longitude = {lon}
         WITH u AS u
         CALL spatial.addNode('member', u) YIELD node
         RETURN COUNT(node)
@@ -390,17 +394,15 @@ class Diary:
         result = str(graph.run(query, which=uuid_diary).evaluate())
         if result != '1':
             print "spatial addNode error!" + result
-
         #evaluate diary vectors and save it to psql
         import lda
         vectors = lda.lda(content)
         query = """
-        INSERT diary_vectors
-        VALUES ('{0}', cube(ARRAY[{1}]), '{2}')
+        INSERT INTO diary_vectors
+        VALUES ('{0}', cube(ARRAY[{1}]), '{2}');
         """.format(uuid_diary, ', '.join(vectors), permission)
         psql.execute(query)
         psqlconn.commit()
-
         return ('', 200)
 
     @staticmethod
@@ -413,21 +415,10 @@ class Diary:
         WHERE NOT (d:Diary)-[:PUBLISHED]-(:User{id: {id}})
         AND NOT (d:Diary)-[:PUBLISHED]-(:User)-[:FRIEND]-(:User{id: {id}})
         AND (d.permission = "public")
-        RETURN d.id AS id, d.title AS title, d.content AS content, d.timestamp AS timestamp, d.date AS date, d.category AS category, d.location AS location, d.latitude AS latitude,
-        d.longitude AS longitude
+        RETURN {id: d.id, title:d.title, latitude:d.latitude, longitude:d.longitude} AS diary
         '''
         # TODO what to return?
         return graph.run(query, lat=user['latitude'], lon=user['longitude'], distance=distance_km, id=uid)
-
-    @staticmethod
-    def check_permission(id, did):
-        query = '''
-        MATCH (d:Diary {id:{did}})-[:PUBLISHED]-(u:User)
-        RETURN d.permission AS permission, u.id AS uid
-        '''
-        result = graph.run(query, did=did).data()
-        print result
-        return True
 
     @staticmethod
     def get_diary_by_did(did):
@@ -451,6 +442,7 @@ class Diary:
         '''
         return graph.run(query, keyword=keyword_f ).data()
 
+    @staticmethod
     def get_similar_diary(uid, did):
         query = """
         SELECT * from diary_vectors

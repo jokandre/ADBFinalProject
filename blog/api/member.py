@@ -38,6 +38,16 @@ def get_my_info():
 		raise InvalidUsage("Missing Parameters: " + str(error))
 	return result
 
+def get_profile():
+	id = session['id']
+	other_id = request.args.get('other_id')
+	if other_id is None:
+		raise InvalidUsage("Missing Parameters: other_id")
+	elif id == other_id:
+		raise InvalidUsage("Don't do bad thing!")
+	else:
+		return jsonify(User.get_profile(id, other_id))
+
 def update_my_info():
 	json_dict = request.get_json()
 	if json_dict is None:
@@ -88,6 +98,26 @@ def get_common_likes():
 	else:
 		common_likes = User.get_common_likes(id, other_id)
 		return jsonify(common_likes)
+
+def create_friendship():
+	id = session['id']
+	other_id = request.args.get('other_id')
+	if other_id is None:
+		raise InvalidUsage("Missing Parameters: other_id")
+	elif id == other_id:
+		raise InvalidUsage("Don't do bad thing!")
+	else:
+		return User.create_friendship(id, other_id)
+
+def delete_friendship():
+	id = session['id']
+	other_id = request.args.get('other_id')
+	if other_id is None:
+		raise InvalidUsage("Missing Parameters: other_id")
+	elif id == other_id:
+		raise InvalidUsage("Don't do bad thing!")
+	else:
+		return User.delete_friendship(id, other_id)
 
 def update_location():
 	json_dict = request.get_json()

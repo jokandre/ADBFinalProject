@@ -57,7 +57,7 @@ function create_diary(){
 	var content = CKEDITOR.instances['diary_content'].getData();
 
 	$.ajax({
-		url: 'http://140.114.77.15:5000/diary/api/v1/create',
+		url: '/diary/api/v1/create',
       	data:JSON.stringify({
         	title: title,
 		 	location: location,
@@ -72,7 +72,7 @@ function create_diary(){
       	contentType:"application/json",
       	datatype:'application/json',
       	success:function(response){
-        	window.location = "http://140.114.77.15:5000/personal";
+        	window.location = "/personal";
       	},
       	error:function(error){
         	console.log(error);

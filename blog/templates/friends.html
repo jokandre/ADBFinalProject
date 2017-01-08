@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	$(function() {
 		var currentURL = window.location;
-        var each_diary_0="<a href='http://140.114.77.15:'"+currentURL.port+"'/?"
+        var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?"
         var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
         var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
         var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
@@ -78,7 +78,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 <script>
 	$(document).on('click', '.all_more', function() {
-			var each_diary_0="<a href='http://140.114.77.15:5000/?"
+			var currentURL = window.location;
+			var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?"
         	var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
         	var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
 	        var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";

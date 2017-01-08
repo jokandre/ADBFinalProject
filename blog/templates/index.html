@@ -27,24 +27,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="container">
 			<h3>SPECTRUM YOU MAY LIKE</h3>
 			<div class="recommend_people">
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
-				<div class="person">
-					<img class="avatar" src="../static/images/2.jpg">
-				</div>
 			</div>
 		</div>
 
@@ -182,6 +164,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		var currentURL = window.location;
 
+		var id = '';
+
         $.ajax({
 	        url: 'http://140.114.77.15:'+currentURL.port+'/member/api/v1/friends/common-likes/users',
 	        success: function(response) {
@@ -191,6 +175,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	            	//$(".recommend_people").append(combine);
 	            }
 	            console.log("start get_diary");
+	            id = get_common_diary_id();
+	            console.log(id);
 	            get_common_diary();
 	            console.log("finish get_diary");
 	        },
@@ -202,9 +188,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	});
 </script>
 <script type="text/javascript">
+	function get_common_diary_id() {
+        var currentURL = window.location;
+        var id=''
+        $.ajax({
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/me',
+	        success: function(response) {
+	            result = response;
+	            for (var i =  0; i < 1; i++) {
+	            	id = result[i]['Diary']['id'];
+	            }
+	        },
+	        error: function (jqXHR, exception) {
+	        	alert("fail in get common diary");
+	        }
+	    });
+	    return id;
+		//window.location.href = "http://140.114.77.15:5050/login";
+	}
+</script>
+<script type="text/javascript">
 	function get_common_diary() {
 				var currentURL = window.location;
-        var each_diary_0="<a href='http://140.114.77.15:'"+currentURL.port+"'/?"
+        var each_diary_0="<a href='http://140.114.77.15:"+currentURL.port+"/browse_diary?"
         var each_diary_1="'><div class='each_diary'><div class='user_intro'><img src='";
         var each_diary_2="'><div class='user_intro_detail'><p class='user_name'>";
         var each_diary_3="</p><img class='user_location_icon' src='/static/images/location.png'><p class='user_location'>";
@@ -220,17 +226,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var title = "";
 
         $.ajax({
-	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/friends',
+	        url: 'http://140.114.77.15:'+currentURL.port+'/diary/api/v1/similar?did=ptt99180',
 	        success: function(response) {
 	            result = response;
 	            for (var i =  0; i < result.length; i++) {
 	            	console.log("getting diary");
-	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['friend']['portrait']+each_diary_2+result[i]['friend']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
+	            	var combine = each_diary_0+result[i]['diary']['id']+each_diary_1+result[i]['owner']['portrait']+each_diary_2+result[i]['owner']['name']+each_diary_3+result[i]['diary']['location']+each_diary_4+result[i]['diary']['title']+each_diary_5+result[i]['diary']['content']+each_diary_6;
 	            	$(".common_diary").append(combine);
 	            }
 	        },
 	        error: function (jqXHR, exception) {
-	        	alert("fail");
+	        	alert("fail in get common diary");
 	        }
 	    });
 		//window.location.href = "http://140.114.77.15:5050/login";
