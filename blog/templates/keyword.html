@@ -52,6 +52,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 var currentURL = window.location;
 $("#keyword_textbox").keyup(function(event){
     if(event.keyCode == 13){
+        $(".search_key_word").remove();
+            
         //alert($("#keyword_textbox").val());
         var keyword = $("#keyword_textbox").val();
         $('#ajax-loader').append('<center><img src="../static/images/loading.gif"/></center>');
