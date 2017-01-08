@@ -38,7 +38,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="col-md-10 col-md-offset-1 keyword_search">
 				<input type="text" id="keyword_textbox" placeholder="Search Here"/>
 			</div>
-			
+			<div id="ajax-loader" class="col-md-10 col-md-offset-1"></div>
 			<div class="col-md-10 col-md-offset-1" id="diary_grids">
 			</div>
 		</div>
@@ -53,6 +53,7 @@ var currentURL = window.location;
 $("#keyword_textbox").keyup(function(event){
     if(event.keyCode == 13){
         $(".search_key_word").remove();
+        //$('#diary_grids').empty();
             
         //alert($("#keyword_textbox").val());
         var keyword = $("#keyword_textbox").val();
@@ -90,6 +91,7 @@ $("#keyword_textbox").keyup(function(event){
 function cate(num) {
             var currentURL = window.location;
             $(".search_key_word").remove();
+            //$('#diary_grids').empty();
             $.ajax({
                 url: 'http://140.114.77.15:5000/diary/api/v1/search/category?category='+num,
                 success: function(response) {
@@ -121,6 +123,7 @@ function cate(num) {
         margin-top: 20px !important;
         margin-left: 10px;
         margin-bottom: : 20px !important;
+        text-decoration: none;
     }
     .cate:hover{
         color: white;

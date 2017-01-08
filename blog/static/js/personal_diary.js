@@ -109,6 +109,7 @@ function full_diary(){
             $('#diary_content').append(content);
             $('#author_img').attr("src",portrait);
             $('#author').append(name);
+            $('#similar').attr('href', '/similar_diary?id='+id);
         },   
         error:function(error){
             console.log(error);
