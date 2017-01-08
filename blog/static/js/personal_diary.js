@@ -9,6 +9,7 @@ function initPersonal(){
                 var id = result[i]['Diary']['id'];
                 var date = result[i]['Diary']['date'];
                 var title = result[i]['Diary']['title'];
+                var category = result[i]['Diary']['category'];
                 var location = result[i]['Diary']['location'];
                 var content = result[i]['Diary']['content'];
 
@@ -73,10 +74,7 @@ function initPersonal(){
                         break;
                 }
 
-                var split_content = content.split('<p/>');
-                //alert(split_content[0]+'\n'+split_content[1]);
-
-                $('#diary_grids').append("<div class='col-md-6'><div class='col-xs-5 show_date'>"+year+"<br/>"+month+"<br/>"+day+"</div><div class='col-xs-7'><div class='show_title'>"+title+"</div><div class='show_location'><img src='../static/images/location.svg'/> "+location+"</div></div><div class='clearfix'> </div><div class='diary_abstract'><p>"+split_content[0]+"</p></div><div class='more m1 read_btn'><a href='http://140.114.77.15:5000/browse_diary?id="+id+"'>Read More</a></div></div>");
+                $('#diary_grids').append("<div class='col-md-6'><div class='col-xs-5 show_date'>"+year+"<br/>"+month+"<br/>"+day+"</div><div class='col-xs-7'><div class='show_title'>"+title+"</div><div>"+category+"</div><div class='show_location'><img src='../static/images/location.svg'/> "+location+"</div></div><div class='clearfix'> </div><div class='diary_abstract'><p>"+content+"</p></div><div class='more m1 read_btn'><a href='http://140.114.77.15:5000/browse_diary?id="+id+"'>Read More</a></div></div>");
             }
         },
         error:function(error){
@@ -100,6 +98,10 @@ function full_diary(){
             var portrait = result[0]['owner']['portrait'];
             var name = result[0]['owner']['name'];
             //var lat = result[i]['diary']['latitude'];
+
+            if(date==null){
+                date='';
+            }
 
             //alert(lat);
             $('#diary_title').append(title);
