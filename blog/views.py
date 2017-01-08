@@ -66,6 +66,16 @@ def keyword():
     session_check('render_page')
     return render_template('keyword.html')
 
+@app.route('/similar_diary', methods=['GET'])
+def similar_diary():
+    session_check('render_page')
+    return render_template('similar_diary.html')
+
+@app.route('/test_map', methods=['GET'])
+def test_map():
+    session_check('render_page')
+    return render_template('test_map.html')
+
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
 def send_static(filename):
