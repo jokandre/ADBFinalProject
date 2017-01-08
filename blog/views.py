@@ -56,6 +56,16 @@ def browse_diary():
     session_check('render_page')
     return render_template('browse_diary.html')
 
+@app.route('/other_profile', methods=['GET'])
+def other_profile():
+    session_check('render_page')
+    return render_template('other_profile.html')
+
+@app.route('/keyword', methods=['GET'])
+def keyword():
+    session_check('render_page')
+    return render_template('keyword.html')
+
 # serving static file such as js css.
 @app.route('/static/<path:filename>')
 def send_static(filename):
